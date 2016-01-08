@@ -9,6 +9,10 @@ set(CMAKE_CXX_COMPILER "clang++")
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} " -std=c++14")
 set(CMAKE_CXX_STANDARD 14)
 
+# Add llvm flags
+execute_process(COMMAND llvm-config --cppflags OUTPUT_VARIABLE LLVM_CPP_FLAGS)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${LLVM_CPP_FLAGS}")
+
 # boost
 find_package(Boost 1.58.0 REQUIRED COMPONENTS
   program_options
