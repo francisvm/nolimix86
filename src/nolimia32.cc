@@ -3,6 +3,8 @@
 #include <llvm/Support/MemoryBuffer.h>
 #include <llvm/Support/SourceMgr.h>
 
+#include <program.hh>
+
 static llvm::cl::opt<std::string>
 input_filename(llvm::cl::Positional, llvm::cl::desc("<input file>"),
                llvm::cl::init("-"));
@@ -18,7 +20,7 @@ int main(int argc, char const *argv[])
     return 1;
   }
 
-  llvm::outs() << "Processing file: " << input_filename << '\n';
+  nolimia32::program prog{std::move(*buffer_ptr)};
 
   return 0;
 }
