@@ -3,6 +3,10 @@ set(nolimia32_src
   program.cc
 )
 
+set(llvm_components
+  x86asmparser
+)
+
 add_executable(nolimia32 ${nolimia32_src})
-target_link_libraries(nolimia32 LLVMSupport)
-target_link_libraries(nolimia32 rt dl curses pthread z m)
+llvm_map_components_to_libnames(llvm_libs ${llvm_components})
+target_link_libraries(nolimia32 ${llvm_libs})
