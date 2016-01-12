@@ -22,6 +22,8 @@ namespace nolimia32
 
     auto options = InitMCTargetOptionsFromFlags();
     llvm::Triple triple{llvm::Triple::normalize(llvm::sys::getDefaultTargetTriple())};
+    triple = triple.get32BitArchVariant();
+
     auto* target = [&]
     {
       std::string error;
