@@ -15,7 +15,7 @@ find_package(Boost 1.58.0 REQUIRED COMPONENTS
 )
 
 # llvm
-set(CMAKE_PREFIX_PATH /home/thegameg/Documents/Projects/llvm/build/)
+set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/llvm/build)
 find_package(LLVM REQUIRED CONFIG)
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")

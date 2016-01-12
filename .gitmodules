@@ -1,0 +1,4 @@
+[submodule "llvm"]
+	path = llvm
+	url = git@github.com:thegameg/llvm.git
+	branch = fvm/nolimix86

@@ -26,3 +26,7 @@
 *.exe
 *.out
 *.app
+
+# Temporary dirs
+_build
+build
