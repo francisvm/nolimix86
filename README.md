@@ -1,6 +1,30 @@
 # nolimia32
 x86 virtual machine with unlimited registers
 
+# Build
+
+## Dependencies
+
+* CMake (2.6+)
+* Boost (1.58+)
+* LLVM  (3.8local)
+
+### Building
+
+```
+mkdir build
+cd build
+cmake .. -G Ninja # if you want to use ninja
+ninja nolimia32
+```
+
+A binary `nolimia32` is built in `build/bin`.
+
+### Usage
+`nolimia32 [options] <input file>`
+
+`nolimia32 --help` for more options.
+
 # Goal
 The goal of `nolimia32` is to simulate a virtual machine with unlimited
 registers, called `temporaries` or `temps`.
