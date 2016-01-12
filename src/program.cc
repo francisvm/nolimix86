@@ -56,7 +56,8 @@ namespace nolimia32
     assert(target_parser);
     parser->setTargetParser(*target_parser);
 
-    parser->Run(true);
+    if (parser->Run(true))
+      throw std::runtime_error("Parse failed.");
   }
 
 } // namespace nolimia32
