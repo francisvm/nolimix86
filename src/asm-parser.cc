@@ -3,7 +3,6 @@
 #include <llvm/MC/MCAsmInfo.h>
 #include <llvm/MC/MCCodeEmitter.h>
 #include <llvm/MC/MCContext.h>
-#include <llvm/MC/MCELFStreamer.h>
 #include <llvm/MC/MCInstrInfo.h>
 #include <llvm/MC/MCParser/MCAsmParser.h>
 #include <llvm/MC/MCRegisterInfo.h>
@@ -17,38 +16,13 @@
 #include <stdexcept>
 
 #include <asm-parser.hh>
+#include <streamer.hh>
 
 namespace nolimia32
 {
 
   namespace
   {
-    struct nolimia32_streamer : public llvm::MCELFStreamer
-    {
-      using llvm::MCELFStreamer::MCELFStreamer;
-
-      void
-      EmitLabel(MCSymbol* symbol) override
-      {
-        llvm::outs() << symbol->getName() << ":\n";
-        // FIXME : Implement AST.
-      }
-
-      void
-      EmitInstruction(const MCInst& inst, const MCSubtargetInfo&) override
-      {
-        llvm::outs() << inst << '\n';
-        // FIXME : Implement AST.
-      }
-
-      bool
-      EmitSymbolAttribute(MCSymbol* symbol, MCSymbolAttr) override
-      {
-        llvm::outs() << symbol->getName() << ": (attribute)\n";
-        return true;
-      };
-    };
-
     struct llvm_parser
     {
       llvm_parser(llvm::SourceMgr& src_mgr)
@@ -100,7 +74,7 @@ namespace nolimia32
         assert(emitter && "Undable to create code emitter!");
 
         // MCStreamer
-        streamer = std::make_unique<nolimia32_streamer>(*ctx, *backend,
+        streamer = std::make_unique<nolimia32::streamer>(*ctx, *backend,
                                                         out.os(),
                                                         emitter);
 
@@ -135,7 +109,7 @@ namespace nolimia32
       std::unique_ptr<const llvm::MCInstrInfo> instr_info;
       llvm::MCAsmBackend* backend; // Not owned.
       llvm::MCCodeEmitter* emitter; // Not owned.
-      std::unique_ptr<nolimia32_streamer> streamer;
+      std::unique_ptr<nolimia32::streamer> streamer;
       std::unique_ptr<llvm::MCAsmParser> parser;
       std::unique_ptr<const llvm::MCSubtargetInfo> subtarget_info;
       llvm::MCTargetOptions options;
