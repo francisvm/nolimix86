@@ -1,8 +1,8 @@
+#include <asm-parser.hh>
+
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/MemoryBuffer.h>
-
-#include <asm-parser.hh>
 
 static llvm::cl::opt<std::string>
 input_filename(llvm::cl::Positional, llvm::cl::desc("<input file>"),
