@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 2.6)
 set(CMAKE_CXX_COMPILER "clang++")
 set(CMAKE_C_COMPILER "clang")
 
-project(nolimia32)
+project(nolimix86)
 
 # Use debug build type by default
 set(CMAKE_BUILD_TYPE debug)

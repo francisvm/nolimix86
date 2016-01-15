@@ -18,7 +18,7 @@
 #include <asm-parser.hh>
 #include <streamer.hh>
 
-namespace nolimia32
+namespace nolimix86
 {
 
   namespace
@@ -74,7 +74,7 @@ namespace nolimia32
         assert(emitter && "Undable to create code emitter!");
 
         // MCStreamer
-        streamer = std::make_unique<nolimia32::streamer>(*ctx, *backend,
+        streamer = std::make_unique<nolimix86::streamer>(*ctx, *backend,
                                                         out.os(),
                                                         emitter);
 
@@ -109,7 +109,7 @@ namespace nolimia32
       std::unique_ptr<const llvm::MCInstrInfo> instr_info;
       llvm::MCAsmBackend* backend; // Not owned.
       llvm::MCCodeEmitter* emitter; // Not owned.
-      std::unique_ptr<nolimia32::streamer> streamer;
+      std::unique_ptr<nolimix86::streamer> streamer;
       std::unique_ptr<llvm::MCAsmParser> parser;
       std::unique_ptr<const llvm::MCSubtargetInfo> subtarget_info;
       llvm::MCTargetOptions options;
@@ -143,4 +143,4 @@ namespace nolimia32
 
   asm_parser::~asm_parser() = default;
 
-} // namespace nolimia32
+} // namespace nolimix86

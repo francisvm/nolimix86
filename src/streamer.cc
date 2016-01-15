@@ -2,7 +2,7 @@
 
 #include <streamer.hh>
 
-namespace nolimia32
+namespace nolimix86
 {
 
   void
@@ -28,4 +28,4 @@ namespace nolimia32
     return true;
   };
 
-} // namespace nolimia32
+} // namespace nolimix86

@@ -1,4 +1,4 @@
-# nolimia32
+# nolimix86
 x86 virtual machine with unlimited registers
 
 # Build
@@ -15,18 +15,18 @@ x86 virtual machine with unlimited registers
 mkdir build
 cd build
 cmake .. -G Ninja # if you want to use ninja
-ninja nolimia32
+ninja nolimix86
 ```
 
-A binary `nolimia32` is built in `build/bin`.
+A binary `nolimix86` is built in `build/bin`.
 
 ### Usage
-`nolimia32 [options] <input file>`
+`nolimix86 [options] <input file>`
 
-`nolimia32 --help` for more options.
+`nolimix86 --help` for more options.
 
 # Goal
-The goal of `nolimia32` is to simulate a virtual machine with unlimited
+The goal of `nolimix86` is to simulate a virtual machine with unlimited
 registers, called `temporaries` or `temps`.
 
 So this is actually a pseudo x86 assembly, `%t0`, `%t1`, etc. as a register.

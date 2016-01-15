@@ -10,7 +10,7 @@ input_filename(llvm::cl::Positional, llvm::cl::desc("<input file>"),
 
 int main(int argc, char const *argv[])
 {
-  llvm::cl::ParseCommandLineOptions(argc, argv, "nolimia32\n");
+  llvm::cl::ParseCommandLineOptions(argc, argv, "nolimix86\n");
 
   auto buffer_ptr = llvm::MemoryBuffer::getFileOrSTDIN(input_filename);
   if (auto ec = buffer_ptr.getError())
@@ -19,7 +19,7 @@ int main(int argc, char const *argv[])
     return 1;
   }
 
-  nolimia32::asm_parser parser{std::move(*buffer_ptr)};
+  nolimix86::asm_parser parser{std::move(*buffer_ptr)};
 
   if (parser.parse())
     return 1;

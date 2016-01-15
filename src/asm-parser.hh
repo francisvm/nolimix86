@@ -5,7 +5,7 @@
 
 #include <memory>
 
-namespace nolimia32
+namespace nolimix86
 {
 
   class asm_parser
@@ -26,4 +26,4 @@ namespace nolimia32
       std::unique_ptr<impl> impl_;
   };
 
-} // namespace nolimia32
+} // namespace nolimix86

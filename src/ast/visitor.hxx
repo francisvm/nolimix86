@@ -1,6 +1,6 @@
 #pragma once
 
-namespace nolimia32
+namespace nolimix86
 {
 
   namespace ast
@@ -13,4 +13,4 @@ namespace nolimia32
 
   } // namespace ast
 
-} // namespace nolimia32
+} // namespace nolimix86

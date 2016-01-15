@@ -2,7 +2,7 @@
 
 #include <llvm/MC/MCELFStreamer.h>
 
-namespace nolimia32
+namespace nolimix86
 {
 
   class streamer : public llvm::MCELFStreamer
@@ -16,4 +16,4 @@ namespace nolimia32
                              llvm::MCSymbolAttr) override;
   };
 
-} // namespace nolimia32
+} // namespace nolimix86

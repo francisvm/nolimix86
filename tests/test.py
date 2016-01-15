@@ -18,7 +18,7 @@ class suite:
     def call_on_dir(self, test_dir):
         for f in os.listdir(test_dir):
             file_name = test_dir + f
-            ret = subprocess.call(["./bin/nolimia32", file_name],
+            ret = subprocess.call(["./bin/nolimix86", file_name],
                                   stdout=FNULL, stderr=FNULL)
             if ret == 0:
                 print(BOLD + GREEN + os.path.basename(file_name) + ENDC)
