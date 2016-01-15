@@ -6,6 +6,9 @@ set(nolimix86_src
 
   # AST
   ast/ast.cc
+  ast/instr-base.cc
+  ast/operand.cc
+  ast/ast.cc
 )
 
 set(llvm_components

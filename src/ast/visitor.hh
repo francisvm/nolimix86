@@ -25,6 +25,10 @@ namespace nolimix86
 
         /// Visit an ast node
         virtual void operator()(const_t<ast>&);
+
+        virtual void operator()(const_t<instr_base>&);
+
+        virtual void operator()(const_t<operand>&);
     };
 
     /// Const visitor: does not alter the AST.

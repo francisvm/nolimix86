@@ -14,8 +14,8 @@ namespace nolimix86
         ast() = default;
         virtual ~ast() = default;
 
-        void accept(const_visitor&) const;
-        void accept(visitor&);
+        virtual void accept(const_visitor&) const = 0;
+        virtual void accept(visitor&) = 0;
     };
 
   } // namespace ast
