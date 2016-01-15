@@ -1,3 +1,2 @@
-	.text
-l0:
-	movl	%t0, %eax
+  .text
+movl %t0, %eax

@@ -1,3 +1,2 @@
   .text
-l0:
-  lea l0, %eax
+lea l0, %eax
