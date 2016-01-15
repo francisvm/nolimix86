@@ -26,9 +26,14 @@ class suite:
             else:
                 print(BOLD + RED + file_name + ENDC)
                 self.failed += 1
+def normalize(path):
+    if path[len(path) - 1] != '/':
+        path += '/'
+
+    return path
 
 if __name__ == '__main__':
     tests = suite()
-    tests.call_on_dir(sys.argv[1])
+    tests.call_on_dir(normalize(sys.argv[1]))
     print("Tests: " + BOLD + " "
           + str(tests.passed) + " / " + str(tests.passed + tests.failed) + ENDC)
