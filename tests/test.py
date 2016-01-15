@@ -21,10 +21,10 @@ class suite:
             ret = subprocess.call(["./bin/nolimia32", file_name],
                                   stdout=FNULL, stderr=FNULL)
             if ret == 0:
-                print(BOLD + GREEN + file_name + ENDC)
+                print(BOLD + GREEN + os.path.basename(file_name) + ENDC)
                 self.passed += 1
             else:
-                print(BOLD + RED + file_name + ENDC)
+                print(BOLD + RED + os.path.basename(file_name) + ENDC)
                 self.failed += 1
 def normalize(path):
     if path[len(path) - 1] != '/':
