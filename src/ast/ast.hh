@@ -8,11 +8,11 @@ namespace nolimix86
   namespace ast
   {
 
-    class instr
+    class ast
     {
       public:
-        instr() = default;
-        virtual ~instr() = default;
+        ast() = default;
+        virtual ~ast() = default;
 
         void accept(const_visitor&) const;
         void accept(visitor&);

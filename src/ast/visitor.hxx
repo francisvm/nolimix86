@@ -7,7 +7,7 @@ namespace nolimix86
   {
 
     template<template <typename> class Const>
-    void visitor_impl<Const>::operator()(const_t<instr>&)
+    void visitor_impl<Const>::operator()(const_t<ast>&)
     {
     }
 

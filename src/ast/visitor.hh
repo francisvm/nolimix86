@@ -23,8 +23,8 @@ namespace nolimix86
         visitor_impl() = default;
         virtual ~visitor_impl() = default;
 
-        /// Visit a impl `instr`
-        virtual void operator()(const_t<instr>&);
+        /// Visit an ast node
+        virtual void operator()(const_t<ast>&);
     };
 
     /// Const visitor: does not alter the AST.

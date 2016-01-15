@@ -1,4 +1,4 @@
-#include <ast/instr.hh>
+#include <ast/ast.hh>
 
 namespace nolimix86
 {
@@ -6,17 +6,15 @@ namespace nolimix86
   namespace ast
   {
 
-    void instr::accept(const_visitor& v) const
+    void ast::accept(const_visitor& v) const
     {
       v(*this);
     }
 
-    void instr::accept(visitor& v)
+    void ast::accept(visitor& v)
     {
       v(*this);
     }
-
-
 
   } // namespace ast
 

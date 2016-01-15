@@ -6,7 +6,7 @@ namespace nolimix86
   namespace ast
   {
 
-    class instr;
+    class ast;
 
   } // namespace ast
 

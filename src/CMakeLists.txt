@@ -5,7 +5,7 @@ set(nolimix86_src
   streamer.cc
 
   # AST
-  ast/instr.cc
+  ast/ast.cc
 )
 
 set(llvm_components
