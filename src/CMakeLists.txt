@@ -1,6 +1,6 @@
 set(nolimia32_src
   nolimia32.cc
-  program.cc
+  asm-parser.cc
 )
 
 set(llvm_components

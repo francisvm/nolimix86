@@ -1,9 +1,8 @@
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/MemoryBuffer.h>
-#include <llvm/Support/SourceMgr.h>
 
-#include <program.hh>
+#include <asm-parser.hh>
 
 static llvm::cl::opt<std::string>
 input_filename(llvm::cl::Positional, llvm::cl::desc("<input file>"),
@@ -20,7 +19,10 @@ int main(int argc, char const *argv[])
     return 1;
   }
 
-  nolimia32::program prog{std::move(*buffer_ptr)};
+  nolimia32::asm_parser parser{std::move(*buffer_ptr)};
+
+  if (parser.parse())
+    return 1;
 
   return 0;
 }
