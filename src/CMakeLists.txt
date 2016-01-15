@@ -1,7 +1,11 @@
 set(nolimia32_src
+  # nolimia32
   nolimia32.cc
   asm-parser.cc
   streamer.cc
+
+  # AST
+  ast/instr.cc
 )
 
 set(llvm_components
