@@ -1,0 +1,2 @@
+  .text
+pushl %t0
