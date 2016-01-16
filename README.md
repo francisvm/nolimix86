@@ -34,13 +34,11 @@ So this is actually a pseudo x86 assembly, `%t0`, `%t1`, etc. as a register.
 ## Support
 
 ### Instructions
-* `addl`
+* `add`
 * `call`
-* `cltd`
 * `cmp`
-* `cmpl`
-* `idvl`
-* `imull`
+* `idiv`
+* `imul`
 * `ja`
 * `jae`
 * `jb`
@@ -54,17 +52,17 @@ So this is actually a pseudo x86 assembly, `%t0`, `%t1`, etc. as a register.
 * `jne`
 * `js`
 * `lea`
-* `leal`
 * `leave`
-* `movl`
-* `movzbl`
-* `negl`
-* `pushl`
+* `mov`
+* `neg`
+* `pop`
+* `push`
 * `ret`
-* `sall`
+* `sal`
+* `sar`
 * `sete`
-* `subl`
-* `testl`
+* `sub`
+* `test`
 
 ### Registers
 * `eax`
