@@ -1,0 +1,2 @@
+  .text
+movzbl %al, %eax
