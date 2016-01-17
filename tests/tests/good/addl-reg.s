@@ -1,2 +1,0 @@
-  .text
-addl %eax, %edx

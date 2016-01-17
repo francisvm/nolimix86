@@ -1,2 +1,0 @@
-  .text
-movzbl %al, %eax

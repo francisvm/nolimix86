@@ -1,2 +1,0 @@
-  .text
-pushl %eax
