@@ -2,6 +2,7 @@
 
 #include <common.hh>
 #include <misc/meta.hh>
+#include <x86/registers.hh>
 
 namespace nolimix86
 {
