@@ -1,0 +1,2 @@
+  .text
+mov %eax, %eax
