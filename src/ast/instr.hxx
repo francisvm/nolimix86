@@ -124,8 +124,6 @@ namespace nolimix86
       return (*this)[0];
     }
 
-
-
   } // namespace ast
 
 } // namespace nolimix86
