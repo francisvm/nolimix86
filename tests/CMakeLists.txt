@@ -1,13 +1,5 @@
-set(CATEGORY good)
-set(PROJECT_TESTS_DIR ${PROJECT_SOURCE_DIR}/tests)
-
-execute_process(
-  COMMAND ${PROJECT_TESTS_DIR}/gen-test.py
-  WORKING_DIRECTORY ${PROJECT_TESTS_DIR}/${CATEGORY}
-)
+add_subdirectory("suite")
 
 add_custom_target(check
-  COMMAND ${PROJECT_TESTS_DIR}/test.py ${PROJECT_TESTS_DIR}/${CATEGORY}
-  DEPENDS nolimix86
-  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+  DEPENDS check-functional
 )
