@@ -6,7 +6,6 @@ x86 virtual machine with unlimited registers
 ## Dependencies
 
 * CMake (2.6+)
-* Boost (1.58+)
 * LLVM  (3.8local)
 
 ### Building
