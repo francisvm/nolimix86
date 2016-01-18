@@ -21,11 +21,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics")
 # Disable RTTI
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
 
-# boost
-find_package(Boost 1.58.0 REQUIRED COMPONENTS
-  program_options
-)
-
 # llvm
 set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/llvm/build)
 find_package(LLVM REQUIRED CONFIG)
