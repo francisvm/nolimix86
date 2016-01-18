@@ -59,6 +59,7 @@ def generate_tests():
     return tests_count
 
 if __name__ == '__main__':
-    print("{0}: generating tests...".format(os.path.basename(sys.argv[0])))
+    print("-- {0}: generating tests...".format(os.path.basename(sys.argv[0])))
     count = generate_tests()
-    print("{0}: tests generated: {1}".format(os.path.basename(sys.argv[0]), count))
+    print("--   {0}: tests generated: {1}".format(os.path.basename(sys.argv[0]),
+                                                  count))
