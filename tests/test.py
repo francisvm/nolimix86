@@ -16,7 +16,7 @@ class suite:
         self.passed = 0
 
     def call_on_dir(self, test_dir):
-        for f in os.listdir(test_dir):
+        for f in sorted(os.listdir(test_dir)):
             file_name = test_dir + f
             ret = subprocess.call(["./bin/nolimix86", file_name],
                                   stdout=FNULL, stderr=FNULL)
