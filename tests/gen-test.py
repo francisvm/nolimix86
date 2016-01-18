@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#! /usr/bin/env python3
 
 # Generate test cases for every instruction using every kind of operands
 # a file named mov-rt contains the following instruction:
