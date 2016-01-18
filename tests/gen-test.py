@@ -4,6 +4,9 @@
 # a file named mov-rt contains the following instruction:
 # mov %eax, %t0
 
+import sys
+import os
+
 binary_instructions = ["mov", "add", "imul", "lea", "sal", "sar", "sub"]
 need_suffix = ["mov", "add", "sub"]
 operands_types = ["r", "i", "m", "t"]
@@ -35,15 +38,27 @@ def add_instr_suffix(instr, lhs, rhs):
         return instr + "l"
     return instr
 
-for instr in binary_instructions:
-    for lhs in operands_types:
-        for rhs in operands_types:
-            if not(valid_types(instr, lhs, rhs)):
-                continue
+def generate_tests():
+    tests_count = 0
+    for instr in binary_instructions:
+        for lhs in operands_types:
+            for rhs in operands_types:
+                if not(valid_types(instr, lhs, rhs)):
+                    continue
 
-            suff_instr = add_instr_suffix(instr, lhs, rhs)
-            filename = "{0}-{1}{2}.s".format(suff_instr, lhs, rhs)
-            file = open(filename, "w")
-            file.write("  .text\n") # Section name
-            file.write("{0} {1}, {2}".format(suff_instr, operands_for_type[lhs],
-                                                    operands_for_type[rhs]))
+                suff_instr = add_instr_suffix(instr, lhs, rhs)
+                filename = "{0}-{1}{2}.s".format(suff_instr, lhs, rhs)
+
+                file = open(filename, "w")
+                file.write("  .text\n") # Section name
+                file.write("{0} {1}, {2}".format(suff_instr,
+                                                 operands_for_type[lhs],
+                                                 operands_for_type[rhs]))
+                tests_count += 1
+
+    return tests_count
+
+if __name__ == '__main__':
+    print("{0}: generating tests...".format(os.path.basename(sys.argv[0])))
+    count = generate_tests()
+    print("{0}: tests generated: {1}".format(os.path.basename(sys.argv[0]), count))
