@@ -1,0 +1,36 @@
+# C++ language configuration.
+language: cpp
+
+# Install dependencies
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test # dependencies
+      - llvm-toolchain-precise-3.7 # clang-3.7
+      - kubuntu-backports # cmake 2.8.12.2
+      - deadsnakes # python3(.2)
+    packages:
+      - clang-3.7
+      - cmake
+      - python3
+
+script:
+  # Get the number of cores.
+  - export CPUCORES=`grep -c '^processor' /proc/cpuinfo`
+
+  # Build llvm.
+  - cd llvm && mkdir build && cd build
+  - CC=clang-3.7 CXX=clang++-3.7 cmake -DLLVM_TARGETS_TO_BUILD="X86"
+                                       -DLLVM_BUILD_TOOLS=OFF
+                                       -DLLVM_INCLUDE_TOOLS=OFF
+                                       -DLLVM_INCLUDE_EXAMPLES=OFF
+                                       -DLLVM_BUILD_EXAMPLES=OFF
+                                       -DLLVM_BUILD_TESTS=OFF
+                                       -DLLVM_INCLUDE_TESTS=OFF
+                                       ..
+  - make -j$CPUCORES
+
+  # Build nolimix86
+  - cd ../../ && mkdir build && cd build
+  - CC=clang-3.7 CXX=clang++-3.7 cmake ..
+  - make check -j$CPUCORES
