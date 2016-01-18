@@ -21,6 +21,7 @@ namespace nolimix86
         struct reg_tag {};
         struct imm_tag {};
         struct mem_tag {};
+        struct label_tag {};
 
       public:
         /// Create an operand represented by a temporary.
@@ -35,6 +36,9 @@ namespace nolimix86
         /// Create an operand represented by a memory access.
         /// Arguments: offset, register.
         operand(size_t, const std::string&);
+
+        /// Create an operand represented by an assembly label.
+        operand(std::string, label_tag);
 
         void accept(const_visitor&) const override;
         void accept(visitor&) override;
@@ -81,6 +85,15 @@ namespace nolimix86
           enum x86::reg reg_ = x86::UNKNOWN;
 
           mem_impl(size_t, const std::string&);
+        };
+
+        /// Implementation of the operand as an assembly label.
+        struct label_impl : public impl
+        {
+          /// The name of the labe.
+          const std::string label_;
+
+          label_impl(std::string);
         };
 
         /// The imlementation detail.

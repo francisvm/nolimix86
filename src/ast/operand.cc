@@ -26,6 +26,11 @@ namespace nolimix86
     {
     }
 
+    operand::operand(std::string label_name, label_tag)
+      : impl_{std::make_unique<label_impl>(std::move(label_name))}
+    {
+    }
+
     void operand::accept(const_visitor& v) const
     {
       v(*this);
@@ -54,6 +59,11 @@ namespace nolimix86
     operand::mem_impl::mem_impl(size_t offset, const std::string& reg_name)
       : offset_{offset}
       , reg_{x86::reg_convert(reg_name)}
+    {
+    }
+
+    operand::label_impl::label_impl(std::string label_name)
+      : label_{std::move(label_name)}
     {
     }
 
