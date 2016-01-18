@@ -1,8 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
-
-# Setup the compilers
-set(CMAKE_CXX_COMPILER "clang++")
-set(CMAKE_C_COMPILER "clang")
+cmake_minimum_required(VERSION 2.8.12.2)
 
 project(nolimix86)
 
@@ -13,7 +9,13 @@ set(CMAKE_BUILD_TYPE debug)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
 # Set the standard to C++14
-set(CMAKE_CXX_STANDARD 14)
+# CMake < 3.1 doesn't support CMAKE_CXX_STANDARD.
+if(${CMAKE_VERSION} VERSION_GREATER 3.0)
+  set(CMAKE_CXX_STANDARD 14)
+else()
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+endif()
+
 # Enable more warnings
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
 # Force color output for ninja
