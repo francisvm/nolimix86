@@ -52,7 +52,7 @@ namespace nolimix86
         struct temp_impl : public impl
         {
           /// The number of the temporary.
-          size_t temp_num_ = 0;
+          const size_t temp_num_ = 0;
 
           temp_impl(size_t);
         };
@@ -61,7 +61,7 @@ namespace nolimix86
         struct reg_impl : public impl
         {
           /// The register.
-          enum x86::reg reg_ = x86::UNKNOWN;
+          const enum x86::reg reg_ = x86::UNKNOWN;
 
           reg_impl(const std::string&);
         };
@@ -70,7 +70,7 @@ namespace nolimix86
         struct imm_impl : public impl
         {
           /// The value of the immediate.
-          size_t value_ = 0;
+          const size_t value_ = 0;
 
           imm_impl(size_t);
         };
@@ -79,7 +79,7 @@ namespace nolimix86
         struct mem_impl : public impl
         {
           /// The value of the offset.
-          size_t offset_ = 0;
+          const size_t offset_ = 0;
 
           /// The register.
           enum x86::reg reg_ = x86::UNKNOWN;
