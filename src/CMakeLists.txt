@@ -20,11 +20,11 @@ set(llvm_components
 )
 
 # Create a library, to be shared with different executables.
-add_library(libnolimix86 ${libnolimix86_src})
+add_library(nolimix86_core ${libnolimix86_src})
 
 # Link LLVM components
 llvm_map_components_to_libnames(llvm_libs ${llvm_components})
-target_link_libraries(libnolimix86 ${llvm_libs})
+target_link_libraries(nolimix86_core ${llvm_libs})
 
 message(STATUS "Found the following LLVM libraries:")
 foreach(component ${llvm_components})
@@ -33,4 +33,4 @@ endforeach()
 
 # Create the main executable.
 add_executable(nolimix86 ${nolimix86_src})
-target_link_libraries(nolimix86 libnolimix86)
+target_link_libraries(nolimix86 nolimix86_core)

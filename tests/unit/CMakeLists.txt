@@ -13,7 +13,7 @@ message(STATUS "Found GTest: " ${GTEST_LIBRARY})
 macro(add_unit_test name file)
   string(REPLACE ";" "" TESTS ${TESTS} ${name})
   add_executable(${name} EXCLUDE_FROM_ALL ${file})
-  target_link_libraries(${name} ${GTEST_BOTH_LIBRARIES} pthread libnolimix86)
+  target_link_libraries(${name} ${GTEST_BOTH_LIBRARIES} pthread nolimix86_core)
 endmacro()
 
 # Output all tests in build/tests/bin.
