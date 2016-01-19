@@ -1,8 +1,15 @@
-#include <ast/operand.hh>
+#include <ast/default-visitor.hh>
 
 #include <gtest/gtest.h>
 
-TEST(Operand, Temp)
+namespace ast = nolimix86::ast;
+
+TEST(default_visitor, const_default_visitor)
 {
-  nolimix86::ast::operand op{0, nolimix86::ast::operand::temp_tag{}};
+  ast::const_default_visitor visitor;
+}
+
+TEST(default_visitor, default_visitor)
+{
+  ast::default_visitor visitor;
 }
