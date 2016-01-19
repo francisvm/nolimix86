@@ -16,6 +16,7 @@ addons:
       - libgtest-dev
 
 script:
+  - export ROOT=`pwd`
   # Get the number of cores.
   - export CPUCORES=`grep -c '^processor' /proc/cpuinfo`
 
@@ -29,9 +30,14 @@ script:
                                        -DLLVM_BUILD_TESTS=OFF
                                        -DLLVM_INCLUDE_TESTS=OFF
                                        ..
+  - make LLVMMC LLVMMCParser LLVMMCDisassembler LLVMSupport LLVMObject LLVMBitReader LLVMX86Desc LLVMX86Info LLVMX86AsmPrinter LLVMX86Utils LLVMCore LLVMX86AsmParser
+
+  # Build gtest
+  - cd $ROOT/tests/unit/googletest && mkdir build && cd build
+  - CC=clang-3.7 CXX=clang++-3.7 cmake ..
   - make -j$CPUCORES
 
   # Build nolimix86
-  - cd ../../ && mkdir build && cd build
+  - cd $ROOT && mkdir build && cd build
   - CC=clang-3.7 CXX=clang++-3.7 cmake ..
   - make check -j$CPUCORES
