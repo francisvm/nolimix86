@@ -1,6 +1,5 @@
-set(nolimix86_src
-  # nolimix86
-  nolimix86.cc
+set(libnolimix86_src
+  # Parser
   asm-parser.cc
   streamer.cc
 
@@ -11,17 +10,27 @@ set(nolimix86_src
   ast/ast.cc
 )
 
+set(nolimix86_src
+  # nolimix86
+  nolimix86.cc
+)
+
 set(llvm_components
   x86asmparser
 )
 
-add_executable(nolimix86 ${nolimix86_src})
+# Create a library, to be shared with different executables.
+add_library(libnolimix86 ${libnolimix86_src})
 
 # Link LLVM components
 llvm_map_components_to_libnames(llvm_libs ${llvm_components})
-target_link_libraries(nolimix86 ${llvm_libs})
+target_link_libraries(libnolimix86 ${llvm_libs})
 
 message(STATUS "Found the following LLVM libraries:")
 foreach(component ${llvm_components})
   message(STATUS "  ${component}")
 endforeach()
+
+# Create the main executable.
+add_executable(nolimix86 ${nolimix86_src})
+target_link_libraries(nolimix86 libnolimix86)
