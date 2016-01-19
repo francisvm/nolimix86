@@ -17,7 +17,7 @@ namespace nolimix86
     class instr : public instr_base
     {
       public:
-        using operand_t = std::unique_ptr<operand>;
+        using operand_t = operand;
         using operands_t = std::array<operand_t, operands_count>;
         using operand_iterator = typename operands_t::iterator;
         using operand_const_iterator = typename operands_t::const_iterator;
