@@ -1,6 +1,8 @@
 set(PROJECT_UNIT_TESTS_DIR ${PROJECT_TESTS_DIR}/unit)
 
 # Find gtest.
+# Remove llvm from the prefix path because it provides libgtest.a.
+set(CMAKE_PREFIX_PATH "")
 find_package(GTest REQUIRED)
 include_directories(SYSTEM ${GTEST_INCLUDE_DIRS})
 
