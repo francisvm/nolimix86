@@ -24,7 +24,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
 
 # llvm
-set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/llvm/build)
+set(CMAKE_PREFIX_PATH "${PROJECT_SOURCE_DIR}/llvm/build")
+set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH};${PROJECT_SOURCE_DIR}/llvm/include")
 find_package(LLVM REQUIRED CONFIG)
 message(STATUS "LLVM version: ${LLVM_PACKAGE_VERSION} in ${LLVM_BUILD_BINARY_DIR}")
 include_directories(SYSTEM ${LLVM_INCLUDE_DIRS})
