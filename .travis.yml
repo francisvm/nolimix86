@@ -5,7 +5,7 @@ language: cpp
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test # dependencies
+      - ubuntu-toolchain-r-test # libgtest-dev
       - llvm-toolchain-precise-3.7 # clang-3.7
       - kubuntu-backports # cmake 2.8.12.2
       - deadsnakes # python3(.2)
@@ -13,6 +13,7 @@ addons:
       - clang-3.7
       - cmake
       - python3
+      - libgtest-dev
 
 script:
   # Get the number of cores.
