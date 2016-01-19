@@ -26,9 +26,9 @@ namespace nolimix86
         /// Visit an ast node
         virtual void operator()(const_t<ast>&);
 
-        virtual void operator()(const_t<instr_base>&);
+        virtual void operator()(const_t<instr_base>&) = 0;
 
-        virtual void operator()(const_t<operand>&);
+        virtual void operator()(const_t<operand>&) = 0;
 
         virtual void operator()(const_t<add>&) = 0;
 
