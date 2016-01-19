@@ -7,7 +7,7 @@ set(libnolimix86_src
   ast/ast.cc
   ast/instr-base.cc
   ast/operand.cc
-  ast/ast.cc
+  ast/basic-block.cc
 )
 
 set(nolimix86_src
