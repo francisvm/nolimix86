@@ -7,6 +7,7 @@ x86 virtual machine with unlimited registers
 
 * CMake (2.8.12.2+)
 * LLVM  (3.8local)
+* Google Test (`libgtest`) (1.7.0+)
 
 ### Building
 
