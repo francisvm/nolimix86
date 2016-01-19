@@ -8,7 +8,7 @@ include_directories(SYSTEM ${GTEST_INCLUDE_DIRS})
 set(GTEST_LIBRARY ${GTEST_BINARY_DIR}/libgtest.a)
 set(GTEST_MAIN_LIBRARY ${GTEST_BINARY_DIR}/libgtest_main.a)
 set(GTEST_BOTH_LIBRARIES ${GTEST_LIBRARY} ${GTEST_MAIN_LIBRARY})
-message("Found GTest: " ${GTEST_LIBRARY})
+message(STATUS "Found GTest: " ${GTEST_LIBRARY})
 
 macro(add_unit_test name file)
   string(REPLACE ";" "" TESTS ${TESTS} ${name})
