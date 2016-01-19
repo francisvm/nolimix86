@@ -41,3 +41,7 @@ if __name__ == '__main__':
     tests.call_on_dir(normalize(sys.argv[1]))
     print("Tests: " + BOLD + " "
           + str(tests.passed) + " / " + str(tests.passed + tests.failed) + ENDC)
+    if tests.failed > 0:
+        sys.exit(1)
+    else:
+        sys.exit(0)

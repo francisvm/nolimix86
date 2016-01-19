@@ -26,6 +26,7 @@ class suite:
             else:
                 print(BOLD + RED + os.path.basename(file_name) + ENDC)
                 self.failed += 1
+
 def normalize(path):
     if path[len(path) - 1] != '/':
         path += '/'
@@ -37,3 +38,7 @@ if __name__ == '__main__':
     tests.call_on_dir(normalize(sys.argv[1]))
     print("Tests: " + BOLD + " "
           + str(tests.passed) + " / " + str(tests.passed + tests.failed) + ENDC)
+    if tests.failed > 0:
+        sys.exit(1)
+    else:
+        sys.exit(0)
