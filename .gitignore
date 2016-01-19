@@ -30,3 +30,6 @@
 # Temporary dirs
 _build
 build
+
+# Don't share these
+tests/suite/misc
