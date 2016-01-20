@@ -241,8 +241,6 @@ namespace nolimix86
         instr->accept(*this);
     }
 
-
-
   } // namespace ast
 
 } // namespace nolimix86
