@@ -15,69 +15,69 @@ namespace nolimix86
         template <typename T>
         using const_t = typename Const<T>::type;
 
-        virtual void operator()(const_t<instr_base>&) override;
+        void operator()(const_t<instr_base>&) override;
 
-        virtual void operator()(const_t<operand>&) override;
+        void operator()(const_t<operand>&) override;
 
-        virtual void operator()(const_t<add>&) override;
+        void operator()(const_t<add>&) override;
 
-        virtual void operator()(const_t<call>&) override;
+        void operator()(const_t<call>&) override;
 
-        virtual void operator()(const_t<cmp>&) override;
+        void operator()(const_t<cmp>&) override;
 
-        virtual void operator()(const_t<idiv>&) override;
+        void operator()(const_t<idiv>&) override;
 
-        virtual void operator()(const_t<imul>&) override;
+        void operator()(const_t<imul>&) override;
 
-        virtual void operator()(const_t<ja>&) override;
+        void operator()(const_t<ja>&) override;
 
-        virtual void operator()(const_t<jae>&) override;
+        void operator()(const_t<jae>&) override;
 
-        virtual void operator()(const_t<jb>&) override;
+        void operator()(const_t<jb>&) override;
 
-        virtual void operator()(const_t<jbe>&) override;
+        void operator()(const_t<jbe>&) override;
 
-        virtual void operator()(const_t<je>&) override;
+        void operator()(const_t<je>&) override;
 
-        virtual void operator()(const_t<jg>&) override;
+        void operator()(const_t<jg>&) override;
 
-        virtual void operator()(const_t<jge>&) override;
+        void operator()(const_t<jge>&) override;
 
-        virtual void operator()(const_t<jl>&) override;
+        void operator()(const_t<jl>&) override;
 
-        virtual void operator()(const_t<jle>&) override;
+        void operator()(const_t<jle>&) override;
 
-        virtual void operator()(const_t<jmp>&) override;
+        void operator()(const_t<jmp>&) override;
 
-        virtual void operator()(const_t<jne>&) override;
+        void operator()(const_t<jne>&) override;
 
-        virtual void operator()(const_t<js>&) override;
+        void operator()(const_t<js>&) override;
 
-        virtual void operator()(const_t<lea>&) override;
+        void operator()(const_t<lea>&) override;
 
-        virtual void operator()(const_t<leave>&) override;
+        void operator()(const_t<leave>&) override;
 
-        virtual void operator()(const_t<mov>&) override;
+        void operator()(const_t<mov>&) override;
 
-        virtual void operator()(const_t<neg>&) override;
+        void operator()(const_t<neg>&) override;
 
-        virtual void operator()(const_t<pop>&) override;
+        void operator()(const_t<pop>&) override;
 
-        virtual void operator()(const_t<push>&) override;
+        void operator()(const_t<push>&) override;
 
-        virtual void operator()(const_t<ret>&) override;
+        void operator()(const_t<ret>&) override;
 
-        virtual void operator()(const_t<sal>&) override;
+        void operator()(const_t<sal>&) override;
 
-        virtual void operator()(const_t<sar>&) override;
+        void operator()(const_t<sar>&) override;
 
-        virtual void operator()(const_t<sete>&) override;
+        void operator()(const_t<sete>&) override;
 
-        virtual void operator()(const_t<sub>&) override;
+        void operator()(const_t<sub>&) override;
 
-        virtual void operator()(const_t<test>&) override;
+        void operator()(const_t<test>&) override;
 
-        virtual void operator()(const_t<basic_block>&) override;
+        void operator()(const_t<basic_block>&) override;
 
       private:
         template <typename T>

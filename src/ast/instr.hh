@@ -36,7 +36,7 @@ namespace nolimix86
         instr(operand_t);
 
         /// Instruction opcode
-        virtual opcode_t opcode_get() const noexcept override;
+        opcode_t opcode_get() const noexcept override;
 
         /// Operand iterators
         operand_iterator begin() noexcept;
