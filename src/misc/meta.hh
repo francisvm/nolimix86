@@ -1,3 +1,5 @@
+#pragma once
+
 #include <common.hh>
 
 namespace nolimix86
