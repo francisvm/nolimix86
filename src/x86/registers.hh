@@ -15,13 +15,13 @@ namespace nolimix86
     {
       // Shouldn never have to use this, since LLVM parses x86 correctly.
       UNKNOWN = 0,
-      EAX,
-      EBX,
-      ECX,
-      EDI,
-      ESI,
-      ESP,
-      EBP
+      EAX = 19,
+      EBX = 21,
+      ECX = 22,
+      EDI = 23,
+      ESI = 29,
+      ESP = 30,
+      EBP = 20
     };
 
     // Use operator""s for strings.

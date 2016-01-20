@@ -41,6 +41,7 @@ namespace nolimix86
 
         /// Create an operand represented by a machine register.
         explicit operand(const std::string&, reg_tag = {});
+        explicit operand(enum x86::reg, reg_tag = {});
 
         /// Create an operand represented by an immediate.
         explicit operand(size_t, imm_tag = {});
@@ -95,6 +96,7 @@ namespace nolimix86
           const enum x86::reg reg_ = x86::UNKNOWN;
 
           reg_impl(const std::string&);
+          reg_impl(enum x86::reg);
           void dump(std::ostream&) const override;
         };
 
