@@ -113,3 +113,24 @@ TEST(instr, construction)
   binary.src();
   binary.dst();
 }
+
+TEST(operand, construction)
+{
+  auto temp = ast::make_operand<ast::operand::temp_tag>(0UL);
+  auto reg = ast::make_operand<ast::operand::reg_tag>("eax");
+  auto imm = ast::make_operand<ast::operand::imm_tag>(0x0UL);
+  auto mem = ast::make_operand<ast::operand::mem_tag>(0UL, "eax");
+  auto label = ast::make_operand<ast::operand::label_tag>("l0");
+
+  EXPECT_EQ(temp.type_get(), ast::operand::type::TEMP);
+  EXPECT_EQ(reg.type_get(), ast::operand::type::REG);
+  EXPECT_EQ(imm.type_get(), ast::operand::type::IMM);
+  EXPECT_EQ(mem.type_get(), ast::operand::type::MEM);
+  EXPECT_EQ(label.type_get(), ast::operand::type::LABEL);
+
+  EXPECT_TRUE(temp.is_temp());
+  EXPECT_TRUE(reg.is_reg());
+  EXPECT_TRUE(imm.is_imm());
+  EXPECT_TRUE(mem.is_mem());
+  EXPECT_TRUE(label.is_label());
+}
