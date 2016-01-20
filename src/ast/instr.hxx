@@ -7,6 +7,21 @@ namespace nolimix86
 
   namespace ast
   {
+
+    template <opcode_t opcode, size_t operands_count>
+    template <size_t count, typename>
+    instr<opcode, operands_count>::instr(operand_t src, operand_t dst)
+      : operands_{{std::move(src), std::move(dst)}}
+    {
+    }
+
+    template <opcode_t opcode, size_t operands_count>
+    template <size_t count, typename>
+    instr<opcode, operands_count>::instr(operand_t oper)
+      : operands_{{std::move(oper)}}
+    {
+    }
+
     template <opcode_t opcode, size_t operands_count>
     void
     instr<opcode, operands_count>::accept(const_visitor& v) const

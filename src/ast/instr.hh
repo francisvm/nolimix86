@@ -22,6 +22,18 @@ namespace nolimix86
         using operand_iterator = typename operands_t::iterator;
         using operand_const_iterator = typename operands_t::const_iterator;
 
+        instr() = default;
+
+        /// Allow construction with two operands if it's a binary instruction.
+        template <size_t count = operands_count,
+                  typename = std::enable_if_t<count == 2>>
+        instr(operand_t, operand_t);
+
+        /// Allow construction with one operand if it's a unary instruction.
+        template <size_t count = operands_count,
+                  typename = std::enable_if_t<count == 1>>
+        instr(operand_t);
+
         /// Instruction opcode
         virtual opcode_t opcode_get() const noexcept override;
 
