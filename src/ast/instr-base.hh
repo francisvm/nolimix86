@@ -16,6 +16,10 @@ namespace nolimix86
         void accept(visitor&) override;
 
         virtual opcode_t opcode_get() const noexcept = 0;
+
+        virtual size_t size() const = 0;
+
+        virtual void set_operand(size_t, operand) = 0;
     };
 
   } // namespace ast

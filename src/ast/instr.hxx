@@ -37,6 +37,21 @@ namespace nolimix86
     }
 
     template <opcode_t opcode, size_t operands_count>
+    size_t
+    instr<opcode, operands_count>::size() const
+    {
+      return operands_count;
+    }
+
+    template <opcode_t opcode, size_t operands_count>
+    void
+    instr<opcode, operands_count>::set_operand(
+      size_t i, typename instr<opcode, operands_count>::operand_t operand)
+    {
+      operands_[i] = std::move(operand);
+    }
+
+    template <opcode_t opcode, size_t operands_count>
     opcode_t
     instr<opcode, operands_count>::opcode_get() const noexcept
     {

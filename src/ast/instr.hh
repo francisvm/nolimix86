@@ -78,6 +78,10 @@ namespace nolimix86
         void accept(const_visitor&) const override;
         void accept(visitor&) override;
 
+        size_t size() const override;
+
+        void set_operand(size_t, operand_t) override;
+
       protected:
         operands_t operands_;
     };
