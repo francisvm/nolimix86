@@ -23,6 +23,16 @@ namespace nolimix86
         struct mem_tag {};
         struct label_tag {};
 
+        enum class type
+        {
+          TEMP,
+          REG,
+          IMM,
+          MEM,
+          LABEL,
+          UNKNOWN
+        };
+
       public:
         /// Create an operand represented by a temporary.
         operand(size_t, temp_tag);
@@ -40,13 +50,27 @@ namespace nolimix86
         /// Create an operand represented by an assembly label.
         operand(std::string, label_tag);
 
+        type type_get() const;
+
+        /// Handy functions.
+        bool is_temp() const;
+        bool is_reg() const;
+        bool is_imm() const;
+        bool is_mem() const;
+        bool is_label() const;
+
         void accept(const_visitor&) const override;
         void accept(visitor&) override;
 
       private:
+
         struct impl
         {
         };
+
+        /// The imlementation detail.
+        std::unique_ptr<impl> impl_;
+        type type_ = type::UNKNOWN;
 
         /// Implementation of the operand as a temporary.
         struct temp_impl : public impl
@@ -95,9 +119,6 @@ namespace nolimix86
 
           label_impl(std::string);
         };
-
-        /// The imlementation detail.
-        std::unique_ptr<impl> impl_;
     };
 
     template <typename Tag, typename... Args>

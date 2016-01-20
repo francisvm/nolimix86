@@ -8,26 +8,31 @@ namespace nolimix86
 
     operand::operand(size_t temp_num, temp_tag)
       : impl_{std::make_unique<temp_impl>(temp_num)}
+      , type_{type::TEMP}
     {
     }
 
     operand::operand(const std::string& reg_name, reg_tag)
       : impl_{std::make_unique<reg_impl>(reg_name)}
+      , type_{type::REG}
     {
     }
 
     operand::operand(size_t imm_val, imm_tag)
       : impl_{std::make_unique<imm_impl>(imm_val)}
+      , type_{type::IMM}
     {
     }
 
     operand::operand(size_t offset, const std::string& reg_name, mem_tag)
       : impl_{std::make_unique<mem_impl>(offset, reg_name)}
+      , type_{type::MEM}
     {
     }
 
     operand::operand(std::string label_name, label_tag)
       : impl_{std::make_unique<label_impl>(std::move(label_name))}
+      , type_{type::LABEL}
     {
     }
 
@@ -65,6 +70,42 @@ namespace nolimix86
     operand::label_impl::label_impl(std::string label_name)
       : label_{std::move(label_name)}
     {
+    }
+
+    typename operand::type
+    operand::type_get() const
+    {
+      return type_;
+    }
+
+    bool
+    operand::is_temp() const
+    {
+      return type_ == type::TEMP;
+    }
+
+    bool
+    operand::is_reg() const
+    {
+      return type_ == type::REG;
+    }
+
+    bool
+    operand::is_imm() const
+    {
+      return type_ == type::IMM;
+    }
+
+    bool
+    operand::is_mem() const
+    {
+      return type_ == type::MEM;
+    }
+
+    bool
+    operand::is_label() const
+    {
+      return type_ == type::LABEL;
     }
 
   } // namespace ast
