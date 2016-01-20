@@ -6,22 +6,22 @@ namespace nolimix86
   namespace ast
   {
 
-    operand::operand(size_t temp_num, operand::temp_tag)
+    operand::operand(size_t temp_num, temp_tag)
       : impl_{std::make_unique<temp_impl>(temp_num)}
     {
     }
 
-    operand::operand(const std::string& reg_name)
+    operand::operand(const std::string& reg_name, reg_tag)
       : impl_{std::make_unique<reg_impl>(reg_name)}
     {
     }
 
-    operand::operand(size_t imm_val)
+    operand::operand(size_t imm_val, imm_tag)
       : impl_{std::make_unique<imm_impl>(imm_val)}
     {
     }
 
-    operand::operand(size_t offset, const std::string& reg_name)
+    operand::operand(size_t offset, const std::string& reg_name, mem_tag)
       : impl_{std::make_unique<mem_impl>(offset, reg_name)}
     {
     }

@@ -28,14 +28,14 @@ namespace nolimix86
         operand(size_t, temp_tag);
 
         /// Create an operand represented by a machine register.
-        explicit operand(const std::string&);
+        explicit operand(const std::string&, reg_tag = {});
 
         /// Create an operand represented by an immediate.
-        explicit operand(size_t);
+        explicit operand(size_t, imm_tag = {});
 
         /// Create an operand represented by a memory access.
         /// Arguments: offset, register.
-        operand(size_t, const std::string&);
+        operand(size_t, const std::string&, mem_tag = {});
 
         /// Create an operand represented by an assembly label.
         operand(std::string, label_tag);
@@ -100,6 +100,11 @@ namespace nolimix86
         std::unique_ptr<impl> impl_;
     };
 
+    template <typename Tag, typename... Args>
+    operand make_operand(Args&&...);
+
   } // namespace ast
 
 } // namespace nolimix86
+
+#include <ast/operand.hxx>
