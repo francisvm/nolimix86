@@ -1,5 +1,7 @@
 #include <ast/operand.hh>
 
+#include <ostream>
+
 namespace nolimix86
 {
 
@@ -51,14 +53,32 @@ namespace nolimix86
     {
     }
 
+    void
+    operand::temp_impl::dump(std::ostream& ostream) const
+    {
+      ostream << "%t" << temp_num_;
+    }
+
     operand::reg_impl::reg_impl(const std::string& reg_name)
       : reg_{x86::reg_convert(reg_name)}
     {
     }
 
+    void
+    operand::reg_impl::dump(std::ostream& ostream) const
+    {
+      ostream << '%' << x86::reg_convert(reg_);
+    }
+
     operand::imm_impl::imm_impl(size_t imm_val)
       : value_{imm_val}
     {
+    }
+
+    void
+    operand::imm_impl::dump(std::ostream& ostream) const
+    {
+      ostream << '$' << value_;
     }
 
     operand::mem_impl::mem_impl(size_t offset, const std::string& reg_name)
@@ -67,9 +87,21 @@ namespace nolimix86
     {
     }
 
+    void
+    operand::mem_impl::dump(std::ostream& ostream) const
+    {
+      ostream << std::hex << offset_ << '(' << x86::reg_convert(reg_) << ')';
+    }
+
     operand::label_impl::label_impl(std::string label_name)
       : label_{std::move(label_name)}
     {
+    }
+
+    void
+    operand::label_impl::dump(std::ostream& ostream) const
+    {
+      ostream << label_;
     }
 
     typename operand::type
@@ -106,6 +138,12 @@ namespace nolimix86
     operand::is_label() const
     {
       return type_ == type::LABEL;
+    }
+
+    void
+    operand::dump(std::ostream& ostream) const
+    {
+      impl_->dump(ostream);
     }
 
   } // namespace ast
