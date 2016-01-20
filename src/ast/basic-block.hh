@@ -31,7 +31,9 @@ namespace nolimix86
         instr_iterator end();
         instr_const_iterator end() const;
 
-        /// Access an instruction
+        /// Number of instructions.
+        size_t size() const;
+
         instr_t& operator[](size_t);
         const instr_t& operator[](size_t) const;
 

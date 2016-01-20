@@ -35,6 +35,12 @@ namespace nolimix86
       return instructions_.cend();
     }
 
+    size_t
+    basic_block::size() const
+    {
+      return instructions_.size();
+    }
+
     typename basic_block::instr_t&
     basic_block::operator[](size_t i)
     {
