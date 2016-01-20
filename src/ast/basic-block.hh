@@ -25,7 +25,7 @@ namespace nolimix86
         basic_block();
         ~basic_block();
 
-        /// Iterators
+        /// Iterators.
         instr_iterator begin();
         instr_const_iterator begin() const;
         instr_iterator end();
@@ -34,6 +34,7 @@ namespace nolimix86
         /// Number of instructions.
         size_t size() const;
 
+        /// Access an instruction.
         instr_t& operator[](size_t);
         const instr_t& operator[](size_t) const;
 
