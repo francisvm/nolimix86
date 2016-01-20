@@ -10,7 +10,7 @@
 namespace nolimix86
 {
 
-  class streamer : public llvm::MCELFStreamer
+  struct streamer : public llvm::MCELFStreamer
   {
     public:
       using llvm::MCELFStreamer::MCELFStreamer;
@@ -21,7 +21,6 @@ namespace nolimix86
       bool EmitSymbolAttribute(llvm::MCSymbol* symbol,
                                llvm::MCSymbolAttr) override;
 
-    private:
       /// The resulting ast.
       std::vector<ast::basic_block> program_;
   };

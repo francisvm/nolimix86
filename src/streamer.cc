@@ -37,8 +37,12 @@ namespace nolimix86
   {
     auto opcode = find_opcode<x86::x86_set>(inst.getOpcode());
     auto instr = ast::make_x86_instruction(opcode);
-    for (size_t i = 0; i < instr->size(); ++i)
-      instr->set_operand(i, emit_operand(inst.getOperand(i)));
+
+    // Since MCInst stores the operands in the AT&T syntaxt,
+    // the destination comes first.
+    for (ssize_t i = instr->size() - 1; i >=  0; --i)
+      instr->set_operand(instr->size() - i - 1,
+                         emit_operand(inst.getOperand(i)));
 
     program_.back().push_back(std::move(instr));
   }
