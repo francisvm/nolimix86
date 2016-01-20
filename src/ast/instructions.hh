@@ -169,8 +169,13 @@ namespace nolimix86
       ACCEPT_VISITOR
     };
 
+    template <typename... Args>
+    std::unique_ptr<instr_base> make_x86_instruction(opcode_t opcode, Args&&...);
+
   } // namespace ast
 
 } // namespace nolimix86
 
 #undef ACCEPT_VISITOR
+
+#include <ast/instructions.hxx>
