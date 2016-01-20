@@ -1,3 +1,7 @@
+#include <asm-parser.hh>
+#include <streamer.hh>
+#include <ast/basic-block.hh>
+
 #include <llvm/ADT/Triple.h>
 #include <llvm/MC/MCAsmBackend.h>
 #include <llvm/MC/MCAsmInfo.h>
@@ -14,9 +18,6 @@
 #include <llvm/Support/ToolOutputFile.h>
 
 #include <stdexcept>
-
-#include <asm-parser.hh>
-#include <streamer.hh>
 
 namespace nolimix86
 {
