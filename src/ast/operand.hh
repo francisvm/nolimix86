@@ -34,6 +34,8 @@ namespace nolimix86
         };
 
       public:
+        operand() = default;
+
         /// Create an operand represented by a temporary.
         operand(size_t, temp_tag);
 
