@@ -28,10 +28,10 @@ namespace nolimix86
         operand(size_t, temp_tag);
 
         /// Create an operand represented by a machine register.
-        operand(const std::string&);
+        explicit operand(const std::string&);
 
         /// Create an operand represented by an immediate.
-        operand(size_t);
+        explicit operand(size_t);
 
         /// Create an operand represented by a memory access.
         /// Arguments: offset, register.
