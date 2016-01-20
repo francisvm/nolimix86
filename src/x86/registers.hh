@@ -38,6 +38,17 @@ namespace nolimix86
       { "ebp"s, EBP }
     };
 
+    static std::map<enum reg, std::string> rev_reg_map
+    {
+      { EAX, "eax"s },
+      { EBX, "ebx"s },
+      { ECX, "ecx"s },
+      { EDI, "edi"s },
+      { ESI, "esi"s },
+      { ESP, "esp"s },
+      { EBP, "ebp"s }
+    };
+
     inline
     enum reg reg_convert(const std::string& reg_name)
     {
@@ -46,6 +57,16 @@ namespace nolimix86
         return it->second;
 
       return UNKNOWN;
+    }
+
+    inline
+    std::string reg_convert(enum reg reg)
+    {
+      auto it = rev_reg_map.find(reg);
+      if (it != rev_reg_map.end())
+        return it->second;
+
+      return "";
     }
 
     constexpr auto max_valid_reg = 246U;
