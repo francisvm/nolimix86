@@ -45,8 +45,7 @@ namespace nolimix86
 
     template <opcode_t opcode, size_t operands_count>
     void
-    instr<opcode, operands_count>::set_operand(
-      size_t i, typename instr<opcode, operands_count>::operand_t operand)
+    instr<opcode, operands_count>::set_operand(size_t i, operand_t operand)
     {
       operands_[i] = std::move(operand);
     }
