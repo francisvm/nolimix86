@@ -13,7 +13,7 @@ namespace nolimix86
   namespace ast
   {
 
-    template <opcode_t opcode, size_t operands_count>
+    template <opcode_t opcode_in, size_t operands_count>
     class instr : public instr_base
     {
       public:
@@ -81,6 +81,8 @@ namespace nolimix86
         size_t size() const override;
 
         void set_operand(size_t, operand_t) override;
+
+        static constexpr auto opcode = opcode_in;
 
       protected:
         operands_t operands_;
