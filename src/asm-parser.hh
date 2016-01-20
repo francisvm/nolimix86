@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ast/basic-block.hh>
+
 #include <llvm/Support/MemoryBuffer.h>
 #include <llvm/Support/SourceMgr.h>
 
@@ -17,6 +19,9 @@ namespace nolimix86
 
       /// Parse the source file, return true if an error occured.
       bool parse();
+
+      /// Release the ownership of the parsed program.
+      std::vector<ast::basic_block> program_release();
 
     private:
       llvm::SourceMgr src_mgr_;

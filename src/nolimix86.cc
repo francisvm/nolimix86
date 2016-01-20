@@ -1,5 +1,8 @@
 #include <asm-parser.hh>
 
+#include <ast/default-visitor.hh>
+#include <ast/pretty-printer.hh>
+
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/MemoryBuffer.h>
@@ -7,6 +10,9 @@
 static llvm::cl::opt<std::string>
 input_filename(llvm::cl::Positional, llvm::cl::desc("<input file>"),
                llvm::cl::init("-"));
+
+static llvm::cl::opt<bool>
+dump_ast("A", llvm::cl::desc("Dump the ast on stdout"), llvm::cl::init(false));
 
 int main(int argc, char const *argv[])
 {
@@ -23,6 +29,16 @@ int main(int argc, char const *argv[])
 
   if (parser.parse())
     return 1;
+
+  auto blocks = parser.program_release();
+
+  if (dump_ast)
+  {
+    nolimix86::ast::pretty_printer printer;
+    for (const auto& block : blocks)
+      printer(block);
+    return 0;
+  }
 
   return 0;
 }

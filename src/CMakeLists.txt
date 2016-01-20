@@ -8,6 +8,7 @@ set(libnolimix86_src
   ast/instr-base.cc
   ast/operand.cc
   ast/basic-block.cc
+  ast/pretty-printer.cc
 )
 
 set(nolimix86_src

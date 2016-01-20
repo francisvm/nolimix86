@@ -142,6 +142,11 @@ namespace nolimix86
     return impl_->parser();
   }
 
+  std::vector<ast::basic_block> asm_parser::program_release()
+  {
+    return std::move(impl_->parser.streamer->program_);
+  }
+
   asm_parser::~asm_parser() = default;
 
 } // namespace nolimix86
