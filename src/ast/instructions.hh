@@ -6,6 +6,9 @@
 // :( Sorry.
 #define ACCEPT_VISITOR                                                         \
 public:                                                                        \
+  using super_type = self_t;                                                   \
+  using super_type::instr;                                                     \
+                                                                               \
   void accept(const_visitor& v) const override                                 \
   {                                                                            \
     v(*this);                                                                  \
