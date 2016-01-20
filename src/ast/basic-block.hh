@@ -22,7 +22,7 @@ namespace nolimix86
         using instr_const_iterator = typename instrs_t::const_iterator;
 
         /// Defaults for forward declaration of instr_base.
-        basic_block();
+        basic_block(std::string);
         ~basic_block();
 
         /// Iterators.
@@ -40,11 +40,14 @@ namespace nolimix86
 
         void push_back(instr_ptr_t);
 
+        const std::string& label_get() const;
+
       public:
         void accept(const_visitor&) const override;
         void accept(visitor&) override;
 
       private:
+        std::string label_;
         instrs_t instructions_;
     };
 

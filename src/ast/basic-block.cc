@@ -8,7 +8,11 @@ namespace nolimix86
   {
 
     // instr_base is an incomplete type in the header.
-    basic_block::basic_block() = default;
+    basic_block::basic_block(std::string label)
+      : label_{std::move(label)}
+    {
+    }
+
     basic_block::~basic_block() = default;
 
     typename basic_block::instr_iterator
@@ -57,6 +61,12 @@ namespace nolimix86
     basic_block::push_back(typename basic_block::instr_ptr_t instr)
     {
       instructions_.push_back(std::move(instr));
+    }
+
+    const std::string&
+    basic_block::label_get() const
+    {
+      return label_;
     }
 
     void

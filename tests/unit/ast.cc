@@ -9,14 +9,14 @@ namespace ast = nolimix86::ast;
 
 TEST(ast_node, basic_block)
 {
-  ast::basic_block bb;
+  ast::basic_block bb{"l0"};
   EXPECT_EQ(bb.size(), 0);
   EXPECT_EQ(std::distance(bb.begin(), bb.end()), 0);
 }
 
 TEST(ast_node, basic_block_filled)
 {
-  ast::basic_block bb;
+  ast::basic_block bb{"l0"};
   bb.push_back(
     std::make_unique<ast::add>(ast::operand(10), ast::operand("eax")));
   bb.push_back(std::make_unique<ast::jmp>(
@@ -39,7 +39,7 @@ TEST(ast_node, visit_basic_block)
     }
   };
 
-  ast::basic_block bb;
+  ast::basic_block bb{"l0"};
   bb_visitor visitor;
   EXPECT_EQ(visitor.i, 0);
   visitor(bb);
@@ -60,7 +60,7 @@ TEST(ast_node, default_visit_basic_block)
     }
   };
 
-  ast::basic_block bb;
+  ast::basic_block bb{"l0"};
   bb.push_back(std::make_unique<ast::mov>(ast::operand(10), ast::operand(11)));
   bb_visitor visitor;
   EXPECT_EQ(visitor.i, 0);
@@ -92,7 +92,7 @@ TEST(default_visitor, visit_instructions)
     }
   };
 
-  ast::basic_block bb;
+  ast::basic_block bb{"l0"};
   bb.push_back(std::make_unique<ast::mov>(ast::operand(10), ast::operand(11)));
   bb.push_back(std::make_unique<ast::mov>(ast::operand("eax"), ast::operand("ebx")));
   op_visitor visitor;
