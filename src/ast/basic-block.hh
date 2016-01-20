@@ -25,6 +25,9 @@ namespace nolimix86
         basic_block(std::string);
         ~basic_block();
 
+        basic_block(basic_block&&) = default;
+        basic_block& operator=(basic_block&&) = default;
+
         /// Iterators.
         instr_iterator begin();
         instr_const_iterator begin() const;
