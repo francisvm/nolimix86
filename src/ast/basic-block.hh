@@ -35,6 +35,8 @@ namespace nolimix86
         instr_t& operator[](size_t);
         const instr_t& operator[](size_t) const;
 
+        void push_back(instr_ptr_t);
+
       public:
         void accept(const_visitor&) const override;
         void accept(visitor&) override;

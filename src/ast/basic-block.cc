@@ -47,6 +47,11 @@ namespace nolimix86
       return *instructions_[i];
     }
 
+    void basic_block::push_back(typename basic_block::instr_ptr_t instr)
+    {
+      instructions_.push_back(std::move(instr));
+    }
+
     void basic_block::accept(const_visitor& v) const
     {
       v(*this);
