@@ -33,7 +33,8 @@ TEST(ast_node, visit_basic_block)
     using super_type::operator();
 
     int i = 0;
-    void operator()(const ast::basic_block&) override
+    void
+    operator()(const ast::basic_block&) override
     {
       ++i;
     }
@@ -54,7 +55,8 @@ TEST(ast_node, default_visit_basic_block)
     using super_type::operator();
 
     int i = 0;
-    void operator()(const ast::mov&) override
+    void
+    operator()(const ast::mov&) override
     {
       ++i;
     }
@@ -86,7 +88,8 @@ TEST(default_visitor, visit_instructions)
     using super_type::operator();
 
     int i = 0;
-    void operator()(const ast::operand&) override
+    void
+    operator()(const ast::operand&) override
     {
       ++i;
     }

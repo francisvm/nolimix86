@@ -50,7 +50,8 @@ namespace nolimix86
     };
 
     inline
-    enum reg reg_convert(const std::string& reg_name)
+    enum reg
+    reg_convert(const std::string& reg_name)
     {
       auto it = reg_map.find(reg_name);
       if (it != reg_map.end())
@@ -60,7 +61,8 @@ namespace nolimix86
     }
 
     inline
-    std::string reg_convert(enum reg reg)
+    std::string
+    reg_convert(enum reg reg)
     {
       auto it = rev_reg_map.find(reg);
       if (it != rev_reg_map.end())

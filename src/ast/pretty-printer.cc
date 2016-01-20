@@ -4,7 +4,8 @@
 
 // Sorry :(
 #define print_instr(instr)                                                     \
-  void pretty_printer::operator()(const instr &e)                              \
+  void                                                                         \
+  pretty_printer::operator()(const instr &e)                                   \
   {                                                                            \
     ostream_ << #instr << ' ';                                                 \
     std::for_each(e.begin(), std::prev(e.end()), [&](const auto &op)           \

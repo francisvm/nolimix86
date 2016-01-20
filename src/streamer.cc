@@ -11,7 +11,8 @@ namespace nolimix86
   namespace
   {
 
-    ast::operand emit_operand(const llvm::MCOperand& op)
+    ast::operand
+    emit_operand(const llvm::MCOperand& op)
     {
       if (op.isReg() && op.getReg() >= x86::max_valid_reg)
         return ast::make_operand<ast::operand::temp_tag>(

@@ -6,12 +6,14 @@ namespace nolimix86
   namespace ast
   {
 
-    void instr_base::accept(const_visitor& v) const
+    void
+    instr_base::accept(const_visitor& v) const
     {
       v(*this);
     }
 
-    void instr_base::accept(visitor& v)
+    void
+    instr_base::accept(visitor& v)
     {
       v(*this);
     }

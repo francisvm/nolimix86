@@ -27,7 +27,8 @@ namespace nolimix86
   template <typename Range, typename... Ranges>
   struct find_range_impl<Range, Ranges...>
   {
-    auto operator()(size_t i)
+    auto
+    operator()(size_t i)
     {
       return i >= Range::start && i < Range::end
                ? Range::opcode
@@ -39,7 +40,8 @@ namespace nolimix86
   template <>
   struct find_range_impl<>
   {
-    opcode_t operator()(size_t)
+    opcode_t
+    operator()(size_t)
     {
       return 0;
     }
@@ -52,14 +54,16 @@ namespace nolimix86
   template <template<typename...> class Range, typename... Ranges>
   struct find_range<Range<Ranges...>>
   {
-    auto operator()(size_t i)
+    auto
+    operator()(size_t i)
     {
       return find_range_impl<Ranges...>{}(i);
     }
   };
 
   template <typename Range>
-  opcode_t find_opcode(size_t i)
+  opcode_t
+  find_opcode(size_t i)
   {
     return find_range<Range>{}(i);
   }

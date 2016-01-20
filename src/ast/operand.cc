@@ -38,12 +38,14 @@ namespace nolimix86
     {
     }
 
-    void operand::accept(const_visitor& v) const
+    void
+    operand::accept(const_visitor& v) const
     {
       v(*this);
     }
 
-    void operand::accept(visitor& v)
+    void
+    operand::accept(visitor& v)
     {
       v(*this);
     }

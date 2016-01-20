@@ -137,12 +137,14 @@ namespace nolimix86
     impl_ = std::make_unique<impl>(src_mgr_);
   }
 
-  bool asm_parser::parse()
+  bool
+  asm_parser::parse()
   {
     return impl_->parser();
   }
 
-  std::vector<ast::basic_block> asm_parser::program_release()
+  std::vector<ast::basic_block>
+  asm_parser::program_release()
   {
     return std::move(impl_->parser.streamer->program_);
   }

@@ -18,7 +18,8 @@ namespace nolimix86
     struct find_instruction_impl<Instr, Instrs...>
     {
       template <typename... Args>
-      auto operator()(size_t i, Args&&... args)
+      auto
+      operator()(size_t i, Args&&... args)
       {
         return i == Instr::opcode
                  ? std::make_unique<Instr>(args...)
@@ -31,7 +32,8 @@ namespace nolimix86
     struct find_instruction_impl<>
     {
       template <typename... Args>
-      std::unique_ptr<instr_base> operator()(size_t, Args&&...)
+      std::unique_ptr<instr_base>
+      operator()(size_t, Args&&...)
       {
         return {};
       }
@@ -45,7 +47,8 @@ namespace nolimix86
     struct find_instruction<Instr<Instrs...>>
     {
       template <typename... Args>
-      auto operator()(size_t i, Args&&... args)
+      auto
+      operator()(size_t i, Args&&... args)
       {
         return find_instruction_impl<Instrs...>{}(i,
                                                   std::forward<Args>(args)...);
