@@ -48,6 +48,8 @@ namespace nolimix86
       return UNKNOWN;
     }
 
-  } // namespace ast
+    constexpr auto max_valid_reg = 246U;
+
+  } // namespace x86
 
 } // namespace nolimix86
