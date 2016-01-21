@@ -83,6 +83,7 @@ namespace nolimix86
         void set_operand(size_t, operand_t) override;
 
         static constexpr auto opcode = opcode_in;
+        static constexpr auto operands = operands_count;
 
       protected:
         operands_t operands_;
