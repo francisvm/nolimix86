@@ -1,7 +1,5 @@
 #include <ast/operand.hh>
 
-#include <ostream>
-
 namespace nolimix86
 {
 
@@ -62,7 +60,7 @@ namespace nolimix86
     }
 
     void
-    operand::temp_impl::dump(std::ostream& ostream) const
+    operand::temp_impl::dump(llvm::raw_ostream& ostream) const
     {
       ostream << "%t" << temp_num_;
     }
@@ -78,7 +76,7 @@ namespace nolimix86
     }
 
     void
-    operand::reg_impl::dump(std::ostream& ostream) const
+    operand::reg_impl::dump(llvm::raw_ostream& ostream) const
     {
       ostream << '%' << x86::reg_convert(reg_);
     }
@@ -89,7 +87,7 @@ namespace nolimix86
     }
 
     void
-    operand::imm_impl::dump(std::ostream& ostream) const
+    operand::imm_impl::dump(llvm::raw_ostream& ostream) const
     {
       ostream << '$' << value_;
     }
@@ -101,9 +99,9 @@ namespace nolimix86
     }
 
     void
-    operand::mem_impl::dump(std::ostream& ostream) const
+    operand::mem_impl::dump(llvm::raw_ostream& ostream) const
     {
-      ostream << std::hex << offset_ << '(' << x86::reg_convert(reg_) << ')';
+      ostream.write_hex(offset_) << '(' << x86::reg_convert(reg_) << ')';
     }
 
     operand::label_impl::label_impl(std::string label_name)
@@ -112,7 +110,7 @@ namespace nolimix86
     }
 
     void
-    operand::label_impl::dump(std::ostream& ostream) const
+    operand::label_impl::dump(llvm::raw_ostream& ostream) const
     {
       ostream << label_;
     }
@@ -154,7 +152,7 @@ namespace nolimix86
     }
 
     void
-    operand::dump(std::ostream& ostream) const
+    operand::dump(llvm::raw_ostream& ostream) const
     {
       impl_->dump(ostream);
     }

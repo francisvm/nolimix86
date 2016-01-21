@@ -4,6 +4,8 @@
 #include <ast/visitor.hh>
 #include <x86/x86.hh>
 
+#include <llvm/Support/raw_ostream.h>
+
 #include <string>
 #include <memory>
 
@@ -63,7 +65,7 @@ namespace nolimix86
         bool is_label() const;
 
         /// Print the operand.
-        void dump(std::ostream&) const;
+        void dump(llvm::raw_ostream&) const;
 
         void accept(const_visitor&) const override;
         void accept(visitor&) override;
@@ -72,7 +74,7 @@ namespace nolimix86
 
         struct impl
         {
-          virtual void dump(std::ostream&) const = 0;
+          virtual void dump(llvm::raw_ostream&) const = 0;
         };
 
         /// The imlementation detail.
@@ -86,7 +88,7 @@ namespace nolimix86
           const size_t temp_num_ = 0;
 
           temp_impl(size_t);
-          void dump(std::ostream&) const override;
+          void dump(llvm::raw_ostream&) const override;
         };
 
         /// Implementation of the operand as a register.
@@ -97,7 +99,7 @@ namespace nolimix86
 
           reg_impl(const std::string&);
           reg_impl(enum x86::reg);
-          void dump(std::ostream&) const override;
+          void dump(llvm::raw_ostream&) const override;
         };
 
         /// Implementation of the operand as a immediate.
@@ -107,7 +109,7 @@ namespace nolimix86
           const size_t value_ = 0;
 
           imm_impl(size_t);
-          void dump(std::ostream&) const override;
+          void dump(llvm::raw_ostream&) const override;
         };
 
         /// Implementation of the operand as a memory access.
@@ -120,7 +122,7 @@ namespace nolimix86
           enum x86::reg reg_ = x86::UNKNOWN;
 
           mem_impl(size_t, const std::string&);
-          void dump(std::ostream&) const override;
+          void dump(llvm::raw_ostream&) const override;
         };
 
         /// Implementation of the operand as an assembly label.
@@ -130,7 +132,7 @@ namespace nolimix86
           const std::string label_;
 
           label_impl(std::string);
-          void dump(std::ostream&) const override;
+          void dump(llvm::raw_ostream&) const override;
         };
     };
 

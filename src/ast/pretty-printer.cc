@@ -26,7 +26,8 @@ namespace nolimix86
 
     pretty_printer::~pretty_printer() = default;
 
-    pretty_printer::pretty_printer()
+    pretty_printer::pretty_printer(llvm::raw_ostream& ostream)
+      : ostream_{ostream}
     {
       ostream_ << "  .text\n";
     }

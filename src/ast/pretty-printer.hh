@@ -2,9 +2,6 @@
 
 #include <ast/default-visitor.hh>
 
-#include <ostream>
-#include <iostream>
-
 namespace nolimix86
 {
 
@@ -17,7 +14,7 @@ namespace nolimix86
         using super_type = const_default_visitor;
         using super_type::operator();
 
-        pretty_printer();
+        pretty_printer(llvm::raw_ostream& = llvm::outs());
 
         ~pretty_printer();
 
@@ -84,7 +81,7 @@ namespace nolimix86
         void operator()(const basic_block&) override;
 
       private:
-        std::ostream& ostream_ = std::cout;
+        llvm::raw_ostream& ostream_;
     };
 
   } // namespace ast
