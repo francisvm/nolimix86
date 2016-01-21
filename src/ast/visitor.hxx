@@ -16,6 +16,13 @@ namespace nolimix86
       e.accept(*this);
     }
 
+    template<template <typename> class Const>
+    void
+    visitor_impl<Const>::operator()(const_t<instr_base>& e)
+    {
+      e.accept(*this);
+    }
+
   } // namespace ast
 
 } // namespace nolimix86

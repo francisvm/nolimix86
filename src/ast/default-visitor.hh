@@ -15,6 +15,8 @@ namespace nolimix86
         template <typename T>
         using const_t = typename Const<T>::type;
 
+        using super_type = visitor_impl<Const>;
+
         void operator()(const_t<instr_base>&) override;
 
         void operator()(const_t<operand>&) override;

@@ -20,8 +20,9 @@ namespace nolimix86
 
     template <template <typename> class Const>
     void
-    default_visitor_impl<Const>::operator()(const_t<instr_base>&)
+    default_visitor_impl<Const>::operator()(const_t<instr_base>& e)
     {
+      super_type::operator()(e);
     }
 
     template <template <typename> class Const>
