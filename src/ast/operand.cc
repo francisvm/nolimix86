@@ -62,7 +62,7 @@ namespace nolimix86
     void
     operand::temp_impl::dump(llvm::raw_ostream& ostream) const
     {
-      ostream << "%t" << temp_num_;
+      ostream << "%t" << temp_num_ - x86::max_valid_reg;
     }
 
     operand::reg_impl::reg_impl(const std::string& reg_name)
