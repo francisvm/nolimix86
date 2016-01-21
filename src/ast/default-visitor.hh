@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ast/visitor.hh>
+#include <ast/apply-visitor.hh>
 
 namespace nolimix86
 {
@@ -8,82 +8,27 @@ namespace nolimix86
   namespace ast
   {
 
+    struct visit_instr
+    {
+      template <typename Visitor, typename T>
+      static
+      void
+      visit(Visitor& v, T& e)
+      {
+        for (auto& operand : e)
+          operand.accept(v);
+      }
+    };
+
     template<template <typename> class Const>
-    class default_visitor_impl : public visitor_impl<Const>
+    class default_visitor_impl : public apply_visitor_impl<Const, visit_instr>
     {
       public:
         template <typename T>
         using const_t = typename Const<T>::type;
 
-        using super_type = visitor_impl<Const>;
-
-        void operator()(const_t<instr_base>&) override;
-
-        void operator()(const_t<operand>&) override;
-
-        void operator()(const_t<add>&) override;
-
-        void operator()(const_t<call>&) override;
-
-        void operator()(const_t<cmp>&) override;
-
-        void operator()(const_t<idiv>&) override;
-
-        void operator()(const_t<imul>&) override;
-
-        void operator()(const_t<ja>&) override;
-
-        void operator()(const_t<jae>&) override;
-
-        void operator()(const_t<jb>&) override;
-
-        void operator()(const_t<jbe>&) override;
-
-        void operator()(const_t<je>&) override;
-
-        void operator()(const_t<jg>&) override;
-
-        void operator()(const_t<jge>&) override;
-
-        void operator()(const_t<jl>&) override;
-
-        void operator()(const_t<jle>&) override;
-
-        void operator()(const_t<jmp>&) override;
-
-        void operator()(const_t<jne>&) override;
-
-        void operator()(const_t<js>&) override;
-
-        void operator()(const_t<lea>&) override;
-
-        void operator()(const_t<leave>&) override;
-
-        void operator()(const_t<mov>&) override;
-
-        void operator()(const_t<neg>&) override;
-
-        void operator()(const_t<pop>&) override;
-
-        void operator()(const_t<push>&) override;
-
-        void operator()(const_t<ret>&) override;
-
-        void operator()(const_t<sal>&) override;
-
-        void operator()(const_t<sar>&) override;
-
-        void operator()(const_t<sete>&) override;
-
-        void operator()(const_t<sub>&) override;
-
-        void operator()(const_t<test>&) override;
-
-        void operator()(const_t<basic_block>&) override;
-
-      private:
-        template <typename T>
-        void visit_instr(T&);
+        using super_type = apply_visitor_impl<Const, visit_instr>;
+        using super_type::operator();
     };
 
     /// Const visitor: does not alter the AST.
