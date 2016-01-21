@@ -2,9 +2,11 @@
 #include <misc/meta.hh>
 #include <x86/x86.hh>
 #include <ast/all.hh>
-#include <ast/default-visitor.hh>
+#include <ast/apply-visitor.hh>
 
 #include <llvm/MC/MCSymbol.h>
+
+#include <cassert>
 
 namespace nolimix86
 {
@@ -27,9 +29,24 @@ namespace nolimix86
         return ast::operand{10}; // FIXME: Handle all the operands.
     }
 
-    struct instr_operand_emitter : public ast::default_visitor
+    // Declaration of the generic visitor dispatcher.
+    struct visit_instr
     {
-      using super_type = ast::default_visitor;
+      template <typename Instr>
+      static
+      std::enable_if_t<Instr::operands == 2>
+      visit(ast::apply_visitor<visit_instr>&, Instr&);
+
+      template <typename Instr>
+      static
+      std::enable_if_t<Instr::operands != 2>
+      visit(ast::apply_visitor<visit_instr>&, Instr&);
+    };
+
+    // Visitor applying the generic visitor dispatcher on each node.
+    struct instr_operand_emitter : public ast::apply_visitor<visit_instr>
+    {
+      using super_type = ast::apply_visitor<visit_instr>;
       using super_type::operator();
 
       const llvm::MCInst& inst_;
@@ -37,15 +54,25 @@ namespace nolimix86
       instr_operand_emitter(const llvm::MCInst& inst)
         : inst_{inst}
       {}
-
-      void
-      operator()(ast::add& e) override
-      {
-        e.set_operand(0, emit_operand(inst_.getOperand(2)));
-        e.set_operand(1, emit_operand(inst_.getOperand(1)));
-      }
-
     };
+
+    // Handle binary instructions.
+    template <typename Instr>
+    std::enable_if_t<Instr::operands == 2>
+    visit_instr::visit(ast::apply_visitor<visit_instr>& v_g, Instr& e)
+    {
+      auto& v = static_cast<instr_operand_emitter&>(v_g);
+      e.set_operand(0, emit_operand(v.inst_.getOperand(2)));
+      e.set_operand(1, emit_operand(v.inst_.getOperand(1)));
+    }
+
+    // Handle the rest.
+    template <typename Instr>
+    std::enable_if_t<Instr::operands != 2>
+    visit_instr::visit(ast::apply_visitor<visit_instr>&, Instr&)
+    {
+      assert(!"Not implemented yet");
+    }
 
     void
     emit_instr_operands(ast::instr_base& instr, const llvm::MCInst& inst)
@@ -80,6 +107,6 @@ namespace nolimix86
   {
     llvm::outs() << symbol->getName() << ": (attribute)\n";
     return true;
-  };
+  }
 
 } // namespace nolimix86
