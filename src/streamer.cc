@@ -1,8 +1,8 @@
 #include <streamer.hh>
-
 #include <misc/meta.hh>
 #include <x86/x86.hh>
 #include <ast/all.hh>
+#include <ast/default-visitor.hh>
 
 #include <llvm/MC/MCSymbol.h>
 
@@ -27,6 +27,33 @@ namespace nolimix86
         return ast::operand{10}; // FIXME: Handle all the operands.
     }
 
+    struct instr_operand_emitter : public ast::default_visitor
+    {
+      using super_type = ast::default_visitor;
+      using super_type::operator();
+
+      const llvm::MCInst& inst_;
+
+      instr_operand_emitter(const llvm::MCInst& inst)
+        : inst_{inst}
+      {}
+
+      void
+      operator()(ast::add& e) override
+      {
+        e.set_operand(0, emit_operand(inst_.getOperand(2)));
+        e.set_operand(1, emit_operand(inst_.getOperand(1)));
+      }
+
+    };
+
+    void
+    emit_instr_operands(ast::instr_base& instr, const llvm::MCInst& inst)
+    {
+      instr_operand_emitter emitter{inst};
+      emitter(instr);
+    }
+
   }
 
   void
@@ -42,11 +69,7 @@ namespace nolimix86
     auto opcode = find_opcode<x86::x86_set>(inst.getOpcode());
     auto instr = ast::make_x86_instruction(opcode);
 
-    // Since MCInst stores the operands in the AT&T syntaxt,
-    // the destination comes first.
-    for (ssize_t i = instr->size() - 1; i >=  0; --i)
-      instr->set_operand(instr->size() - i - 1,
-                         emit_operand(inst.getOperand(i)));
+    emit_instr_operands(*instr, inst);
 
     program_.back().push_back(std::move(instr));
   }
