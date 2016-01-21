@@ -51,9 +51,9 @@ def generate_tests():
 
                 file = open(filename, "w")
                 file.write("  .text\n") # Section name
-                file.write("{0} {1}, {2}".format(suff_instr,
-                                                 operands_for_type[lhs],
-                                                 operands_for_type[rhs]))
+                file.write("{0} {1}, {2}\n".format(suff_instr,
+                                                   operands_for_type[lhs],
+                                                   operands_for_type[rhs]))
                 tests_count += 1
 
     return tests_count
