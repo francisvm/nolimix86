@@ -138,7 +138,7 @@ namespace nolimix86
     constexpr
     std::enable_if_t<count == 1,
                      typename instr<opcode, operands_count>::operand_t&>
-    instr<opcode, operands_count>::operand() noexcept
+    instr<opcode, operands_count>::oper() noexcept
     {
       return (*this)[0];
     }
@@ -148,7 +148,7 @@ namespace nolimix86
     constexpr
     std::enable_if_t<count == 1,
                      const typename instr<opcode, operands_count>::operand_t&>
-    instr<opcode, operands_count>::operand() const noexcept
+    instr<opcode, operands_count>::oper() const noexcept
     {
       return (*this)[0];
     }

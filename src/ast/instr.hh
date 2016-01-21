@@ -69,11 +69,11 @@ namespace nolimix86
         /// Operand should be available only for instructions with 1 operand.
         template <size_t count = operands_count>
         constexpr std::enable_if_t<count == 1, operand_t&>
-        operand() noexcept;
+        oper() noexcept;
 
         template <size_t count = operands_count>
         constexpr std::enable_if_t<count == 1, const operand_t&>
-        operand() const noexcept;
+        oper() const noexcept;
 
         void accept(const_visitor&) const override;
         void accept(visitor&) override;

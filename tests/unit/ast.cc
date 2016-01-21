@@ -112,7 +112,7 @@ TEST(instr, construction)
   EXPECT_EQ(unary.opcode_get(), 10);
   EXPECT_EQ(binary.opcode_get(), 16);
   EXPECT_EQ(nop.opcode_get(), 24);
-  unary.operand();
+  unary.oper();
   binary.src();
   binary.dst();
 }
