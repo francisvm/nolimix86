@@ -22,6 +22,7 @@ set(llvm_components
 
 # Create a library, to be shared with different executables.
 add_library(nolimix86_core ${libnolimix86_src})
+set_target_properties(nolimix86_core PROPERTIES COMPILE_FLAGS "-fPIC")
 
 # Link LLVM components
 llvm_map_components_to_libnames(llvm_libs ${llvm_components})
