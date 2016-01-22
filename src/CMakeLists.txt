@@ -36,3 +36,30 @@ endforeach()
 # Create the main executable.
 add_executable(nolimix86 ${nolimix86_src})
 target_link_libraries(nolimix86 nolimix86_core)
+
+macro(add_sanitizer name full_name)
+  string(TOUPPER ${name} UP_NAME)
+  message(STATUS "Building ${UP_NAME}.")
+  add_executable(nolimix86-${name} EXCLUDE_FROM_ALL ${nolimix86_src})
+  target_link_libraries(nolimix86-${name} nolimix86_core)
+  set_target_properties(nolimix86-${name}
+    PROPERTIES COMPILE_FLAGS "-fsanitize=${full_name}"
+               LINK_FLAGS "-fsanitize=${full_name}"
+  )
+endmacro()
+
+if(NOLIMIX86_ASAN)
+  add_sanitizer(asan address)
+endif()
+
+if(NOLIMIX86_MSAN)
+  add_sanitizer(msan memory)
+endif()
+
+if(NOLIMIX86_UBSAN)
+  add_sanitizer(ubsan undefined)
+endif()
+
+if(NOLIMIX86_LSAN)
+  add_sanitizer(lsan leak)
+endif()

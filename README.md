@@ -74,3 +74,14 @@ So this is actually a pseudo x86 assembly, `%t0`, `%t1`, etc. as a register.
 * `esi`
 * `esp`
 * `t[0-9]+`
+
+# Misc
+
+## Sanitizers
+
+In order to build with the sanitizers on, pass the following flags to CMake.
+
+* `-DNOLIMIX86_ASAN` for ASAN -> `./bin/nolimix86-asan`
+* `-DNOLIMIX86_MSAN` for MSAN -> `./bin/nolimix86-msan`
+* `-DNOLIMIX86_UBSAN` for UBSAN -> `./bin/nolimix86-ubsan`
+* `-DNOLIMIX86_LSAN` for LSAN -> `./bin/nolimix86-lsan`
