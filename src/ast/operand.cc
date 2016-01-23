@@ -36,6 +36,12 @@ namespace nolimix86
     {
     }
 
+    operand::operand(size_t offset, enum x86::reg reg, mem_tag)
+      : impl_{std::make_unique<mem_impl>(offset, reg)}
+      , type_{type::MEM}
+    {
+    }
+
     operand::operand(std::string label_name, label_tag)
       : impl_{std::make_unique<label_impl>(std::move(label_name))}
       , type_{type::LABEL}
@@ -95,6 +101,12 @@ namespace nolimix86
     operand::mem_impl::mem_impl(size_t offset, const std::string& reg_name)
       : offset_{offset}
       , reg_{x86::reg_convert(reg_name)}
+    {
+    }
+
+    operand::mem_impl::mem_impl(size_t offset, enum x86::reg reg)
+      : offset_{offset}
+      , reg_{reg}
     {
     }
 

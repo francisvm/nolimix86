@@ -51,6 +51,7 @@ namespace nolimix86
         /// Create an operand represented by a memory access.
         /// Arguments: offset, register.
         operand(size_t, const std::string&, mem_tag = {});
+        operand(size_t, enum x86::reg, mem_tag = {});
 
         /// Create an operand represented by an assembly label.
         operand(std::string, label_tag);
@@ -122,6 +123,7 @@ namespace nolimix86
           enum x86::reg reg_ = x86::UNKNOWN;
 
           mem_impl(size_t, const std::string&);
+          mem_impl(size_t, enum x86::reg);
           void dump(llvm::raw_ostream&) const override;
         };
 
