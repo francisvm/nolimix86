@@ -113,7 +113,8 @@ namespace nolimix86
     void
     operand::mem_impl::dump(llvm::raw_ostream& ostream) const
     {
-      ostream.write_hex(offset_) << '(' << x86::reg_convert(reg_) << ')';
+      ostream << "0x";
+      ostream.write_hex(offset_) << '(' << '%' << x86::reg_convert(reg_) << ')';
     }
 
     operand::label_impl::label_impl(std::string label_name)
