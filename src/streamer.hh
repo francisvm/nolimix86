@@ -15,6 +15,9 @@ namespace nolimix86
     public:
       using llvm::MCELFStreamer::MCELFStreamer;
 
+      streamer(llvm::MCContext &Context, llvm::MCAsmBackend &TAB,
+               llvm::raw_pwrite_stream &OS, llvm::MCCodeEmitter *Emitter);
+
       void EmitLabel(llvm::MCSymbol* symbol) override;
       void EmitInstruction(const llvm::MCInst& inst,
                            const llvm::MCSubtargetInfo&) override;

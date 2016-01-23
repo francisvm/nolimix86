@@ -83,10 +83,18 @@ namespace nolimix86
 
   }
 
+  streamer::streamer(llvm::MCContext& Context, llvm::MCAsmBackend& TAB,
+                     llvm::raw_pwrite_stream& OS, llvm::MCCodeEmitter* Emitter)
+    : llvm::MCELFStreamer(Context, TAB, OS, Emitter)
+  {
+    program_.emplace_back("start");
+  }
+
   void
   streamer::EmitLabel(llvm::MCSymbol* symbol)
   {
-    program_.emplace_back(symbol->getName().str());
+    if (symbol->isInSection(false))
+      program_.emplace_back(symbol->getName().str());
   }
 
   void
