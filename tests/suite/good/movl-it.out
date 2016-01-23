@@ -1,0 +1,3 @@
+  .text
+start:
+movl $0, %t0

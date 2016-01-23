@@ -1,0 +1,3 @@
+  .text
+start:
+movl %eax, %t0

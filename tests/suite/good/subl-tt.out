@@ -1,0 +1,3 @@
+  .text
+start:
+subl %t0, %t0

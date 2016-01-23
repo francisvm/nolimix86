@@ -1,0 +1,3 @@
+  .text
+start:
+sub %t0, %eax
