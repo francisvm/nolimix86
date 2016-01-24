@@ -55,17 +55,20 @@ class test:
     def run(self, flags, check_out = False, check_err = False):
         sub = None
         if flags != "":
-            sub = subprocess.run(["./bin/nolimix86", flags,
+            sub = subprocess.Popen(["./bin/nolimix86", flags,
                                    self.full_file_name], stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE,
                                    universal_newlines=True)
+            sub.wait()
+            (pstdout, pstderr) = sub.communicate()
         else:
-            sub = subprocess.run(["./bin/nolimix86", self.full_file_name],
+            sub = subprocess.Popen(["./bin/nolimix86", self.full_file_name],
                                    stdout=FNULL, stderr=FNULL,
                                    universal_newlines=True)
+            sub.wait()
 
-        out_ko = check_out and self.expected_out and self.expected_out != sub.stdout
-        err_ko = check_err and self.expected_err and self.expected_err != sub.stderr
+        out_ko = check_out and self.expected_out and self.expected_out != pstdout
+        err_ko = check_err and self.expected_err and self.expected_err != pstderr
         ret_ko = self.expected_ret and self.expected_ret != sub.returncode
 
         return (out_ko, err_ko, ret_ko, sub.returncode)
