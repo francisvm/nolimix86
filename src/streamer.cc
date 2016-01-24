@@ -72,6 +72,24 @@ namespace nolimix86
         e.set_operand(1, emit_operand(inst_.getOperand(0)));
 
       }
+
+      // Special case for mov-mr with no size specifier.
+      void
+      operator()(ast::mov& e)
+      {
+        if (inst_.size() == 6 && inst_.getOpcode() == 1663)
+        {
+          // [dst][reg][?][?][offset][?]
+          size_t offset = inst_.getOperand(4).getImm();
+          auto reg = static_cast<enum x86::reg>(inst_.getOperand(1).getReg());
+          e.set_operand(0, emit_operand(offset, reg));
+          e.set_operand(1, emit_operand(inst_.getOperand(0)));
+        }
+        else
+          super_type::operator()(e);
+
+      }
+
     };
 
     // Handle binary instructions.
