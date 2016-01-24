@@ -1,3 +1,3 @@
   .text
 start:
-movl %eax, 0x0(%eax)
+mov %eax, 0x0(%eax)

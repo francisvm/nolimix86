@@ -1,3 +1,3 @@
   .text
 start:
-subl %eax, %t0
+sub %eax, %t0
