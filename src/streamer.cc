@@ -60,6 +60,18 @@ namespace nolimix86
       instr_operand_emitter(const llvm::MCInst& inst)
         : inst_{inst}
       {}
+
+      // Special case for lea. The destination doesn't appear twice.
+      void
+      operator()(ast::lea& e)
+      {
+        // [dst][reg][?][?][offset][?]
+        size_t offset = inst_.getOperand(4).getImm();
+        auto reg = static_cast<enum x86::reg>(inst_.getOperand(1).getReg());
+        e.set_operand(0, emit_operand(offset, reg));
+        e.set_operand(1, emit_operand(inst_.getOperand(0)));
+
+      }
     };
 
     // Handle binary instructions.
