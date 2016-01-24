@@ -22,7 +22,7 @@ def valid_types(instr, lhs, rhs):
         return False
     if rhs == "m" and lhs == "m":
         return False
-    if instr == "lea" and (lhs != "m" or rhs != "r"):
+    if instr == "lea" and (lhs != "m" or (rhs != "r" and rhs != "t")):
         return False
     if instr == "imul" and rhs == "m":
         return False
