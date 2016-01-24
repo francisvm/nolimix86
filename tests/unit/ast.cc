@@ -20,7 +20,7 @@ TEST(ast_node, basic_block_filled)
   bb.push_back(
     std::make_unique<ast::add>(ast::operand(10), ast::operand("eax")));
   bb.push_back(std::make_unique<ast::jmp>(
-    ast::make_operand<ast::operand::label_tag>("l0")));
+    ast::make_operand<ast::operand::label_tag>(bb)));
   EXPECT_EQ(bb.size(), 2);
   EXPECT_EQ(std::distance(bb.begin(), bb.end()), 2);
 }
@@ -123,7 +123,9 @@ TEST(operand, construction)
   auto reg = ast::make_operand<ast::operand::reg_tag>("eax");
   auto imm = ast::make_operand<ast::operand::imm_tag>(0x0UL);
   auto mem = ast::make_operand<ast::operand::mem_tag>(0UL, "eax");
-  auto label = ast::make_operand<ast::operand::label_tag>("l0");
+
+  ast::basic_block bb{"l0"};
+  auto label = ast::make_operand<ast::operand::label_tag>(bb);
 
   EXPECT_EQ(temp.type_get(), ast::operand::type::TEMP);
   EXPECT_EQ(reg.type_get(), ast::operand::type::REG);

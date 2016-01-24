@@ -7,6 +7,7 @@
 #include <llvm/MC/MCSymbol.h>
 
 #include <cassert>
+#include <vector>
 
 namespace nolimix86
 {
@@ -25,6 +26,30 @@ namespace nolimix86
       else if (op.isImm())
         return ast::make_operand<ast::operand::imm_tag>(
           static_cast<size_t>(op.getImm()));
+      else
+        assert(!"Unknown operand.");
+    }
+
+    ast::operand
+    emit_operand(const llvm::MCOperand& op,
+                 const std::vector<ast::basic_block>& program)
+    {
+      if (op.isExpr() && op.getExpr()->getKind() == llvm::MCExpr::SymbolRef)
+      {
+        const auto operand_expr
+          = static_cast<const llvm::MCSymbolRefExpr*>(op.getExpr());
+        const auto& label_symbol = operand_expr->getSymbol().getName().str();
+        auto bb = std::find_if(program.begin(), program.end(),
+                               [&](const auto& elt)
+                               {
+                                 return label_symbol == elt.label_get();
+                               });
+
+        assert(bb != program.end()
+               && "The label is not referring to any known symbol");
+
+        return ast::make_operand<ast::operand::label_tag>(*bb);
+      }
       else
         assert(!"Unknown operand.");
     }
@@ -56,9 +81,12 @@ namespace nolimix86
       using super_type::operator();
 
       const llvm::MCInst& inst_;
+      const std::vector<ast::basic_block>& program_;
 
-      instr_operand_emitter(const llvm::MCInst& inst)
+      instr_operand_emitter(const llvm::MCInst& inst,
+                            const std::vector<ast::basic_block>& program)
         : inst_{inst}
+        , program_{program}
       {}
 
       // Special case for lea. The destination doesn't appear twice.
@@ -88,6 +116,17 @@ namespace nolimix86
         else
           super_type::operator()(e);
 
+      }
+
+      // CALL label
+      void
+      operator()(ast::call& e)
+      {
+        assert(inst_.getOperand(0).isExpr());
+        assert(inst_.getOperand(0).getExpr()->getKind()
+               == llvm::MCExpr::SymbolRef);
+
+        e.set_operand(0, emit_operand(inst_.getOperand(0), program_));
       }
 
     };
@@ -138,9 +177,10 @@ namespace nolimix86
     }
 
     void
-    emit_instr_operands(ast::instr_base& instr, const llvm::MCInst& inst)
+    emit_instr_operands(ast::instr_base& instr, const llvm::MCInst& inst,
+                        const std::vector<ast::basic_block>& program)
     {
-      instr_operand_emitter emitter{inst};
+      instr_operand_emitter emitter{inst, program};
       emitter(instr);
     }
 
@@ -168,7 +208,7 @@ namespace nolimix86
     auto opcode = find_opcode<x86::x86_set>(inst.getOpcode());
     auto instr = ast::make_x86_instruction(opcode);
 
-    emit_instr_operands(*instr, inst);
+    emit_instr_operands(*instr, inst, program_);
 
     program_.back().push_back(std::move(instr));
   }

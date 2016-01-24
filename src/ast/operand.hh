@@ -54,7 +54,7 @@ namespace nolimix86
         operand(size_t, enum x86::reg, mem_tag = {});
 
         /// Create an operand represented by an assembly label.
-        operand(std::string, label_tag);
+        operand(const basic_block&, label_tag = {});
 
         type type_get() const;
 
@@ -130,10 +130,10 @@ namespace nolimix86
         /// Implementation of the operand as an assembly label.
         struct label_impl : public impl
         {
-          /// The name of the labe.
-          const std::string label_;
+          /// The label with the basic block.
+          const basic_block& bb_;
 
-          label_impl(std::string);
+          label_impl(const basic_block&);
           void dump(llvm::raw_ostream&) const override;
         };
     };

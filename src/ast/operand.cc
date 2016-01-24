@@ -1,4 +1,5 @@
 #include <ast/operand.hh>
+#include <ast/basic-block.hh>
 
 namespace nolimix86
 {
@@ -42,8 +43,8 @@ namespace nolimix86
     {
     }
 
-    operand::operand(std::string label_name, label_tag)
-      : impl_{std::make_unique<label_impl>(std::move(label_name))}
+    operand::operand(const basic_block& bb, label_tag)
+      : impl_{std::make_unique<label_impl>(std::move(bb))}
       , type_{type::LABEL}
     {
     }
@@ -117,15 +118,15 @@ namespace nolimix86
       ostream.write_hex(offset_) << '(' << '%' << x86::reg_convert(reg_) << ')';
     }
 
-    operand::label_impl::label_impl(std::string label_name)
-      : label_{std::move(label_name)}
+    operand::label_impl::label_impl(const basic_block& bb)
+      : bb_{bb}
     {
     }
 
     void
     operand::label_impl::dump(llvm::raw_ostream& ostream) const
     {
-      ostream << label_;
+      ostream << bb_.label_get();
     }
 
     typename operand::type
