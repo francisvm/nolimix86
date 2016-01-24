@@ -156,7 +156,8 @@ namespace nolimix86
   void
   streamer::EmitLabel(llvm::MCSymbol* symbol)
   {
-    if (symbol->isInSection(false))
+    // section labels are not registered. FIXME: Why?
+    if (!symbol->isRegistered())
       program_.emplace_back(symbol->getName().str());
   }
 
