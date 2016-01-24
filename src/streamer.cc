@@ -81,7 +81,13 @@ namespace nolimix86
     {
       auto& v = static_cast<instr_operand_emitter&>(v_g);
       // Registers, temporaries and immediates.
-      if (v.inst_.size() == 3)
+      if (v.inst_.size() == 2)
+      {
+        // [dst][src]
+        e.set_operand(0, emit_operand(v.inst_.getOperand(1)));
+        e.set_operand(1, emit_operand(v.inst_.getOperand(0)));
+      }
+      else if (v.inst_.size() == 3)
       {
         // [dst][dst][src]
         e.set_operand(0, emit_operand(v.inst_.getOperand(2)));
