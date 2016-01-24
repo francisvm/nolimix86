@@ -105,7 +105,7 @@ namespace nolimix86
       void
       operator()(ast::mov& e)
       {
-        if (inst_.size() == 6 && inst_.getOpcode() == 1663)
+        if (inst_.size() == 6 && inst_.getOpcode() == 1664)
         {
           // [dst][reg][?][?][offset][?]
           size_t offset = inst_.getOperand(4).getImm();

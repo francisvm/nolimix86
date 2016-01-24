@@ -46,7 +46,7 @@ namespace nolimix86
     /// A ranges of llvm instructions corresponding to the instruction
     /// mnemonic.
     using add = range<75, 157, ADD>;
-    using call = range<376, 385, CALL>;
+    using call = range<376, 386, CALL>;
     using cmp = range<556, 622, CMP>;
     using idiv = range<902, 910, IDIV>;
     using imul = range<922, 947, IMUL>;
