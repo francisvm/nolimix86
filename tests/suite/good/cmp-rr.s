@@ -1,0 +1,2 @@
+  .text
+cmp %eax, %eax
