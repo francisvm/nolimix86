@@ -269,7 +269,8 @@ namespace nolimix86
     auto opcode = find_opcode<x86::x86_set>(inst.getOpcode());
     auto instr = ast::make_x86_instruction(opcode);
 
-    emit_instr_operands(*instr, inst, program_);
+    if (instr->size() > 0)
+      emit_instr_operands(*instr, inst, program_);
 
     program_.back().push_back(std::move(instr));
   }

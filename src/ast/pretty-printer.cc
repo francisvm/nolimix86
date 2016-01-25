@@ -7,14 +7,18 @@
   void                                                                         \
   pretty_printer::operator()(const instr &e)                                   \
   {                                                                            \
-    ostream_ << #instr << ' ';                                                 \
-    std::for_each(e.begin(), std::prev(e.end()), [&](const auto &op)           \
+    ostream_ << #instr;                                                        \
+    if (e.size() > 0)                                                          \
     {                                                                          \
-      (*this)(op);                                                             \
-      ostream_ << ", ";                                                        \
-    });                                                                        \
+      ostream_ << ' ';                                                         \
+      std::for_each(e.begin(), std::prev(e.end()), [&](const auto &op)         \
+      {                                                                        \
+        (*this)(op);                                                           \
+        ostream_ << ", ";                                                      \
+      });                                                                      \
                                                                                \
-    (*this)(*std::prev(e.end()));                                              \
+      (*this)(*std::prev(e.end()));                                            \
+    }                                                                          \
     ostream_ << '\n';                                                          \
   }
 
