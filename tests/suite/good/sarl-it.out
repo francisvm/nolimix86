@@ -1,0 +1,3 @@
+  .text
+start:
+sar $0, %t0

@@ -8,7 +8,7 @@ import sys
 import os
 
 binary_instructions = ["mov", "add", "imul", "lea", "sal", "sar", "sub", "cmp"]
-need_suffix = ["mov", "add", "sub", "cmp"]
+need_suffix = ["mov", "add", "sub", "cmp", "sal", "sar"]
 operands_types = ["r", "i", "m", "t"]
 operands_for_type = {
         "r" : "%eax", # register
@@ -26,9 +26,9 @@ def valid_types(instr, lhs, rhs):
         return False
     if instr == "imul" and rhs == "m":
         return False
-    if instr == "sal" and (lhs != "i" or (rhs != "r" or rhs != "m")):
+    if instr == "sal" and (lhs != "i" or ((rhs != "r" and rhs != "t") and rhs != "m")):
         return False
-    if instr == "sar" and (lhs != "i" or (rhs != "r" or rhs != "m")):
+    if instr == "sar" and (lhs != "i" or ((rhs != "r" and rhs != "t") and rhs != "m")):
         return False
 
     return True
