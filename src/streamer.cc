@@ -118,6 +118,17 @@ namespace nolimix86
         e.set_operand(1, emit_operand(inst_.getOperand(0)));
       }
 
+      template <typename Instr>
+      void
+      emit_label_operand(Instr& e)
+      {
+        assert(inst_.getOperand(0).isExpr());
+        assert(inst_.getOperand(0).getExpr()->getKind()
+               == llvm::MCExpr::SymbolRef);
+
+        e.set_operand(0, emit_operand(inst_.getOperand(0), program_));
+      }
+
       // Special case for mov-mr with no size specifier.
       void
       operator()(ast::mov& e)
@@ -126,17 +137,6 @@ namespace nolimix86
           emit_special_mr(e);
         else
           super_type::operator()(e);
-      }
-
-      // CALL label
-      void
-      operator()(ast::call& e)
-      {
-        assert(inst_.getOperand(0).isExpr());
-        assert(inst_.getOperand(0).getExpr()->getKind()
-               == llvm::MCExpr::SymbolRef);
-
-        e.set_operand(0, emit_operand(inst_.getOperand(0), program_));
       }
 
       void
@@ -148,6 +148,28 @@ namespace nolimix86
           super_type::operator()(e);
       }
 
+// :(
+#define emit_label_for(instr)                                                  \
+      void                                                                     \
+      operator()(ast::instr & e)                                               \
+      {                                                                        \
+        emit_label_operand(e);                                                 \
+      }
+
+      emit_label_for(call)
+      emit_label_for(ja)
+      emit_label_for(jae)
+      emit_label_for(jb)
+      emit_label_for(jbe)
+      emit_label_for(je)
+      emit_label_for(jg)
+      emit_label_for(jge)
+      emit_label_for(jl)
+      emit_label_for(jle)
+      emit_label_for(jmp)
+      emit_label_for(jne)
+      emit_label_for(js)
+#undef emit_label_for
     };
 
     // Handle unary instructions.

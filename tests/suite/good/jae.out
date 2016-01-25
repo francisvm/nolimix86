@@ -1,0 +1,4 @@
+  .text
+start:
+l0:
+jae l0
