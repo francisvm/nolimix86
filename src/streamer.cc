@@ -148,6 +148,17 @@ namespace nolimix86
           super_type::operator()(e);
       }
 
+      // Two kinds of rets:
+      // `ret` and `ret $0` (they are equivalent)
+      void
+      operator()(ast::ret& e)
+      {
+        if (inst_.size())
+          super_type::operator()(e);
+        else
+          e.set_operand(0, ast::make_operand<ast::operand::imm_tag>(0UL));
+      }
+
 // :(
 #define emit_label_for(instr)                                                  \
       void                                                                     \
