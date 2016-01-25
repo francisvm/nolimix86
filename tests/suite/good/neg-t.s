@@ -1,0 +1,2 @@
+  .text
+neg %t0

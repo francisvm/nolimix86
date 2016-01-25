@@ -183,6 +183,11 @@ namespace nolimix86
         // [dst]
         e.set_operand(0, emit_operand(v.inst_.getOperand(0)));
       }
+      else if (v.inst_.size() == 2)
+      {
+        // [dst][dst]
+        e.set_operand(0, emit_operand(v.inst_.getOperand(0)));
+      }
       else if (v.inst_.size() == 5) // Memory operand.
       {
         // [reg][?][?][offset][?]
