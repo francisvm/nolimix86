@@ -1,0 +1,2 @@
+  .text
+idiv %eax

@@ -1,0 +1,2 @@
+  .text
+idiv %t0

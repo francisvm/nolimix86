@@ -65,12 +65,17 @@ namespace nolimix86
     {
       template <typename Instr>
       static
+      std::enable_if_t<Instr::operands == 1>
+      visit(ast::apply_visitor<visit_instr>&, Instr&);
+
+      template <typename Instr>
+      static
       std::enable_if_t<Instr::operands == 2>
       visit(ast::apply_visitor<visit_instr>&, Instr&);
 
       template <typename Instr>
       static
-      std::enable_if_t<Instr::operands != 2>
+      std::enable_if_t<Instr::operands != 2 && Instr::operands != 1>
       visit(ast::apply_visitor<visit_instr>&, Instr&);
     };
 
@@ -145,6 +150,26 @@ namespace nolimix86
 
     };
 
+    // Handle unary instructions.
+    template <typename Instr>
+    std::enable_if_t<Instr::operands == 1>
+    visit_instr::visit(ast::apply_visitor<visit_instr>& v_g, Instr& e)
+    {
+      auto& v = static_cast<instr_operand_emitter&>(v_g);
+      if (v.inst_.size() == 1)
+      {
+        // [dst]
+        e.set_operand(0, emit_operand(v.inst_.getOperand(0)));
+      }
+      else if (v.inst_.size() == 5) // Memory operand.
+      {
+        // [reg][?][?][offset][?]
+        size_t offset = v.inst_.getOperand(3).getImm();
+        auto reg = static_cast<enum x86::reg>(v.inst_.getOperand(0).getReg());
+        e.set_operand(0, emit_operand(offset, reg));
+      }
+    }
+
     // Handle binary instructions.
     template <typename Instr>
     std::enable_if_t<Instr::operands == 2>
@@ -184,7 +209,7 @@ namespace nolimix86
 
     // Handle the rest.
     template <typename Instr>
-    std::enable_if_t<Instr::operands != 2>
+    std::enable_if_t<Instr::operands != 2 && Instr::operands != 1>
     visit_instr::visit(ast::apply_visitor<visit_instr>&, Instr&)
     {
       assert(!"Not implemented yet");

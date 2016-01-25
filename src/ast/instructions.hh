@@ -41,7 +41,7 @@ namespace nolimix86
       ACCEPT_VISITOR
     };
 
-    class idiv : public instr<x86::IDIV, 2>
+    class idiv : public instr<x86::IDIV, 1>
     {
       ACCEPT_VISITOR
     };
