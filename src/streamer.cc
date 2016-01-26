@@ -159,6 +159,22 @@ namespace nolimix86
           e.set_operand(0, ast::make_operand<ast::operand::imm_tag>(0UL));
       }
 
+      void
+      operator()(ast::test& e)
+      {
+        // test imm %eax is [imm]
+        if (inst_.size() == 1)
+        {
+          e.set_operand(0, emit_operand(inst_.getOperand(0)));
+          e.set_operand(1, ast::make_operand<ast::operand::reg_tag>("eax"));
+        }
+        // test operands are commutative, and llvm canonicalizes it
+        else if (inst_.size() == 6 && inst_.getOpcode() == 2936)
+          emit_special_mr(e);
+        else
+          super_type::operator()(e);
+      }
+
 // :(
 #define emit_label_for(instr)                                                  \
       void                                                                     \

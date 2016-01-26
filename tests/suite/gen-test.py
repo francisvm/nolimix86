@@ -7,8 +7,8 @@
 import sys
 import os
 
-binary_instructions = ["mov", "add", "imul", "lea", "sal", "sar", "sub", "cmp"]
-need_suffix = ["mov", "add", "sub", "cmp", "sal", "sar"]
+binary_instructions = ["mov", "add", "imul", "lea", "sal", "sar", "sub", "cmp", "test"]
+need_suffix = ["mov", "add", "sub", "cmp", "sal", "sar", "test"]
 operands_types = ["r", "i", "m", "t"]
 operands_for_type = {
         "r" : "%eax", # register

@@ -1,0 +1,2 @@
+  .text
+test %eax, %eax
