@@ -11,7 +11,7 @@ set(GTEST_BOTH_LIBRARIES ${GTEST_LIBRARY} ${GTEST_MAIN_LIBRARY})
 message(STATUS "Found GTest: " ${GTEST_LIBRARY})
 
 macro(add_unit_test name file)
-  string(REPLACE ";" "" TESTS ${TESTS} ${name})
+  set(TESTS ${TESTS} ${name})
   add_executable(${name} EXCLUDE_FROM_ALL ${file})
   target_link_libraries(${name} ${GTEST_BOTH_LIBRARIES} pthread nolimix86_core)
 endmacro()
