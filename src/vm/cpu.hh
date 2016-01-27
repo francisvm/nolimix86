@@ -28,6 +28,9 @@ namespace nolimix86
       void push(const ast::operand&);
       void pop(const ast::operand&);
 
+      /// Dump the current state of the CPU.
+      void dump_state() const;
+
       std::unordered_map<reg_t, word_t> regs_;
       std::vector<word_t> stack_;
     };

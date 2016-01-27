@@ -84,6 +84,27 @@ namespace nolimix86
       regs_[reg_t::ESP] -= word_size;
     }
 
+    void
+    x86::dump_state() const
+    {
+      llvm::outs() << "=============================\n"
+                      "Stack:\t\tindex\tvalue\n";
+
+      for (auto it = stack_.begin(); it != stack_.end(); ++it)
+      {
+        const auto& elt = *it;
+        auto i = std::distance(stack_.begin(), it);
+        llvm::outs() << "\t\t" << i << "\t" << elt << '\n';
+      }
+
+      llvm::outs() << "-----------------------------\n"
+                      "Registers:\tid\tvalue\n";
+
+      for (const auto& reg_pair: regs_)
+        llvm::outs() << "\t\t" << reg_pair.first
+                   << "\t" << reg_pair.second << '\n';
+    }
+
   } // namespace cpu
 
 } // namespace nolimix86
