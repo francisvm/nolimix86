@@ -76,3 +76,21 @@ namespace nolimix86
   } // namespace x86
 
 } // namespace nolimix86
+
+namespace std
+{
+
+  template <>
+  struct hash<::nolimix86::x86::reg>
+  {
+    using argument_t = nolimix86::x86::reg;
+    using result_t = size_t;
+
+    result_t
+    operator()(const argument_t& s) const
+    {
+      return static_cast<result_t>(s);
+    }
+  };
+
+} // namespace std
