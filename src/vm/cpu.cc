@@ -23,6 +23,7 @@ namespace nolimix86
     x86::push(const ast::operand& op)
     {
       stack_.push_back(value_of(op));
+      regs_[reg_t::ESP] += word_size;
     }
 
     void
@@ -30,6 +31,7 @@ namespace nolimix86
     {
       set_value(op, stack_.back());
       stack_.pop_back();
+      regs_[reg_t::ESP] -= word_size;
     }
 
   } // namespace cpu
