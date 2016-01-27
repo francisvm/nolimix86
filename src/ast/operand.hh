@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ast/ast.hh>
+#include <ast/fwd.hh>
 #include <ast/visitor.hh>
 #include <x86/x86.hh>
 
@@ -61,12 +62,27 @@ namespace nolimix86
 
         type type_get() const;
 
-        /// Handy functions.
+        /// Temp accessors.
         bool is_temp() const;
+        temp_t temp_get() const;
+        reg_t temp_reg_get() const;
+
+        /// Registers accessors.
         bool is_reg() const;
+        reg_t reg_get() const;
+
+        /// Immediates accessors.
         bool is_imm() const;
+        imm_t imm_get() const;
+
+        /// Memory accessors.
         bool is_mem() const;
+        reg_t mem_reg_get() const;
+        imm_t mem_offset_get() const;
+
+        /// Label accessors.
         bool is_label() const;
+        const basic_block& label_bb_get() const;
 
         /// Print the operand.
         void dump(llvm::raw_ostream&) const;

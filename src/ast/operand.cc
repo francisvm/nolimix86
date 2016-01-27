@@ -141,10 +141,33 @@ namespace nolimix86
       return type_ == type::TEMP;
     }
 
+    operand::temp_t
+    operand::temp_get() const
+    {
+      assert(is_temp() && "The operand must be a temporary.");
+      auto impl = static_cast<temp_impl&>(*impl_);
+      return impl.temp_num_;
+    }
+
+    operand::reg_t
+    operand::temp_reg_get() const
+    {
+      return static_cast<operand::reg_t>(temp_get()
+                                                  + x86::max_valid_reg);
+    }
+
     bool
     operand::is_reg() const
     {
       return type_ == type::REG;
+    }
+
+    operand::reg_t
+    operand::reg_get() const
+    {
+      assert(is_reg() && "The operand must be a register.");
+      auto impl = static_cast<reg_impl&>(*impl_);
+      return impl.reg_;
     }
 
     bool
@@ -153,16 +176,48 @@ namespace nolimix86
       return type_ == type::IMM;
     }
 
+    operand::imm_t
+    operand::imm_get() const
+    {
+      assert(is_imm() && "The operand must be an immediate.");
+      auto impl = static_cast<imm_impl&>(*impl_);
+      return impl.value_;
+    }
+
     bool
     operand::is_mem() const
     {
       return type_ == type::MEM;
     }
 
+    operand::reg_t
+    operand::mem_reg_get() const
+    {
+      assert(is_mem() && "The operand must be a memory access.");
+      auto impl = static_cast<mem_impl&>(*impl_);
+      return impl.reg_;
+    }
+
+    operand::imm_t
+    operand::mem_offset_get() const
+    {
+      assert(is_mem() && "The operand must be a memory access.");
+      auto impl = static_cast<mem_impl&>(*impl_);
+      return impl.offset_;
+    }
+
     bool
     operand::is_label() const
     {
       return type_ == type::LABEL;
+    }
+
+    const basic_block&
+    operand::label_bb_get() const
+    {
+      assert(is_mem() && "The operand must be a memory access.");
+      auto impl = static_cast<label_impl&>(*impl_);
+      return impl.bb_;
     }
 
     void
