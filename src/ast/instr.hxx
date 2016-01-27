@@ -94,6 +94,14 @@ namespace nolimix86
     }
 
     template <opcode_t opcode, size_t operands_count>
+    constexpr
+    const typename instr<opcode, operands_count>::operand_t&
+    instr<opcode, operands_count>::operator[](size_t i) const noexcept
+    {
+      return operands_[i];
+    }
+
+    template <opcode_t opcode, size_t operands_count>
     template <size_t count>
     constexpr
     std::enable_if_t<count == 2,
