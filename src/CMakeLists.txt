@@ -9,6 +9,9 @@ set(libnolimix86_src
   ast/operand.cc
   ast/basic-block.cc
   ast/pretty-printer.cc
+
+  # VM
+  vm/cpu.cc
 )
 
 set(nolimix86_src

@@ -11,8 +11,9 @@ namespace nolimix86
 
     template <typename Cpu>
     void
-    vm<Cpu>::operator()(const ast::add&)
+    vm<Cpu>::operator()(const ast::add& e)
     {
+      cpu_.set_value(e.dst(), cpu_.value_of(e.src()) + cpu_.value_of(e.dst()));
     }
 
     template <typename Cpu>
@@ -35,8 +36,9 @@ namespace nolimix86
 
     template <typename Cpu>
     void
-    vm<Cpu>::operator()(const ast::imul&)
+    vm<Cpu>::operator()(const ast::imul& e)
     {
+      cpu_.set_value(e.dst(), cpu_.value_of(e.src()) * cpu_.value_of(e.dst()));
     }
 
     template <typename Cpu>
@@ -125,8 +127,9 @@ namespace nolimix86
 
     template <typename Cpu>
     void
-    vm<Cpu>::operator()(const ast::mov&)
+    vm<Cpu>::operator()(const ast::mov& e)
     {
+      cpu_.set_value(e.dst(), cpu_.value_of(e.src()));
     }
 
     template <typename Cpu>
@@ -137,14 +140,16 @@ namespace nolimix86
 
     template <typename Cpu>
     void
-    vm<Cpu>::operator()(const ast::pop&)
+    vm<Cpu>::operator()(const ast::pop& e)
     {
+      cpu_.pop(e.oper());
     }
 
     template <typename Cpu>
     void
-    vm<Cpu>::operator()(const ast::push&)
+    vm<Cpu>::operator()(const ast::push& e)
     {
+      cpu_.push(e.oper());
     }
 
     template <typename Cpu>
@@ -173,8 +178,9 @@ namespace nolimix86
 
     template <typename Cpu>
     void
-    vm<Cpu>::operator()(const ast::sub&)
+    vm<Cpu>::operator()(const ast::sub& e)
     {
+      cpu_.set_value(e.dst(), cpu_.value_of(e.src()) - cpu_.value_of(e.dst()));
     }
 
     template <typename Cpu>
@@ -185,8 +191,9 @@ namespace nolimix86
 
     template <typename Cpu>
     void
-    vm<Cpu>::operator()(const ast::basic_block&)
+    vm<Cpu>::operator()(const ast::basic_block& e)
     {
+      super_type::operator()(e);
     }
 
   } // namespace vm
