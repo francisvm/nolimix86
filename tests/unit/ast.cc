@@ -119,7 +119,7 @@ TEST(instr, construction)
 
 TEST(operand, construction)
 {
-  auto temp = ast::make_operand<ast::operand::temp_tag>(0UL);
+  auto temp = ast::make_operand<ast::operand::temp_tag>(0U);
   auto reg = ast::make_operand<ast::operand::reg_tag>("eax");
   auto imm = ast::make_operand<ast::operand::imm_tag>(0x0UL);
   auto mem = ast::make_operand<ast::operand::mem_tag>(0UL, "eax");

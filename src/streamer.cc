@@ -19,7 +19,7 @@ namespace nolimix86
     {
       if (op.isReg() && op.getReg() >= x86::max_valid_reg)
         return ast::make_operand<ast::operand::temp_tag>(
-          static_cast<size_t>(op.getReg()));
+          static_cast<uint32_t>(op.getReg()));
       else if (op.isReg())
         return ast::make_operand<ast::operand::reg_tag>(
           static_cast<enum x86::reg>(op.getReg()));

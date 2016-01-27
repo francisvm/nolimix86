@@ -11,7 +11,7 @@ namespace nolimix86
   {
 
     /// x86 common-used registers
-    enum reg : uint8_t
+    enum reg : uint32_t
     {
       // Shouldn never have to use this, since LLVM parses x86 correctly.
       UNKNOWN = 0,
