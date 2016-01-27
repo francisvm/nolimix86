@@ -17,6 +17,7 @@ FILE_REGEX = re.compile(".*\.s")
 TEST_DIRS = [
         ("good", 0, "", False, False),
         ("good", 0, "-A", True, False),
+        ("good", 0, "-e", False, False),
         ]
 
 def print_good(string):

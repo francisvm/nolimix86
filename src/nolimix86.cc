@@ -2,6 +2,7 @@
 
 #include <ast/default-visitor.hh>
 #include <ast/pretty-printer.hh>
+#include <vm/vm.hh>
 
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/raw_ostream.h>
@@ -13,6 +14,9 @@ input_filename(llvm::cl::Positional, llvm::cl::desc("<input file>"),
 
 static llvm::cl::opt<bool>
 dump_ast("A", llvm::cl::desc("Dump the ast on stdout"), llvm::cl::init(false));
+
+static llvm::cl::opt<bool>
+eval("e", llvm::cl::desc("Evaluate the parsed ast"), llvm::cl::init(false));
 
 int main(int argc, char const *argv[])
 {
@@ -37,6 +41,14 @@ int main(int argc, char const *argv[])
     nolimix86::ast::pretty_printer printer;
     for (const auto& block : blocks)
       printer(block);
+    return 0;
+  }
+
+  if (eval)
+  {
+    nolimix86::vm::x86 vm;
+    for (const auto& block : blocks)
+      vm(block);
     return 0;
   }
 
