@@ -36,22 +36,25 @@ namespace nolimix86
         };
 
       public:
+        using temp_t = uint32_t;
+        using reg_t = enum x86::reg;
+        using imm_t = size_t;
         operand() = default;
 
         /// Create an operand represented by a temporary.
-        operand(size_t, temp_tag);
+        operand(temp_t, temp_tag);
 
         /// Create an operand represented by a machine register.
         explicit operand(const std::string&, reg_tag = {});
-        explicit operand(enum x86::reg, reg_tag = {});
+        explicit operand(reg_t, reg_tag = {});
 
         /// Create an operand represented by an immediate.
-        explicit operand(size_t, imm_tag = {});
+        explicit operand(imm_t, imm_tag = {});
 
         /// Create an operand represented by a memory access.
         /// Arguments: offset, register.
-        operand(size_t, const std::string&, mem_tag = {});
-        operand(size_t, enum x86::reg, mem_tag = {});
+        operand(imm_t, const std::string&, mem_tag = {});
+        operand(imm_t, reg_t, mem_tag = {});
 
         /// Create an operand represented by an assembly label.
         operand(const basic_block&, label_tag = {});
@@ -86,9 +89,9 @@ namespace nolimix86
         struct temp_impl : public impl
         {
           /// The number of the temporary.
-          const size_t temp_num_ = 0;
+          const temp_t temp_num_ = 0;
 
-          temp_impl(size_t);
+          temp_impl(temp_t);
           void dump(llvm::raw_ostream&) const override;
         };
 
@@ -96,10 +99,10 @@ namespace nolimix86
         struct reg_impl : public impl
         {
           /// The register.
-          const enum x86::reg reg_ = x86::UNKNOWN;
+          const reg_t reg_ = x86::UNKNOWN;
 
           reg_impl(const std::string&);
-          reg_impl(enum x86::reg);
+          reg_impl(reg_t);
           void dump(llvm::raw_ostream&) const override;
         };
 
@@ -107,9 +110,9 @@ namespace nolimix86
         struct imm_impl : public impl
         {
           /// The value of the immediate.
-          const size_t value_ = 0;
+          const imm_t value_ = 0;
 
-          imm_impl(size_t);
+          imm_impl(imm_t);
           void dump(llvm::raw_ostream&) const override;
         };
 
@@ -117,13 +120,13 @@ namespace nolimix86
         struct mem_impl : public impl
         {
           /// The value of the offset.
-          const size_t offset_ = 0;
+          const imm_t offset_ = 0;
 
           /// The register.
-          enum x86::reg reg_ = x86::UNKNOWN;
+          reg_t reg_ = x86::UNKNOWN;
 
-          mem_impl(size_t, const std::string&);
-          mem_impl(size_t, enum x86::reg);
+          mem_impl(imm_t, const std::string&);
+          mem_impl(imm_t, reg_t);
           void dump(llvm::raw_ostream&) const override;
         };
 
