@@ -42,9 +42,31 @@ namespace nolimix86
     }
 
     void
-    x86::set_value(const ast::operand&, word_t)
+    x86::set_value(const ast::operand& op, word_t value)
     {
-      // FIXME: Set the value to the operand depending on the type.
+      assert(!op.is_imm() && "Can't set the value of an immediate.");
+      assert(!op.is_label() && "Can't set the value of a label.");
+
+      if (op.is_temp())
+      {
+        const auto temp = op.temp_reg_get();
+        regs_[temp] = value;
+      }
+      else if (op.is_reg())
+      {
+        const auto reg = op.reg_get();
+        regs_[reg] = value;
+      }
+      else if (op.is_mem())
+      {
+        assert(!"Not implemented yet.");
+        //const auto offset = op.mem_offset_get();
+        //const auto reg = op.mem_reg_get();
+      }
+      else
+      {
+        assert(!"Not implemented yet.");
+      }
     }
 
     void
