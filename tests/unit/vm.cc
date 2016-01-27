@@ -14,6 +14,7 @@ TEST(vm_x86, construction)
 TEST(vm_x86, visit)
 {
   vm::x86 vm;
-  ast::mov mov;
+  ast::mov mov{ast::make_operand<ast::operand::temp_tag>(1U),
+               ast::make_operand<ast::operand::temp_tag>(1U)};
   vm(mov);
 }

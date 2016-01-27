@@ -7,10 +7,38 @@ namespace nolimix86
   {
 
     typename x86::word_t
-    x86::value_of(const ast::operand&)
+    x86::value_of(const ast::operand& op)
     {
-      // FIXME: Indirect call to the operand.
-      return {};
+      if (op.is_temp())
+      {
+        const auto temp = op.temp_reg_get();
+        return regs_[temp];
+      }
+      else if (op.is_reg())
+      {
+        const auto reg = op.reg_get();
+        return regs_[reg];
+      }
+      else if (op.is_imm())
+      {
+        const auto imm = op.imm_get();
+        return imm;
+      }
+      else if (op.is_mem())
+      {
+        assert(!"Not implemented yet.");
+        //const auto offset = op.mem_offset_get();
+        //const auto reg = op.mem_reg_get();
+      }
+      else if (op.is_label())
+      {
+        assert(!"Not implemented yet.");
+        //const auto& bb = op.label_bb_get();
+      }
+      else
+      {
+        assert(!"Not implemented yet.");
+      }
     }
 
     void

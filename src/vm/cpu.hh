@@ -15,7 +15,8 @@ namespace nolimix86
     struct x86
     {
       using word_t = uint32_t;
-      using reg_t = ::nolimix86::x86::reg;
+      using reg_t = ast::operand::reg_t;
+      static constexpr auto word_size = sizeof (word_t);
 
       /// Get the value of an operand.
       word_t value_of(const ast::operand&);
