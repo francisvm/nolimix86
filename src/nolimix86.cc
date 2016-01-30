@@ -8,6 +8,8 @@
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/MemoryBuffer.h>
 
+#include <string>
+
 static llvm::cl::opt<std::string>
 input_filename(llvm::cl::Positional, llvm::cl::desc("<input file>"),
                llvm::cl::init("-"));

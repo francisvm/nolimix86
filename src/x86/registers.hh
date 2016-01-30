@@ -2,6 +2,7 @@
 
 #include <common.hh>
 
+#include <string>
 #include <map>
 
 namespace nolimix86

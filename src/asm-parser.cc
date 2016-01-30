@@ -17,6 +17,7 @@
 #include <llvm/Support/TargetRegistry.h>
 #include <llvm/Support/ToolOutputFile.h>
 
+#include <string>
 #include <stdexcept>
 
 namespace nolimix86

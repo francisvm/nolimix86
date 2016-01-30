@@ -3,6 +3,7 @@
 #include <ast/fwd.hh>
 #include <ast/ast.hh>
 
+#include <string>
 #include <vector>
 #include <memory>
 
