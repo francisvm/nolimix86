@@ -2,6 +2,7 @@
 
 #include <ast/operand.hh>
 #include <x86/registers.hh>
+#include <vm/mmu.hh>
 
 #include <vector>
 #include <unordered_map>
@@ -16,7 +17,11 @@ namespace nolimix86
     {
       using word_t = uint32_t;
       using reg_t = ast::operand::reg_t;
+      using mmu_t = mmu<x86>;
       static constexpr auto word_size = sizeof (word_t);
+
+      /// Create an x86 virtual machine.
+      x86();
 
       /// Get the value of an operand.
       word_t value_of(const ast::operand&);
@@ -33,6 +38,7 @@ namespace nolimix86
 
       std::unordered_map<reg_t, word_t> regs_;
       std::vector<word_t> stack_;
+      mmu_t mmu_;
     };
 
   } // namespace vm

@@ -22,6 +22,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/tests/bin)
 # Unit tests here.
 add_unit_test(ast_test ast.cc)
 add_unit_test(vm_test vm.cc)
+add_unit_test(mmu_test mmu.cc)
 
 # Call the script that runs the test.
 add_custom_target(check-unit

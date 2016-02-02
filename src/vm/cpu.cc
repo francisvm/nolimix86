@@ -6,6 +6,14 @@ namespace nolimix86
   namespace cpu
   {
 
+    x86::x86()
+      : stack_{}
+      , mmu_{reinterpret_cast<typename mmu_t::host_address_t>(stack_.data())}
+    {
+      // Set the stack pointer
+      regs_[reg_t::ESP] = mmu_.host_to_vm(mmu_.base_);
+    }
+
     typename x86::word_t
     x86::value_of(const ast::operand& op)
     {
