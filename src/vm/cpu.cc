@@ -41,9 +41,13 @@ namespace nolimix86
       }
       else if (op.is_mem())
       {
-        assert(!"Not implemented yet.");
-        //const auto offset = op.mem_offset_get();
-        //const auto reg = op.mem_reg_get();
+        const auto offset = op.mem_offset_get();
+        const auto reg = op.mem_reg_get();
+        const auto reg_value = regs_[reg];
+        const auto vm_addr = reg_value + offset;
+        const auto host_addr =
+            reinterpret_cast<word_t*>(mmu_.vm_to_host(vm_addr));
+        return *host_addr;
       }
       else if (op.is_label())
       {
@@ -74,9 +78,13 @@ namespace nolimix86
       }
       else if (op.is_mem())
       {
-        assert(!"Not implemented yet.");
-        //const auto offset = op.mem_offset_get();
-        //const auto reg = op.mem_reg_get();
+        const auto offset = op.mem_offset_get();
+        const auto reg = op.mem_reg_get();
+        const auto reg_value = regs_[reg];
+        const auto vm_addr = reg_value + offset;
+        const auto host_addr =
+            reinterpret_cast<word_t *>(mmu_.vm_to_host(vm_addr));
+        *host_addr = value;
       }
       else
       {
