@@ -73,3 +73,43 @@ TEST(vm_x86_stack, loop)
     --i;
   }
 }
+
+TEST(vm_x86_heap, construction)
+{
+  {
+    auto mem = std::make_unique<int[]>(1);
+    cpu::heap<int> s{mem.get() + 1};
+    ASSERT_EQ(s.size(), 0);
+  }
+  {
+    auto mem = std::make_unique<std::string[]>(1);
+    cpu::heap<std::string> s2{mem.get() + 1};
+    ASSERT_EQ(s2.size(), 0);
+  }
+}
+
+TEST(vm_x86_heap, alloc)
+{
+  auto mem = std::make_unique<int[]>(1);
+  cpu::heap<int> s{mem.get() + 1};
+  s.alloc(10);
+
+  ASSERT_EQ(s.size(), 1);
+}
+
+TEST(vm_x86_heap, loop)
+{
+  auto mem = std::make_unique<int[]>(4);
+  cpu::heap<int> s{mem.get() + 4};
+  s.alloc(10);
+  s.alloc(11);
+  s.alloc(12);
+  s.alloc(13);
+
+  auto i = 10;
+  for (const auto& elt : s)
+  {
+    ASSERT_EQ(elt, i);
+    ++i;
+  }
+}

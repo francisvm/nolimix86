@@ -50,6 +50,46 @@ namespace nolimix86
       T* mem_ = nullptr;
     };
 
+    template <typename T>
+    class heap
+    {
+    public:
+      using value_type = T;
+      using reference = T&;
+      using const_reference = const T&;
+      using pointer = value_type*;
+      using const_pointer = const value_type*;
+      using size_type = size_t;
+      using iterator = std::reverse_iterator<pointer>;
+      using const_iterator = std::reverse_iterator<const_pointer>;
+
+    public:
+      heap(T*);
+
+      heap(const heap&) = delete;
+      heap& operator=(const heap&) = delete;
+
+      heap(heap&&) = default;
+      heap& operator=(heap&&) = default;
+
+      size_type size() const;
+
+      iterator begin();
+      const_iterator begin() const;
+
+      iterator end();
+      const_iterator end() const;
+
+      reference back();
+      const_reference back() const;
+
+      void alloc(T);
+
+    private:
+      size_type size_ = 0;
+      T* mem_ = nullptr;
+    };
+
   } // namespace cpu
 
 } // namespace nolimix86

@@ -79,6 +79,70 @@ namespace nolimix86
       return mem_[size_ - 1];
     }
 
+    template <typename T>
+    heap<T>::heap(T* mem)
+      : size_{0}
+      , mem_{mem}
+    {
+    }
+
+    template <typename T>
+    typename heap<T>::size_type
+    heap<T>::size() const
+    {
+      return size_;
+    }
+
+    template <typename T>
+    typename heap<T>::iterator
+    heap<T>::begin()
+    {
+      return typename heap<T>::iterator{mem_};
+    }
+
+    template <typename T>
+    typename heap<T>::const_iterator
+    heap<T>::begin() const
+    {
+      return typename heap<T>::iterator{mem_};
+    }
+
+    template <typename T>
+    typename heap<T>::iterator
+    heap<T>::end()
+    {
+      return typename heap<T>::iterator{mem_ - size_};
+    }
+
+    template <typename T>
+    typename heap<T>::const_iterator
+    heap<T>::end() const
+    {
+      return typename heap<T>::iterator{mem_ - size_};
+    }
+
+    template <typename T>
+    void
+    heap<T>::alloc(T elt)
+    {
+      *(mem_ - size_ - 1) = std::move(elt);
+      ++size_;
+    }
+
+    template <typename T>
+    typename heap<T>::reference
+    heap<T>::back()
+    {
+      return *(mem_ - size_ - 1);
+    }
+
+    template <typename T>
+    typename heap<T>::const_reference
+    heap<T>::back() const
+    {
+      return *(mem_ - size_ - 1);
+    }
+
   } // namespace cpu
 
 } // namespace nolimix86

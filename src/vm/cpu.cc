@@ -14,6 +14,7 @@ namespace nolimix86
     x86::x86()
       : mem_{std::make_unique<word_t[]>(default_size)}
       , stack_{mem_.get()}
+      , heap_{mem_.get() + default_size}
       , mmu_{reinterpret_cast<typename mmu_t::host_address_t>(mem_.get())}
     {
       // Set the stack pointer
