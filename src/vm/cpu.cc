@@ -6,9 +6,15 @@ namespace nolimix86
   namespace cpu
   {
 
+    namespace
+    {
+      constexpr auto default_size = 4096;
+    }
+
     x86::x86()
-      : stack_{}
-      , mmu_{reinterpret_cast<typename mmu_t::host_address_t>(stack_.data())}
+      : mem_{std::make_unique<word_t[]>(default_size)}
+      , stack_{mem_.get()}
+      , mmu_{reinterpret_cast<typename mmu_t::host_address_t>(mem_.get())}
     {
       // Set the stack pointer
       regs_[reg_t::ESP] = mmu_.host_to_vm(mmu_.base_);
@@ -80,7 +86,7 @@ namespace nolimix86
     void
     x86::push(const ast::operand& op)
     {
-      stack_.push_back(value_of(op));
+      stack_.push(value_of(op));
       regs_[reg_t::ESP] += word_size;
     }
 
@@ -88,7 +94,7 @@ namespace nolimix86
     x86::pop(const ast::operand& op)
     {
       set_value(op, stack_.back());
-      stack_.pop_back();
+      stack_.pop();
       regs_[reg_t::ESP] -= word_size;
     }
 
