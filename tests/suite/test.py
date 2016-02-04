@@ -15,9 +15,9 @@ FILE_REGEX = re.compile(".*\.s")
 
 # (test_category_name, expected_return_code, flags, check_stdout, check_stderr)
 TEST_DIRS = [
-        ("good", 0, "", False, False),
-        ("good", 0, "-A", True, False),
-        ("good", 0, "-e", False, False),
+        ("good", 0, "", False, False, []),
+        ("good", 0, "-A", True, False, []),
+        ("good", 0, "-e", False, False, ["pop-m", "pop-r", "pop-t"]),
         ]
 
 def print_good(string):
@@ -79,10 +79,13 @@ class suite:
         self.failed = 0
         self.passed = 0
 
-    def call_on_dir(self, test_dir, expected_ret, flag, check_out, check_err):
+    def call_on_dir(self, test_dir, expected_ret, flag, check_out, check_err,
+                    ignore):
         for file_name in sorted(filter(FILE_REGEX.match, os.listdir(test_dir))):
             # Normalize the names.
             test_name = os.path.splitext(file_name)[0]
+            if test_name in ignore:
+                continue
 
             # Create and run the test.
             new_test = test(test_name, file_name, test_dir)
@@ -120,7 +123,8 @@ if __name__ == '__main__':
                 "\nCategory: {0}\nFlag: {1}\nExpected return code: {2}\n"
                 .format(test_dir[0], test_dir[2], test_dir[1]))
         tests.call_on_dir(tests_dir + test_dir[0] + "/",
-                          test_dir[1], test_dir[2], test_dir[3], test_dir[4])
+                          test_dir[1], test_dir[2], test_dir[3], test_dir[4],
+                          test_dir[5])
 
     print("Tests: " + BOLD + " "
           + str(tests.passed) + " / " + str(tests.passed + tests.failed) + ENDC)
