@@ -2,6 +2,9 @@
 
 #include <vm/vm.hh>
 #include <vm/cpu.hh>
+#include <x86/flags.hh>
+
+#include <limits>
 
 namespace nolimix86
 {
@@ -24,8 +27,39 @@ namespace nolimix86
 
     template <typename Cpu>
     void
-    vm<Cpu>::operator()(const ast::cmp&)
+    vm<Cpu>::operator()(const ast::cmp& e)
     {
+      cpu_.reset_flags();
+
+      {
+        auto src_big = static_cast<int64_t>(cpu_.value_of(e.src()));
+        auto dst_big = static_cast<int64_t>(cpu_.value_of(e.dst()));
+        auto temp = src_big - dst_big;
+
+        // Check for overflow.
+        if (temp > std::numeric_limits<decltype(temp)>::max()
+            || temp < std::numeric_limits<decltype(temp)>::min())
+          cpu_.set_flag(Cpu::flag_t::OF, 1);
+
+        // Check for equality.
+        if (temp == 0)
+          cpu_.set_flag(Cpu::flag_t::ZF, 1);
+
+        // Check for sign.
+        if (temp <= 0)
+          cpu_.set_flag(Cpu::flag_t::SF, 1);
+      }
+
+      // "Below" is the result of a signed comparaison.
+      {
+        auto src_big = static_cast<uint64_t>(cpu_.value_of(e.src()));
+        auto dst_big = static_cast<uint64_t>(cpu_.value_of(e.dst()));
+        if (src_big < dst_big)
+          cpu_.set_flag(Cpu::flag_t::CF, 1);
+      }
+
+      // FIXME: Parity flag
+
     }
 
     template <typename Cpu>

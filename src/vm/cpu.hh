@@ -19,6 +19,7 @@ namespace nolimix86
     {
       using word_t = uint32_t;
       using reg_t = ast::operand::reg_t;
+      using flag_t = ::nolimix86::x86::flag;
       using memory_t = cpu::memory<word_t>;
       using mmu_t = cpu::mmu<x86>;
       using stack_t = cpu::stack<word_t>;
@@ -34,6 +35,12 @@ namespace nolimix86
       /// Set the value of a register/memory.
       void set_value(const ast::operand&, word_t);
 
+      /// Set the value of a flag.
+      void set_flag(flag_t, word_t);
+
+      /// Reset all the flags to 0.
+      void reset_flags();
+
       /// Actions on the stack.
       void push(const ast::operand&);
       void pop(const ast::operand&);
@@ -42,6 +49,7 @@ namespace nolimix86
       void dump_state() const;
 
       std::unordered_map<reg_t, word_t> regs_;
+      std::unordered_map<flag_t, word_t> eflags_;
       memory_t mem_;
       stack_t stack_;
       heap_t heap_;

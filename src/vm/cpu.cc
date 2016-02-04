@@ -93,6 +93,19 @@ namespace nolimix86
     }
 
     void
+    x86::set_flag(flag_t flag, word_t value)
+    {
+      eflags_[flag] = value;
+    }
+
+    void
+    x86::reset_flags()
+    {
+      for (auto& pair : eflags_)
+        pair.second = 0;
+    }
+
+    void
     x86::push(const ast::operand& op)
     {
       stack_.push(value_of(op));

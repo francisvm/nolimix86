@@ -8,3 +8,4 @@
 * Add benchmarks.
 * Add more instructions.
 * Generate target-dependent code.
+* Handle EFLAGS in all the instructions.
