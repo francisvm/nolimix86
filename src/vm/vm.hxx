@@ -180,7 +180,7 @@ namespace nolimix86
     void
     vm<Cpu>::operator()(const ast::sub& e)
     {
-      cpu_.set_value(e.dst(), cpu_.value_of(e.src()) - cpu_.value_of(e.dst()));
+      cpu_.set_value(e.dst(), cpu_.value_of(e.dst()) - cpu_.value_of(e.src()));
     }
 
     template <typename Cpu>

@@ -9,6 +9,22 @@ namespace nolimix86
   {
 
     template <typename T>
+    struct memory
+    {
+      using size_type = size_t;
+
+      memory(size_type);
+
+      T* base();
+
+      T& operator[](size_type);
+      const T& operator[](size_type) const;
+
+      size_type size_ = 0;
+      std::unique_ptr<T[]> mem_ = nullptr;
+    };
+
+    template <typename T>
     class stack
     {
     public:
@@ -22,13 +38,7 @@ namespace nolimix86
       using const_iterator = std::reverse_iterator<const_pointer>;
 
     public:
-      stack(T*);
-
-      stack(const stack&) = delete;
-      stack& operator=(const stack&) = delete;
-
-      stack(stack&&) = default;
-      stack& operator=(stack&&) = default;
+      stack(memory<T>&);
 
       size_type size() const;
 
@@ -47,7 +57,7 @@ namespace nolimix86
 
     private:
       size_type size_ = 0;
-      T* mem_ = nullptr;
+      memory<T>& mem_;
     };
 
     template <typename T>
@@ -64,13 +74,7 @@ namespace nolimix86
       using const_iterator = std::reverse_iterator<const_pointer>;
 
     public:
-      heap(T*);
-
-      heap(const heap&) = delete;
-      heap& operator=(const heap&) = delete;
-
-      heap(heap&&) = default;
-      heap& operator=(heap&&) = default;
+      heap(memory<T>&);
 
       size_type size() const;
 
@@ -87,7 +91,7 @@ namespace nolimix86
 
     private:
       size_type size_ = 0;
-      T* mem_ = nullptr;
+      memory<T>& mem_;
     };
 
   } // namespace cpu

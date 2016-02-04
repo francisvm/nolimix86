@@ -18,6 +18,9 @@ namespace nolimix86
     typename mmu<Cpu>::vm_address_t
     mmu<Cpu>::host_to_vm(typename mmu<Cpu>::host_address_t host)
     {
+      if (host < base_)
+        die("Out of bounds access.");
+
       return std::abs(host - base_);
     }
 

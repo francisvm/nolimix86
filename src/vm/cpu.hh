@@ -19,7 +19,8 @@ namespace nolimix86
     {
       using word_t = uint32_t;
       using reg_t = ast::operand::reg_t;
-      using mmu_t = mmu<x86>;
+      using memory_t = cpu::memory<word_t>;
+      using mmu_t = cpu::mmu<x86>;
       using stack_t = cpu::stack<word_t>;
       using heap_t = cpu::heap<word_t>;
       static constexpr auto word_size = sizeof (word_t);
@@ -40,8 +41,8 @@ namespace nolimix86
       /// Dump the current state of the CPU.
       void dump_state() const;
 
-      std::unique_ptr<word_t[]> mem_ = nullptr;
       std::unordered_map<reg_t, word_t> regs_;
+      memory_t mem_;
       stack_t stack_;
       heap_t heap_;
       mmu_t mmu_;

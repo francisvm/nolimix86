@@ -27,21 +27,21 @@ TEST(vm_x86, visit)
 TEST(vm_x86_stack, construction)
 {
   {
-    auto mem = std::make_unique<int[]>(1);
-    cpu::stack<int> s{mem.get()};
+    auto mem = cpu::memory<int>(1);
+    cpu::stack<int> s{mem};
     ASSERT_EQ(s.size(), 0);
   }
   {
-    auto mem = std::make_unique<std::string[]>(1);
-    cpu::stack<std::string> s2{mem.get()};;
+    auto mem = cpu::memory<std::string>(1);
+    cpu::stack<std::string> s2{mem};
     ASSERT_EQ(s2.size(), 0);
   }
 }
 
 TEST(vm_x86_stack, push)
 {
-  auto mem = std::make_unique<int[]>(1);
-  cpu::stack<int> s{mem.get()};;
+  auto mem = cpu::memory<int>(1);
+  cpu::stack<int> s{mem};
   s.push(10);
 
   ASSERT_EQ(s.size(), 1);
@@ -49,8 +49,8 @@ TEST(vm_x86_stack, push)
 
 TEST(vm_x86_stack, pop)
 {
-  auto mem = std::make_unique<int[]>(1);
-  cpu::stack<int> s{mem.get()};;
+  auto mem = cpu::memory<int>(1);
+  cpu::stack<int> s{mem};
   s.push(10);
   s.pop();
 
@@ -59,8 +59,8 @@ TEST(vm_x86_stack, pop)
 
 TEST(vm_x86_stack, loop)
 {
-  auto mem = std::make_unique<int[]>(4);
-  cpu::stack<int> s{mem.get()};;
+  auto mem = cpu::memory<int>(4);
+  cpu::stack<int> s{mem};
   s.push(10);
   s.push(11);
   s.push(12);
@@ -77,21 +77,21 @@ TEST(vm_x86_stack, loop)
 TEST(vm_x86_heap, construction)
 {
   {
-    auto mem = std::make_unique<int[]>(1);
-    cpu::heap<int> s{mem.get() + 1};
+    auto mem = cpu::memory<int>(1);
+    cpu::heap<int> s{mem};
     ASSERT_EQ(s.size(), 0);
   }
   {
-    auto mem = std::make_unique<std::string[]>(1);
-    cpu::heap<std::string> s2{mem.get() + 1};
+    auto mem = cpu::memory<std::string>(1);
+    cpu::heap<std::string> s2{mem};
     ASSERT_EQ(s2.size(), 0);
   }
 }
 
 TEST(vm_x86_heap, alloc)
 {
-  auto mem = std::make_unique<int[]>(1);
-  cpu::heap<int> s{mem.get() + 1};
+  auto mem = cpu::memory<int>(1);
+  cpu::heap<int> s{mem};
   s.alloc(10);
 
   ASSERT_EQ(s.size(), 1);
@@ -99,8 +99,8 @@ TEST(vm_x86_heap, alloc)
 
 TEST(vm_x86_heap, loop)
 {
-  auto mem = std::make_unique<int[]>(4);
-  cpu::heap<int> s{mem.get() + 4};
+  auto mem = cpu::memory<int>(4);
+  cpu::heap<int> s{mem};
   s.alloc(10);
   s.alloc(11);
   s.alloc(12);

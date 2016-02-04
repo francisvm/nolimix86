@@ -12,10 +12,10 @@ namespace nolimix86
     }
 
     x86::x86()
-      : mem_{std::make_unique<word_t[]>(default_size)}
-      , stack_{mem_.get()}
-      , heap_{mem_.get() + default_size}
-      , mmu_{reinterpret_cast<typename mmu_t::host_address_t>(mem_.get())}
+      : mem_{default_size}
+      , stack_{mem_}
+      , heap_{mem_}
+      , mmu_{reinterpret_cast<typename mmu_t::host_address_t>(mem_.base())}
     {
       // Set the stack pointer
       regs_[reg_t::ESP] = mmu_.host_to_vm(mmu_.base_);
