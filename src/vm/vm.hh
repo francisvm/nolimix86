@@ -3,6 +3,10 @@
 #include <ast/default-visitor.hh>
 #include <vm/cpu.hh>
 
+#include <vector>
+
+#include <experimental/optional>
+
 namespace nolimix86
 {
 
@@ -17,6 +21,14 @@ namespace nolimix86
         using super_type::operator();
 
         using cpu_t = Cpu;
+        using instr_t = ast::basic_block::instr_t;
+        using queue_t = std::vector<instr_t*>;
+
+        // FIXME: Use std::optional when std::optional<T&> is implemented.
+        // Avoid adding boost::optional only for this use-case.
+        /// Return the next instruction to be executed.
+        /// Returns `nullptr` if there are no instructions left.
+        instr_t* fetch();
 
         void operator()(const ast::add&) override;
 
@@ -80,6 +92,7 @@ namespace nolimix86
 
       private:
         cpu_t cpu_;
+        queue_t fetch_queue_;
     };
 
     using x86 = vm<cpu::x86>;

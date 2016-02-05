@@ -49,8 +49,13 @@ int main(int argc, char const *argv[])
   if (eval)
   {
     nolimix86::vm::x86 vm;
-    for (const auto& block : blocks)
-      vm(block);
+    vm(*blocks.begin());
+
+    while (auto instr = vm.fetch())
+    {
+      vm(*instr);
+    }
+
     return 0;
   }
 

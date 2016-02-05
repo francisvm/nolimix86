@@ -5,12 +5,25 @@
 #include <x86/flags.hh>
 
 #include <limits>
+#include <algorithm>
 
 namespace nolimix86
 {
 
   namespace vm
   {
+
+    template <typename Cpu>
+    typename vm<Cpu>::instr_t*
+    vm<Cpu>::fetch()
+    {
+      if (fetch_queue_.size() == 0)
+        return nullptr;
+
+      auto instr = fetch_queue_.back();
+      fetch_queue_.pop_back();
+      return instr;
+    }
 
     template <typename Cpu>
     void
@@ -227,7 +240,12 @@ namespace nolimix86
     void
     vm<Cpu>::operator()(const ast::basic_block& e)
     {
-      super_type::operator()(e);
+      // Push the instructions in the fetch_queue_.
+      std::transform(e.begin(), e.end(), std::back_inserter(fetch_queue_),
+                     [](auto& instr)
+                     {
+                       return instr.get();
+                     });
     }
 
   } // namespace vm
