@@ -81,6 +81,12 @@ namespace nolimix86
       v(*this);
     }
 
+    bool
+    operator==(const basic_block& lhs, const basic_block& rhs)
+    {
+      return lhs.label_get() == rhs.label_get();
+    }
+
   } // namespace ast
 
 } // namespace nolimix86

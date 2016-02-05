@@ -55,6 +55,10 @@ namespace nolimix86
         instrs_t instructions_;
     };
 
+    /// Two basic blocks are equal if their labels are equal.
+    bool operator==(const basic_block&, const basic_block&);
+
   } // namespace ast
+
 
 } // namespace nolimix86
