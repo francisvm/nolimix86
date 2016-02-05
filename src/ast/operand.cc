@@ -215,7 +215,7 @@ namespace nolimix86
     const basic_block&
     operand::label_bb_get() const
     {
-      assert(is_mem() && "The operand must be a memory access.");
+      assert(is_label() && "The operand must be a memory access.");
       auto impl = static_cast<label_impl&>(*impl_);
       return impl.bb_;
     }
