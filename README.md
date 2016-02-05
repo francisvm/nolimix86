@@ -35,34 +35,34 @@ So this is actually a pseudo x86 assembly, `%t0`, `%t1`, etc. as a register.
 
 ### Instructions
 * `add`
-* `call`
+* `call` [not implemented yet]
 * `cmp`
-* `idiv`
+* `idiv` [not implemented yet]
 * `imul`
-* `ja`
-* `jae`
-* `jb`
-* `jbe`
-* `je`
-* `jg`
-* `jge`
-* `jl`
-* `jle`
-* `jmp`
-* `jne`
-* `js`
-* `lea`
-* `leave`
+* `ja` [not implemented yet]
+* `jae` [not implemented yet]
+* `jb` [not implemented yet]
+* `jbe` [not implemented yet]
+* `je` [not implemented yet]
+* `jg` [not implemented yet]
+* `jge` [not implemented yet]
+* `jl` [not implemented yet]
+* `jle` [not implemented yet]
+* `jmp` [not implemented yet]
+* `jne` [not implemented yet]
+* `js` [not implemented yet]
+* `lea` [not implemented yet]
+* `leave` [not implemented yet]
 * `mov`
-* `neg`
+* `neg` [not implemented yet]
 * `pop`
 * `push`
-* `ret`
-* `sal`
-* `sar`
-* `sete`
+* `ret` [not implemented yet]
+* `sal` [not implemented yet]
+* `sar` [not implemented yet]
+* `sete` [not implemented yet]
 * `sub`
-* `test`
+* `test` [not implemented yet]
 
 ### Registers
 * `eax`
