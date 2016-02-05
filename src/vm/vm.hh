@@ -23,6 +23,10 @@ namespace nolimix86
         using cpu_t = Cpu;
         using instr_t = ast::basic_block::instr_t;
         using queue_t = std::vector<instr_t*>;
+        using program_t = std::vector<ast::basic_block>;
+
+        /// Create a vm with the list of basic blocks.
+        vm(const program_t&);
 
         // FIXME: Use std::optional when std::optional<T&> is implemented.
         // Avoid adding boost::optional only for this use-case.
@@ -93,6 +97,10 @@ namespace nolimix86
       private:
         cpu_t cpu_;
         queue_t fetch_queue_;
+        const program_t& program_;
+
+        // Jump to the basic block.
+        void jump_to(const ast::basic_block&);
     };
 
     using x86 = vm<cpu::x86>;

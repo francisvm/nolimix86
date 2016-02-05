@@ -48,8 +48,11 @@ int main(int argc, char const *argv[])
 
   if (eval)
   {
-    nolimix86::vm::x86 vm;
-    vm(*blocks.begin());
+    nolimix86::vm::x86 vm{blocks};
+
+    // Add all the basic blocks to the fetch queue.
+    for (auto& block : blocks)
+      vm(block);
 
     while (auto instr = vm.fetch())
     {
