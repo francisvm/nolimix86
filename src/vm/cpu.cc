@@ -98,6 +98,18 @@ namespace nolimix86
       eflags_[flag] = value;
     }
 
+    bool
+    x86::is_flag_set(flag_t flag)
+    {
+      return eflags_[flag] != 0;
+    }
+
+    x86::word_t
+    x86::flag(flag_t fl)
+    {
+      return eflags_[fl];
+    }
+
     void
     x86::reset_flags()
     {

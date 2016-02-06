@@ -38,6 +38,12 @@ namespace nolimix86
       /// Set the value of a flag.
       void set_flag(flag_t, word_t);
 
+      /// Check if a flag is set.
+      bool is_flag_set(flag_t);
+
+      /// Get the value of a flag.
+      word_t flag(flag_t);
+
       /// Reset all the flags to 0.
       void reset_flags();
 
