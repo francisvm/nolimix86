@@ -68,17 +68,44 @@ namespace nolimix86
         instr_info.reset(target->createMCInstrInfo());
         assert(instr_info && "Unable to create target instr info!");
 
+        label_backend = target->createMCAsmBackend(*reg_info, triple_name, "");
+        assert(label_backend && "Undable to create label asm backend!");
+
+        label_emitter = target->createMCCodeEmitter(*instr_info, *reg_info,
+                                                  *ctx);
+        assert(label_emitter && "Undable to create label code emitter!");
+
+        // FIXME: Refactor.
+        // Setup the label streamer
+        // MCStreamer
+        label_streamer = std::make_unique<nolimix86::label_streamer>(
+          *ctx, *label_backend, out.os(), label_emitter);
+
+        // MCParser
+        label_parser.reset(llvm::createMCAsmParser(src_mgr, *ctx,
+                                                   *label_streamer, *asm_info));
+
+        label_subtarget_info.reset(target->createMCSubtargetInfo(triple_name,
+                                                           "", ""));
+        assert(label_subtarget_info
+               && "Unable to create label subtarget info!");
+
+        label_target_parser.reset(target->createMCAsmParser(
+          *label_subtarget_info, *label_parser, *instr_info, label_options));
+        assert(label_target_parser && "Unable to create label target parser!");
+        label_parser->setTargetParser(*label_target_parser);
+
+        // Setup the program streamer
+
         backend = target->createMCAsmBackend(*reg_info, triple_name, "");
         assert(backend && "Undable to create asm backend!");
 
         emitter = target->createMCCodeEmitter(*instr_info, *reg_info,
                                                   *ctx);
         assert(emitter && "Undable to create code emitter!");
-
         // MCStreamer
-        streamer = std::make_unique<nolimix86::streamer>(*ctx, *backend,
-                                                        out.os(),
-                                                        emitter);
+        streamer = std::make_unique<nolimix86::streamer>(
+          label_streamer->program_, *ctx, *backend, out.os(), emitter);
 
         // MCParser
         parser.reset(llvm::createMCAsmParser(src_mgr, *ctx, *streamer,
@@ -97,6 +124,9 @@ namespace nolimix86
       bool
       operator()()
       {
+        if (label_parser->Run(true))
+          return true;
+
         return parser->Run(true);
       }
 
@@ -109,6 +139,17 @@ namespace nolimix86
       llvm::MCObjectFileInfo ofile_info;
       std::unique_ptr<llvm::MCContext> ctx;
       std::unique_ptr<const llvm::MCInstrInfo> instr_info;
+
+      // Label streamer
+      llvm::MCAsmBackend* label_backend; // Not owned.
+      llvm::MCCodeEmitter* label_emitter; // Not owned.
+      std::unique_ptr<nolimix86::label_streamer> label_streamer;
+      std::unique_ptr<llvm::MCAsmParser> label_parser;
+      std::unique_ptr<const llvm::MCSubtargetInfo> label_subtarget_info;
+      llvm::MCTargetOptions label_options;
+      std::unique_ptr<llvm::MCTargetAsmParser> label_target_parser;
+
+      // Streamer
       llvm::MCAsmBackend* backend; // Not owned.
       llvm::MCCodeEmitter* emitter; // Not owned.
       std::unique_ptr<nolimix86::streamer> streamer;

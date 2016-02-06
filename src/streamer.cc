@@ -279,19 +279,67 @@ namespace nolimix86
 
   }
 
-  streamer::streamer(llvm::MCContext& Context, llvm::MCAsmBackend& TAB,
-                     llvm::raw_pwrite_stream& OS, llvm::MCCodeEmitter* Emitter)
-    : llvm::MCELFStreamer(Context, TAB, OS, Emitter)
+  label_streamer::label_streamer(llvm::MCContext& context,
+                                 llvm::MCAsmBackend& tab,
+                                 llvm::raw_pwrite_stream& os,
+                                 llvm::MCCodeEmitter* emitter)
+    : llvm::MCELFStreamer(context, tab, os, emitter)
   {
     program_.emplace_back("start");
   }
 
   void
+  label_streamer::EmitLabel(llvm::MCSymbol* symbol)
+  {
+    const auto& name = symbol->getName();
+
+    // FIXME: Detect section symbols.
+    if (name != ".text")
+      program_.emplace_back(symbol->getName().str());
+  }
+
+  void
+  label_streamer::EmitInstruction(const llvm::MCInst&,
+                                  const llvm::MCSubtargetInfo&)
+  {
+    // Do nothing. Override this function to forbid the ELFStreamer to decode
+    // the instruction.
+  }
+
+  bool
+  label_streamer::EmitSymbolAttribute(llvm::MCSymbol*, llvm::MCSymbolAttr)
+  {
+    // FIXME: Why?
+    return true;
+  }
+
+  streamer::streamer(std::vector<ast::basic_block>& program,
+                     llvm::MCContext& context, llvm::MCAsmBackend& tab,
+                     llvm::raw_pwrite_stream& os, llvm::MCCodeEmitter* emitter)
+    : llvm::MCELFStreamer(context, tab, os, emitter)
+    , program_{program}
+    , current_block_{nullptr}
+  {
+  }
+
+  void
   streamer::EmitLabel(llvm::MCSymbol* symbol)
   {
-    // section labels are not registered. FIXME: Why?
-    if (!symbol->isRegistered())
-      program_.emplace_back(symbol->getName().str());
+    const auto& name = symbol->getName();
+
+    // FIXME: Detect section symbols.
+    if (name == ".text")
+      return;
+
+    // Retrieve the basic block.
+    auto it = std::find_if(program_.begin(), program_.end(), [&](const auto& bb)
+                           {
+                             return bb.label_get() == name;
+                           });
+    assert(it != program_.end() && "Label wasn't processed before");
+
+    // Save the current basic block.
+    current_block_ = &*it;
   }
 
   void
@@ -304,7 +352,10 @@ namespace nolimix86
     if (instr->size() > 0)
       emit_instr_operands(*instr, inst, program_);
 
-    program_.back().push_back(std::move(instr));
+    if (current_block_)
+      current_block_->push_back(std::move(instr));
+    else // If there is no current basic block, it has to be the first.
+      program_[0].push_back(std::move(instr));
   }
 
   bool
