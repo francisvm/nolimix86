@@ -27,6 +27,14 @@ namespace nolimix86
 
       // Set the stack pointer to the base of the stack.
       regs_[reg_t::ESP] = mmu_.host_to_vm(mmu_.base_);
+
+      // Reset all the flags.
+      eflags_[flag_t::CF] = 0;
+      eflags_[flag_t::OF] = 0;
+      eflags_[flag_t::SF] = 0;
+      eflags_[flag_t::ZF] = 0;
+      eflags_[flag_t::AF] = 0;
+      eflags_[flag_t::PF] = 0;
     }
 
     typename x86::word_t
