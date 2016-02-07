@@ -22,6 +22,7 @@ TEST_DIRS = [
                                          "jnc", "ja", "jnbe", "jge", "jnl",
                                          "jle", "jng", "jg", "jngle", "jnp",
                                          "jmp"]),
+        ("cpu", 0, "-Y", True, False, []),
         ]
 
 def print_good(string):
