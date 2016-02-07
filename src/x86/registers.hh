@@ -25,6 +25,8 @@ namespace nolimix86
       EBP = 20
     };
 
+    constexpr auto max_valid_reg = 246U;
+
     // Use operator""s for strings.
     using namespace std::string_literals;
 
@@ -58,6 +60,15 @@ namespace nolimix86
       if (it != reg_map.end())
         return it->second;
 
+      if (reg_name[0] == 't')
+      {
+        auto pp_reg_name = std::string{std::next(reg_name.begin()),
+                                       reg_name.end()};
+        auto reg_no = std::stoi(pp_reg_name);
+
+        return static_cast<enum reg>(max_valid_reg + reg_no);
+      }
+
       return UNKNOWN;
     }
 
@@ -69,10 +80,14 @@ namespace nolimix86
       if (it != rev_reg_map.end())
         return it->second;
 
+      if (static_cast<decltype(max_valid_reg)>(reg) >= max_valid_reg)
+      {
+        auto temp = reg - max_valid_reg;
+        return "t"s + std::to_string(temp);
+      }
+
       return "";
     }
-
-    constexpr auto max_valid_reg = 246U;
 
   } // namespace x86
 

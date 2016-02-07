@@ -17,6 +17,7 @@ namespace nolimix86
 
     struct x86
     {
+      using stream_t = llvm::raw_ostream;
       using word_t = uint32_t;
       using reg_t = ast::operand::reg_t;
       using flag_t = ::nolimix86::x86::flag;
@@ -25,6 +26,7 @@ namespace nolimix86
       using stack_t = cpu::stack<word_t>;
       using heap_t = cpu::heap<word_t>;
       static constexpr auto word_size = sizeof (word_t);
+      static constexpr auto name = "x86";
 
       /// Create an x86 virtual machine.
       x86();
@@ -52,7 +54,7 @@ namespace nolimix86
       void pop(const ast::operand&);
 
       /// Dump the current state of the CPU.
-      void dump_state() const;
+      void dump_state(stream_t& os = llvm::outs()) const;
 
       std::unordered_map<reg_t, word_t> regs_;
       std::unordered_map<flag_t, word_t> eflags_;

@@ -35,6 +35,13 @@ namespace nolimix86
     }
 
     template <typename Cpu>
+    const typename vm<Cpu>::cpu_t&
+    vm<Cpu>::cpu_get() const
+    {
+      return cpu_;
+    }
+
+    template <typename Cpu>
     void
     vm<Cpu>::operator()(const ast::add& e)
     {

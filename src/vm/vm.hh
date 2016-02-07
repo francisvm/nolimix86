@@ -34,6 +34,9 @@ namespace nolimix86
         /// Returns `nullptr` if there are no instructions left.
         instr_t* fetch();
 
+        /// Get the vm's cpu.
+        const cpu_t& cpu_get() const;
+
         void operator()(const ast::add&) override;
 
         void operator()(const ast::call&) override;

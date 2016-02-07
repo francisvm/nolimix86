@@ -18,7 +18,28 @@ static llvm::cl::opt<bool>
 dump_ast("A", llvm::cl::desc("Dump the ast on stdout"), llvm::cl::init(false));
 
 static llvm::cl::opt<bool>
+dump_state("Y", llvm::cl::desc("Dump cpu's state at the end of the program"),
+           llvm::cl::init(false));
+
+static llvm::cl::opt<bool>
 eval("e", llvm::cl::desc("Evaluate the parsed ast"), llvm::cl::init(false));
+
+namespace
+{
+  void
+  vm_run(nolimix86::vm::x86& vm,
+       const std::vector<nolimix86::ast::basic_block>& blocks)
+  {
+    // Add all the basic blocks to the fetch queue.
+    for (auto& block : blocks)
+      vm(block);
+
+    while (auto instr = vm.fetch())
+    {
+      vm(*instr);
+    }
+  }
+}
 
 int main(int argc, char const *argv[])
 {
@@ -49,17 +70,16 @@ int main(int argc, char const *argv[])
   if (eval)
   {
     nolimix86::vm::x86 vm{blocks};
+    vm_run(vm, blocks);
+  }
 
-    // Add all the basic blocks to the fetch queue.
-    for (auto& block : blocks)
-      vm(block);
+  if (dump_state)
+  {
+    nolimix86::vm::x86 vm{blocks};
+    vm_run(vm, blocks);
 
-    while (auto instr = vm.fetch())
-    {
-      vm(*instr);
-    }
-
-    return 0;
+    const auto& cpu = vm.cpu_get();
+    cpu.dump_state();
   }
 
   return 0;

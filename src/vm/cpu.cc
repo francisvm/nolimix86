@@ -1,4 +1,5 @@
 #include <vm/cpu.hh>
+#include <x86/yaml.hh>
 
 namespace nolimix86
 {
@@ -149,24 +150,12 @@ namespace nolimix86
     }
 
     void
-    x86::dump_state() const
+    x86::dump_state(stream_t& os) const
     {
-      llvm::outs() << "=============================\n"
-                      "Stack:\t\tindex\tvalue\n";
+      llvm::yaml::Output yout{os};
 
-      for (auto it = stack_.begin(); it != stack_.end(); ++it)
-      {
-        const auto& elt = *it;
-        auto i = std::distance(stack_.begin(), it);
-        llvm::outs() << "\t\t" << i << "\t" << elt << '\n';
-      }
-
-      llvm::outs() << "-----------------------------\n"
-                      "Registers:\tid\tvalue\n";
-
-      for (const auto& reg_pair: regs_)
-        llvm::outs() << "\t\t" << reg_pair.first
-                   << "\t" << reg_pair.second << '\n';
+      // Needed for the llvm::yaml interface. Won't actually modify anything.
+      yout << const_cast<x86&>(*this);
     }
 
   } // namespace cpu

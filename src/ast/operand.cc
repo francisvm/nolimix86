@@ -152,8 +152,7 @@ namespace nolimix86
     operand::reg_t
     operand::temp_reg_get() const
     {
-      return static_cast<operand::reg_t>(temp_get()
-                                                  + x86::max_valid_reg);
+      return static_cast<operand::reg_t>(temp_get());
     }
 
     bool
