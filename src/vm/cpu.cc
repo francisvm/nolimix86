@@ -17,7 +17,15 @@ namespace nolimix86
       , heap_{mem_}
       , mmu_{reinterpret_cast<typename mmu_t::host_address_t>(mem_.base())}
     {
-      // Set the stack pointer
+      // Reset all the registers.
+      regs_[reg_t::EAX] = 0;
+      regs_[reg_t::EBX] = 0;
+      regs_[reg_t::ECX] = 0;
+      regs_[reg_t::EDI] = 0;
+      regs_[reg_t::ESI] = 0;
+      regs_[reg_t::EBP] = 0;
+
+      // Set the stack pointer to the base of the stack.
       regs_[reg_t::ESP] = mmu_.host_to_vm(mmu_.base_);
     }
 
