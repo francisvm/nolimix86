@@ -18,7 +18,8 @@ TEST(ast_node, basic_block_filled)
 {
   ast::basic_block bb{"l0"};
   bb.push_back(
-    std::make_unique<ast::add>(ast::operand(10), ast::operand("eax")));
+    std::make_unique<ast::add>(ast::operand(10),
+                               ast::operand("eax", ast::operand::reg_tag{})));
   bb.push_back(std::make_unique<ast::jmp>(
     ast::make_operand<ast::operand::label_tag>(bb)));
   EXPECT_EQ(bb.size(), 2);
@@ -97,7 +98,9 @@ TEST(default_visitor, visit_instructions)
 
   ast::basic_block bb{"l0"};
   bb.push_back(std::make_unique<ast::mov>(ast::operand(10), ast::operand(11)));
-  bb.push_back(std::make_unique<ast::mov>(ast::operand("eax"), ast::operand("ebx")));
+  bb.push_back(std::make_unique<ast::mov>(
+      ast::operand("eax", ast::operand::reg_tag{}),
+      ast::operand("ebx", ast::operand::reg_tag{})));
   op_visitor visitor;
   EXPECT_EQ(visitor.i, 0);
   visitor(bb);
@@ -107,7 +110,8 @@ TEST(default_visitor, visit_instructions)
 TEST(instr, construction)
 {
   ast::instr<10, 1> unary{ast::operand(10)};
-  ast::instr<16, 2> binary{ast::operand(10), ast::operand("eax")};
+  ast::instr<16, 2> binary{ast::operand(10),
+                           ast::operand("eax", ast::operand::reg_tag{})};
   ast::instr<24, 0> nop;
   EXPECT_EQ(unary.opcode_get(), 10);
   EXPECT_EQ(binary.opcode_get(), 16);

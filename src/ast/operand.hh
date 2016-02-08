@@ -25,6 +25,7 @@ namespace nolimix86
         struct imm_tag {};
         struct mem_tag {};
         struct label_tag {};
+        struct symbol_tag {};
 
         enum class type
         {
@@ -33,6 +34,7 @@ namespace nolimix86
           IMM,
           MEM,
           LABEL,
+          SYMBOL,
           UNKNOWN
         };
 
@@ -60,6 +62,9 @@ namespace nolimix86
         /// Create an operand represented by an assembly label.
         operand(const basic_block&, label_tag = {});
 
+        /// Create an operand represented by a symbol
+        operand(std::string, symbol_tag = {});
+
         type type_get() const;
 
         /// Temp accessors.
@@ -83,6 +88,10 @@ namespace nolimix86
         /// Label accessors.
         bool is_label() const;
         const basic_block& label_bb_get() const;
+
+        /// Symbol accessors.
+        bool is_symbol() const;
+        const std::string& symbol_get() const;
 
         /// Print the operand.
         void dump(llvm::raw_ostream&) const;
@@ -155,6 +164,17 @@ namespace nolimix86
           label_impl(const basic_block&);
           void dump(llvm::raw_ostream&) const override;
         };
+
+        /// Implementation of the operand as a symbol
+        struct symbol_impl : public impl
+        {
+          /// The symbol's name.
+          std::string name_;
+
+          symbol_impl(std::string);
+          void dump(llvm::raw_ostream&) const override;
+        };
+
     };
 
     template <typename Tag, typename... Args>

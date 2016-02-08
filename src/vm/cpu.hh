@@ -58,6 +58,7 @@ namespace nolimix86
 
       std::unordered_map<reg_t, word_t> regs_;
       std::unordered_map<flag_t, word_t> eflags_;
+      std::unordered_map<std::string, word_t> globals_;
       memory_t mem_;
       stack_t stack_;
       heap_t heap_;

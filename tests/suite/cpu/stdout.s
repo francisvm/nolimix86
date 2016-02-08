@@ -1,0 +1,2 @@
+  .text
+movl stdout, %ebx

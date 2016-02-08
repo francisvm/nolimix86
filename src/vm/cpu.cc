@@ -36,6 +36,11 @@ namespace nolimix86
       eflags_[flag_t::ZF] = 0;
       eflags_[flag_t::AF] = 0;
       eflags_[flag_t::PF] = 0;
+
+      // Set the globals.
+      globals_["stdin"] = 1;
+      globals_["stdout"] = 2;
+      globals_["stderr"] = 3;
     }
 
     typename x86::word_t
@@ -71,6 +76,10 @@ namespace nolimix86
         assert(!"Not implemented yet.");
         //const auto& bb = op.label_bb_get();
       }
+      else if (op.is_symbol())
+      {
+        return globals_[op.symbol_get()];
+      }
       else
       {
         assert(!"Not implemented yet.");
@@ -82,6 +91,7 @@ namespace nolimix86
     {
       assert(!op.is_imm() && "Can't set the value of an immediate.");
       assert(!op.is_label() && "Can't set the value of a label.");
+      assert(!op.is_symbol() && "Can't set the value of a label.");
 
       if (op.is_temp())
       {

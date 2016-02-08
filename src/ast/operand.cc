@@ -49,6 +49,13 @@ namespace nolimix86
     {
     }
 
+    operand::operand(std::string name, symbol_tag)
+      : impl_{std::make_unique<symbol_impl>(std::move(name))}
+      , type_{type::SYMBOL}
+    {
+    }
+
+
     void
     operand::accept(const_visitor& v) const
     {
@@ -127,6 +134,17 @@ namespace nolimix86
     operand::label_impl::dump(llvm::raw_ostream& ostream) const
     {
       ostream << bb_.label_get();
+    }
+
+    operand::symbol_impl::symbol_impl(std::string name)
+      : name_{std::move(name)}
+    {
+    }
+
+    void
+    operand::symbol_impl::dump(llvm::raw_ostream& ostream) const
+    {
+      ostream << name_;
     }
 
     operand::type
@@ -217,6 +235,20 @@ namespace nolimix86
       assert(is_label() && "The operand must be a memory access.");
       auto impl = static_cast<label_impl&>(*impl_);
       return impl.bb_;
+    }
+
+    bool
+    operand::is_symbol() const
+    {
+      return type_ == type::SYMBOL;
+    }
+
+    const std::string&
+    operand::symbol_get() const
+    {
+      assert(is_symbol() && "The operand must be a symbol.");
+      auto& impl = static_cast<symbol_impl&>(*impl_);
+      return impl.name_;
     }
 
     void

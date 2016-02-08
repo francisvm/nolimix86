@@ -26,6 +26,10 @@ namespace nolimix86
       else if (op.isImm())
         return ast::make_operand<ast::operand::imm_tag>(
           static_cast<size_t>(op.getImm()));
+      else if (op.isExpr())
+        return ast::make_operand<ast::operand::symbol_tag>(
+          static_cast<const llvm::MCSymbolRefExpr*>(op.getExpr())->getSymbol()
+            .getName().str());
       else
         assert(!"Unknown operand.");
     }
@@ -111,10 +115,25 @@ namespace nolimix86
       void
       emit_special_mr(Instr& e)
       {
-        // [dst][reg][?][?][offset][?]
-        size_t offset = inst_.getOperand(4).getImm();
-        auto reg = static_cast<enum x86::reg>(inst_.getOperand(1).getReg());
-        e.set_operand(0, emit_operand(offset, reg));
+        // [dst][reg][?][?][offset/symbol][?]
+        if (!inst_.getOperand(4).isExpr())
+        {
+          size_t offset = inst_.getOperand(4).getImm();
+          auto reg = static_cast<enum x86::reg>(inst_.getOperand(1).getReg());
+          e.set_operand(0, emit_operand(offset, reg));
+        }
+        else
+          e.set_operand(0, emit_operand(inst_.getOperand(4)));
+
+        e.set_operand(1, emit_operand(inst_.getOperand(0)));
+      }
+
+      template <typename Instr>
+      void
+      emit_special_sr(Instr& e)
+      {
+        // [dst][?][?][?][symbol][?]
+        e.set_operand(0, emit_operand(inst_.getOperand(4)));
         e.set_operand(1, emit_operand(inst_.getOperand(0)));
       }
 
