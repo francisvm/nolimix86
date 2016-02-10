@@ -18,6 +18,9 @@ namespace nolimix86
     struct x86
     {
       using stream_t = llvm::raw_ostream;
+      // Not actually a x86 word, since a x86 word is 16bits.
+      // Weird, huh? Let's keep the word_t as it is, since it can be useful
+      // if any other architectures may be implemented.
       using word_t = uint32_t;
       using reg_t = ast::operand::reg_t;
       using flag_t = ::nolimix86::x86::flag;
