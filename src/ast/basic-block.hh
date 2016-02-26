@@ -20,7 +20,9 @@ namespace nolimix86
         using instr_ptr_t = std::unique_ptr<instr_t>;
         using instrs_t = std::vector<instr_ptr_t>;
         using instr_iterator = typename instrs_t::iterator;
+        using instr_reverse_iterator = typename instrs_t::reverse_iterator;
         using instr_const_iterator = typename instrs_t::const_iterator;
+        using instr_const_reverse_iterator = typename instrs_t::const_reverse_iterator;
 
         /// Defaults for forward declaration of instr_base.
         basic_block(std::string);
@@ -34,6 +36,11 @@ namespace nolimix86
         instr_const_iterator begin() const;
         instr_iterator end();
         instr_const_iterator end() const;
+
+        instr_reverse_iterator rbegin();
+        instr_const_reverse_iterator rbegin() const;
+        instr_reverse_iterator rend();
+        instr_const_reverse_iterator rend() const;
 
         /// Number of instructions.
         size_t size() const;

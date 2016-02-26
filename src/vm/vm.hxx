@@ -295,7 +295,7 @@ namespace nolimix86
     vm<Cpu>::operator()(const ast::basic_block& e)
     {
       // Push the instructions in the fetch_queue_.
-      std::transform(e.begin(), e.end(), std::back_inserter(fetch_queue_),
+      std::transform(e.rbegin(), e.rend(), std::back_inserter(fetch_queue_),
                      [](auto& instr)
                      {
                        return instr.get();

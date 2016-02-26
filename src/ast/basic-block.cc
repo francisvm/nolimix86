@@ -2,6 +2,7 @@
 #include <ast/instr-base.hh>
 
 namespace nolimix86
+
 {
 
   namespace ast
@@ -37,6 +38,30 @@ namespace nolimix86
     basic_block::end() const
     {
       return instructions_.cend();
+    }
+
+    typename basic_block::instr_reverse_iterator
+    basic_block::rbegin()
+    {
+      return instructions_.rbegin();
+    }
+
+    typename basic_block::instr_const_reverse_iterator
+    basic_block::rbegin() const
+    {
+      return instructions_.crbegin();
+    }
+
+    typename basic_block::instr_reverse_iterator
+    basic_block::rend()
+    {
+      return instructions_.rend();
+    }
+
+    typename basic_block::instr_const_reverse_iterator
+    basic_block::rend() const
+    {
+      return instructions_.crend();
     }
 
     size_t
