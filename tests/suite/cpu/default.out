@@ -1,0 +1,31 @@
+---
+cpu:             x86
+registers:       
+  - name:            ebp
+    value:           0
+  - name:            esi
+    value:           0
+  - name:            esp
+    value:           0
+  - name:            eax
+    value:           0
+  - name:            ebx
+    value:           0
+  - name:            ecx
+    value:           0
+  - name:            edi
+    value:           0
+flags:           
+  - name:            pf
+    value:           0
+  - name:            af
+    value:           0
+  - name:            cf
+    value:           0
+  - name:            of
+    value:           0
+  - name:            sf
+    value:           0
+  - name:            zf
+    value:           0
+...
