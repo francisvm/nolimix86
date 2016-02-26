@@ -213,6 +213,17 @@ namespace nolimix86
     void
     vm<Cpu>::operator()(const ast::leave&)
     {
+      {
+        auto ebp = ast::make_operand<ast::operand::reg_tag>("ebp");
+        auto pop = ast::pop{std::move(ebp)};
+        (*this)(pop);
+      }
+      {
+        auto ebp = ast::make_operand<ast::operand::reg_tag>("ebp");
+        auto esp = ast::make_operand<ast::operand::reg_tag>("esp");
+        auto mov = ast::mov{std::move(ebp), std::move(esp)};
+        (*this)(mov);
+      }
     }
 
     template <typename Cpu>

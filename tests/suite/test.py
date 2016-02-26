@@ -21,7 +21,7 @@ TEST_DIRS = [
                                          "jns", "jne", "jnz", "jnb", "jae",
                                          "jnc", "ja", "jnbe", "jge", "jnl",
                                          "jle", "jng", "jg", "jngle", "jnp",
-                                         "jmp"]),
+                                         "jmp", "leave"]),
         ("cpu", 0, "-Y", True, False, []),
         ]
 

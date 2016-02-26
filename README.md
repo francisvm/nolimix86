@@ -52,7 +52,7 @@ So this is actually a pseudo x86 assembly, `%t0`, `%t1`, etc. as a register.
 * `jne` [not implemented yet]
 * `js` [not implemented yet]
 * `lea` [not implemented yet]
-* `leave` [not implemented yet]
+* `leave`
 * `mov`
 * `neg` [not implemented yet]
 * `pop`
