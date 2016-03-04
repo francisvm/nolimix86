@@ -2,6 +2,7 @@
 
 #include <ast/ast.hh>
 #include <ast/fwd.hh>
+#include <ast/program.hh>
 #include <ast/visitor.hh>
 #include <x86/x86.hh>
 
@@ -42,6 +43,7 @@ namespace nolimix86
         using temp_t = uint32_t;
         using reg_t = enum x86::reg;
         using imm_t = size_t;
+        using label_t = std::pair<program::label_t, program::const_iterator>;
         operand() = default;
 
         /// Create an operand represented by a temporary.
@@ -60,7 +62,7 @@ namespace nolimix86
         operand(imm_t, reg_t, mem_tag = {});
 
         /// Create an operand represented by an assembly label.
-        operand(const basic_block&, label_tag = {});
+        operand(label_t, label_tag = {});
 
         /// Create an operand represented by a symbol
         operand(std::string, symbol_tag = {});
@@ -87,7 +89,8 @@ namespace nolimix86
 
         /// Label accessors.
         bool is_label() const;
-        const basic_block& label_bb_get() const;
+        const label_t& label_bb_get() const;
+	void update_label_it(program::const_iterator);
 
         /// Symbol accessors.
         bool is_symbol() const;
@@ -158,10 +161,10 @@ namespace nolimix86
         /// Implementation of the operand as an assembly label.
         struct label_impl : public impl
         {
-          /// The label with the basic block.
-          const basic_block& bb_;
+          /// The label and the first instruction.
+          label_t label_;
 
-          label_impl(const basic_block&);
+          label_impl(label_t);
           void dump(llvm::raw_ostream&) const override;
         };
 

@@ -1,3 +1,2 @@
   .text
-start:
 test %t0, %t0

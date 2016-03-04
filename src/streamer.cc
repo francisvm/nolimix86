@@ -7,7 +7,6 @@
 #include <llvm/MC/MCSymbol.h>
 
 #include <cassert>
-#include <vector>
 
 namespace nolimix86
 {
@@ -36,23 +35,17 @@ namespace nolimix86
 
     ast::operand
     emit_operand(const llvm::MCOperand& op,
-                 const std::vector<ast::basic_block>& program)
+                 const ast::program& program)
     {
       if (op.isExpr() && op.getExpr()->getKind() == llvm::MCExpr::SymbolRef)
       {
         const auto operand_expr
           = static_cast<const llvm::MCSymbolRefExpr*>(op.getExpr());
         const auto& label_symbol = operand_expr->getSymbol().getName().str();
-        auto bb = std::find_if(program.begin(), program.end(),
-                               [&](const auto& elt)
-                               {
-                                 return label_symbol == elt.label_get();
-                               });
+        auto it = program.label(label_symbol);
 
-        assert(bb != program.end()
-               && "The label is not referring to any known symbol");
-
-        return ast::make_operand<ast::operand::label_tag>(*bb);
+        return ast::make_operand<ast::operand::label_tag>(
+            std::make_pair(label_symbol, it));
       }
       else
         assert(!"Unknown operand.");
@@ -90,12 +83,15 @@ namespace nolimix86
       using super_type::operator();
 
       const llvm::MCInst& inst_;
-      const std::vector<ast::basic_block>& program_;
+      const ast::program& program_;
+      std::vector<ast::operand*>& relocs_;
 
       instr_operand_emitter(const llvm::MCInst& inst,
-                            const std::vector<ast::basic_block>& program)
+                            const ast::program& program,
+                            std::vector<ast::operand*>& relocs)
         : inst_{inst}
         , program_{program}
+        , relocs_{relocs}
       {}
 
       // Special case for lea. The destination doesn't appear twice.
@@ -146,6 +142,11 @@ namespace nolimix86
                == llvm::MCExpr::SymbolRef);
 
         e.set_operand(0, emit_operand(inst_.getOperand(0), program_));
+
+        // If the label is missing, ask for a relocation later.
+        auto& operand = e.oper();
+        if (operand.label_bb_get().second == program_.end())
+          relocs_.push_back(&operand);
       }
 
       // Special case for mov-mr with no size specifier.
@@ -290,54 +291,18 @@ namespace nolimix86
 
     void
     emit_instr_operands(ast::instr_base& instr, const llvm::MCInst& inst,
-                        const std::vector<ast::basic_block>& program)
+                        const ast::program& program,
+                        std::vector<ast::operand*>& relocs)
     {
-      instr_operand_emitter emitter{inst, program};
+      instr_operand_emitter emitter{inst, program, relocs};
       emitter(instr);
     }
 
   }
 
-  label_streamer::label_streamer(llvm::MCContext& context,
-                                 llvm::MCAsmBackend& tab,
-                                 llvm::raw_pwrite_stream& os,
-                                 llvm::MCCodeEmitter* emitter)
-    : llvm::MCELFStreamer(context, tab, os, emitter)
-  {
-    program_.emplace_back("start");
-  }
-
-  void
-  label_streamer::EmitLabel(llvm::MCSymbol* symbol)
-  {
-    const auto& name = symbol->getName();
-
-    // FIXME: Detect section symbols.
-    if (name != ".text")
-      program_.emplace_back(symbol->getName().str());
-  }
-
-  void
-  label_streamer::EmitInstruction(const llvm::MCInst&,
-                                  const llvm::MCSubtargetInfo&)
-  {
-    // Do nothing. Override this function to forbid the ELFStreamer to decode
-    // the instruction.
-  }
-
-  bool
-  label_streamer::EmitSymbolAttribute(llvm::MCSymbol*, llvm::MCSymbolAttr)
-  {
-    // FIXME: Why?
-    return true;
-  }
-
-  streamer::streamer(std::vector<ast::basic_block>& program,
-                     llvm::MCContext& context, llvm::MCAsmBackend& tab,
+  streamer::streamer(llvm::MCContext& context, llvm::MCAsmBackend& tab,
                      llvm::raw_pwrite_stream& os, llvm::MCCodeEmitter* emitter)
     : llvm::MCELFStreamer(context, tab, os, emitter)
-    , program_{program}
-    , current_block_{nullptr}
   {
   }
 
@@ -350,15 +315,7 @@ namespace nolimix86
     if (name == ".text")
       return;
 
-    // Retrieve the basic block.
-    auto it = std::find_if(program_.begin(), program_.end(), [&](const auto& bb)
-                           {
-                             return bb.label_get() == name;
-                           });
-    assert(it != program_.end() && "Label wasn't processed before");
-
-    // Save the current basic block.
-    current_block_ = &*it;
+    labels_[ic_] = name;
   }
 
   void
@@ -369,19 +326,16 @@ namespace nolimix86
     auto instr = ast::make_x86_instruction(opcode);
 
     if (instr->size() > 0)
-      emit_instr_operands(*instr, inst, program_);
+      emit_instr_operands(*instr, inst, program_, relocs_);
 
-    if (current_block_)
-      current_block_->push_back(std::move(instr));
-    else // If there is no current basic block, it has to be the first.
-      program_[0].push_back(std::move(instr));
+    program_.push_back(std::move(instr));
+    ++ic_;
   }
 
   bool
-  streamer::EmitSymbolAttribute(llvm::MCSymbol* symbol,
-                                llvm::MCSymbolAttr)
+  streamer::EmitSymbolAttribute(llvm::MCSymbol*, llvm::MCSymbolAttr)
   {
-    llvm::outs() << symbol->getName() << ": (attribute)\n";
+    // FIXME: Why?
     return true;
   }
 

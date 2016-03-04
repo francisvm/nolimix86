@@ -89,7 +89,7 @@ namespace nolimix86
 
         void operator()(const_t<test>&) override;
 
-        void operator()(const_t<basic_block>&) override;
+        void operator()(const_t<program>&) override;
     };
 
     /// Const visitor: does not alter the AST.

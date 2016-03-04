@@ -1,6 +1,7 @@
 #include <asm-parser.hh>
 #include <streamer.hh>
-#include <ast/basic-block.hh>
+#include <ast/program.hh>
+#include <ast/operand.hh>
 
 #include <llvm/ADT/Triple.h>
 #include <llvm/MC/MCAsmBackend.h>
@@ -25,6 +26,23 @@ namespace nolimix86
 
   namespace
   {
+
+    void
+    binder(const nolimix86::streamer::labels_t& labels,
+         nolimix86::ast::program& program, std::vector<ast::operand*>& relocs)
+    {
+      for (const auto& label : labels)
+        program.set_label(label.second,
+                          std::next(program.begin(), label.first));
+      for (auto reloc : relocs)
+      {
+        assert(reloc->is_label());
+        auto new_it = program.label(reloc->label_bb_get().first);
+        assert(new_it != program.end());
+        reloc->update_label_it(new_it);
+      }
+    }
+
     struct llvm_parser
     {
       llvm_parser(llvm::SourceMgr& src_mgr)
@@ -68,33 +86,6 @@ namespace nolimix86
         instr_info.reset(target->createMCInstrInfo());
         assert(instr_info && "Unable to create target instr info!");
 
-        label_backend = target->createMCAsmBackend(*reg_info, triple_name, "");
-        assert(label_backend && "Undable to create label asm backend!");
-
-        label_emitter = target->createMCCodeEmitter(*instr_info, *reg_info,
-                                                  *ctx);
-        assert(label_emitter && "Undable to create label code emitter!");
-
-        // FIXME: Refactor.
-        // Setup the label streamer
-        // MCStreamer
-        label_streamer = std::make_unique<nolimix86::label_streamer>(
-          *ctx, *label_backend, out.os(), label_emitter);
-
-        // MCParser
-        label_parser.reset(llvm::createMCAsmParser(src_mgr, *ctx,
-                                                   *label_streamer, *asm_info));
-
-        label_subtarget_info.reset(target->createMCSubtargetInfo(triple_name,
-                                                           "", ""));
-        assert(label_subtarget_info
-               && "Unable to create label subtarget info!");
-
-        label_target_parser.reset(target->createMCAsmParser(
-          *label_subtarget_info, *label_parser, *instr_info, label_options));
-        assert(label_target_parser && "Unable to create label target parser!");
-        label_parser->setTargetParser(*label_target_parser);
-
         // Setup the program streamer
 
         backend = target->createMCAsmBackend(*reg_info, triple_name, "");
@@ -104,8 +95,8 @@ namespace nolimix86
                                                   *ctx);
         assert(emitter && "Undable to create code emitter!");
         // MCStreamer
-        streamer = std::make_unique<nolimix86::streamer>(
-          label_streamer->program_, *ctx, *backend, out.os(), emitter);
+        streamer = std::make_unique<nolimix86::streamer>(*ctx, *backend,
+                                                         out.os(), emitter);
 
         // MCParser
         parser.reset(llvm::createMCAsmParser(src_mgr, *ctx, *streamer,
@@ -124,10 +115,10 @@ namespace nolimix86
       bool
       operator()()
       {
-        if (label_parser->Run(true))
+        if (parser->Run(true))
           return true;
-
-        return parser->Run(true);
+        binder(streamer->labels_, streamer->program_, streamer->relocs_);
+        return false;
       }
 
       std::error_code ec;
@@ -139,15 +130,6 @@ namespace nolimix86
       llvm::MCObjectFileInfo ofile_info;
       std::unique_ptr<llvm::MCContext> ctx;
       std::unique_ptr<const llvm::MCInstrInfo> instr_info;
-
-      // Label streamer
-      llvm::MCAsmBackend* label_backend; // Not owned.
-      llvm::MCCodeEmitter* label_emitter; // Not owned.
-      std::unique_ptr<nolimix86::label_streamer> label_streamer;
-      std::unique_ptr<llvm::MCAsmParser> label_parser;
-      std::unique_ptr<const llvm::MCSubtargetInfo> label_subtarget_info;
-      llvm::MCTargetOptions label_options;
-      std::unique_ptr<llvm::MCTargetAsmParser> label_target_parser;
 
       // Streamer
       llvm::MCAsmBackend* backend; // Not owned.
@@ -185,7 +167,7 @@ namespace nolimix86
     return impl_->parser();
   }
 
-  std::vector<ast::basic_block>
+  ast::program
   asm_parser::program_release()
   {
     return std::move(impl_->parser.streamer->program_);

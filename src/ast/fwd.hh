@@ -78,7 +78,7 @@ namespace nolimix86
 
     class test;
 
-    class basic_block;
+    class program;
 
   } // namespace ast
 

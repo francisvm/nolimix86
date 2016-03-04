@@ -18,6 +18,8 @@ namespace nolimix86
 
         ~pretty_printer();
 
+        void operator()(const program&) override;
+
         void operator()(const operand&) override;
 
         void operator()(const add&) override;
@@ -77,8 +79,6 @@ namespace nolimix86
         void operator()(const sub&) override;
 
         void operator()(const test&) override;
-
-        void operator()(const basic_block&) override;
 
       private:
         llvm::raw_ostream& ostream_;

@@ -1,3 +1,2 @@
   .text
-start:
 cmp %t0, 0x0(%eax)

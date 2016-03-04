@@ -1,3 +1,2 @@
   .text
-start:
 lea 0x0(%eax), %eax

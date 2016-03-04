@@ -21,18 +21,8 @@ namespace nolimix86
         using super_type::operator();
 
         using cpu_t = Cpu;
-        using instr_t = ast::basic_block::instr_t;
-        using queue_t = std::vector<instr_t*>;
-        using program_t = std::vector<ast::basic_block>;
-
-        /// Create a vm with the list of basic blocks.
-        vm(const program_t&);
-
-        // FIXME: Use std::optional when std::optional<T&> is implemented.
-        // Avoid adding boost::optional only for this use-case.
-        /// Return the next instruction to be executed.
-        /// Returns `nullptr` if there are no instructions left.
-        instr_t* fetch();
+        using program_t = ast::program;
+        using ip_t = program_t::const_iterator;
 
         /// Get the vm's cpu.
         const cpu_t& cpu_get() const;
@@ -95,15 +85,14 @@ namespace nolimix86
 
         void operator()(const ast::test&) override;
 
-        void operator()(const ast::basic_block&) override;
+        void operator()(const ast::program&) override;
 
       private:
         cpu_t cpu_;
-        queue_t fetch_queue_;
-        const program_t& program_;
+        ip_t eip_;
 
-        // Jump to the basic block.
-        void jump_to(const ast::basic_block&);
+        // Jump to a label
+        void jump_to(const ast::operand::label_t&);
     };
 
     using x86 = vm<cpu::x86>;

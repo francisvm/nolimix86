@@ -14,27 +14,6 @@ namespace nolimix86
   {
 
     template <typename Cpu>
-    vm<Cpu>::vm(const program_t& program)
-      : cpu_{}
-      , fetch_queue_{}
-      , program_(program)
-    {
-
-    }
-
-    template <typename Cpu>
-    typename vm<Cpu>::instr_t*
-    vm<Cpu>::fetch()
-    {
-      if (fetch_queue_.size() == 0)
-        return nullptr;
-
-      auto instr = fetch_queue_.back();
-      fetch_queue_.pop_back();
-      return instr;
-    }
-
-    template <typename Cpu>
     const typename vm<Cpu>::cpu_t&
     vm<Cpu>::cpu_get() const
     {
@@ -292,33 +271,21 @@ namespace nolimix86
 
     template <typename Cpu>
     void
-    vm<Cpu>::operator()(const ast::basic_block& e)
+    vm<Cpu>::operator()(const ast::program& e)
     {
-      // Push the instructions in the fetch_queue_.
-      std::transform(e.rbegin(), e.rend(), std::back_inserter(fetch_queue_),
-                     [](auto& instr)
-                     {
-                       return instr.get();
-                     });
+      eip_ = e.begin();
+      while (eip_ != e.end())
+      {
+        (*this)(**eip_);
+        ++eip_;
+      }
     }
 
     template <typename Cpu>
     void
-    vm<Cpu>::jump_to(const ast::basic_block& e)
+    vm<Cpu>::jump_to(const ast::operand::label_t& e)
     {
-      // Clear the fetch queue.
-      fetch_queue_.clear();
-
-      // Find the basic block in the program.
-      auto it = std::find(program_.begin(), program_.end(), e);
-      assert(it != program_.end());
-
-      // For all the next basic blocks in the program, add their instructions
-      // to the fetch queue.
-      std::for_each(it, program_.end(), [this](const auto& bb)
-                                        {
-                                          (*this)(bb);
-                                        });
+      eip_ = e.second;
     }
 
   } // namespace vm

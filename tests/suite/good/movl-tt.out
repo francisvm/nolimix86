@@ -1,3 +1,2 @@
   .text
-start:
 mov %t0, %t0

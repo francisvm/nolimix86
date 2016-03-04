@@ -1,3 +1,2 @@
   .text
-start:
 push %t0

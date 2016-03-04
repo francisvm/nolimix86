@@ -32,7 +32,7 @@ namespace nolimix86
 
     template <template <typename> class Const, typename Func>
     void
-    apply_visitor_impl<Const, Func>::operator()(const_t<basic_block>& e)
+    apply_visitor_impl<Const, Func>::operator()(const_t<program>& e)
     {
       for (auto& instr : e)
         instr->accept(*this);

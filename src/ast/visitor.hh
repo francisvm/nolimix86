@@ -88,7 +88,7 @@ namespace nolimix86
 
         virtual void operator()(const_t<test>&) = 0;
 
-        virtual void operator()(const_t<basic_block>&) = 0;
+        virtual void operator()(const_t<program>&) = 0;
     };
 
     /// Const visitor: does not alter the AST.

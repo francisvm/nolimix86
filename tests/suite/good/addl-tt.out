@@ -1,3 +1,2 @@
   .text
-start:
 add %t0, %t0

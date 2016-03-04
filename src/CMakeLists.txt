@@ -7,8 +7,8 @@ set(libnolimix86_src
   ast/ast.cc
   ast/instr-base.cc
   ast/operand.cc
-  ast/basic-block.cc
   ast/pretty-printer.cc
+  ast/program.cc
 
   # VM
   vm/cpu.cc

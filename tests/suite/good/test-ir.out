@@ -1,3 +1,2 @@
   .text
-start:
 test $0, %eax

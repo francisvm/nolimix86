@@ -1,3 +1,2 @@
   .text
-start:
 mov %eax, %eax

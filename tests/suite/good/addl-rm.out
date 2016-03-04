@@ -1,3 +1,2 @@
   .text
-start:
 add %eax, 0x0(%eax)

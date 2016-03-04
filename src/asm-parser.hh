@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ast/basic-block.hh>
+#include <ast/program.hh>
 
 #include <llvm/Support/MemoryBuffer.h>
 #include <llvm/Support/SourceMgr.h>
@@ -21,7 +21,7 @@ namespace nolimix86
       bool parse();
 
       /// Release the ownership of the parsed program.
-      std::vector<ast::basic_block> program_release();
+      ast::program program_release();
 
     private:
       llvm::SourceMgr src_mgr_;

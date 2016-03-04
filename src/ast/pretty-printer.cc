@@ -37,16 +37,26 @@ namespace nolimix86
     }
 
     void
-    pretty_printer::operator()(const operand& e)
+    pretty_printer::operator()(const program& e)
     {
-      e.dump(ostream_);
+      for (auto it = e.begin(); it != e.end(); ++it)
+      {
+        auto res = std::find_if(e.labels_get().begin(), e.labels_get().end(),
+                                [it]
+                                (const auto& pair)
+                                {
+                                  return it == pair.second;
+                                });
+        if (res != e.labels_get().end())
+          ostream_ << res->first << ":\n";
+        (*this)(**it);
+      }
     }
 
     void
-    pretty_printer::operator()(const basic_block& e)
+    pretty_printer::operator()(const operand& e)
     {
-      ostream_ << e.label_get() << ":\n";
-      super_type::operator()(e);
+      e.dump(ostream_);
     }
 
     print_instr(add)

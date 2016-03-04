@@ -1,3 +1,2 @@
   .text
-start:
 idiv 0x0(%eax)

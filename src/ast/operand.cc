@@ -1,5 +1,4 @@
 #include <ast/operand.hh>
-#include <ast/basic-block.hh>
 
 namespace nolimix86
 {
@@ -43,8 +42,8 @@ namespace nolimix86
     {
     }
 
-    operand::operand(const basic_block& bb, label_tag)
-      : impl_{std::make_unique<label_impl>(std::move(bb))}
+    operand::operand(label_t l, label_tag)
+      : impl_{std::make_unique<label_impl>(std::move(l))}
       , type_{type::LABEL}
     {
     }
@@ -125,15 +124,15 @@ namespace nolimix86
       ostream.write_hex(offset_) << '(' << '%' << x86::reg_convert(reg_) << ')';
     }
 
-    operand::label_impl::label_impl(const basic_block& bb)
-      : bb_{bb}
+    operand::label_impl::label_impl(label_t l)
+      : label_{std::move(l)}
     {
     }
 
     void
     operand::label_impl::dump(llvm::raw_ostream& ostream) const
     {
-      ostream << bb_.label_get();
+      ostream << label_.first;
     }
 
     operand::symbol_impl::symbol_impl(std::string name)
@@ -229,12 +228,20 @@ namespace nolimix86
       return type_ == type::LABEL;
     }
 
-    const basic_block&
+    const operand::label_t&
     operand::label_bb_get() const
     {
-      assert(is_label() && "The operand must be a memory access.");
-      auto impl = static_cast<label_impl&>(*impl_);
-      return impl.bb_;
+      assert(is_label() && "The operand must be a label.");
+      auto& impl = static_cast<label_impl&>(*impl_);
+      return impl.label_;
+    }
+
+    void
+    operand::update_label_it(program::const_iterator it)
+    {
+      assert(is_label() && "The operand must be a label.");
+      auto& impl = static_cast<label_impl&>(*impl_);
+      impl.label_.second = it;
     }
 
     bool

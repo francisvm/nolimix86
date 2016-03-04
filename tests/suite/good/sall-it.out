@@ -1,3 +1,2 @@
   .text
-start:
 sal $0, %t0

@@ -24,23 +24,6 @@ dump_state("Y", llvm::cl::desc("Dump cpu's state at the end of the program"),
 static llvm::cl::opt<bool>
 eval("e", llvm::cl::desc("Evaluate the parsed ast"), llvm::cl::init(false));
 
-namespace
-{
-  void
-  vm_run(nolimix86::vm::x86& vm,
-       const std::vector<nolimix86::ast::basic_block>& blocks)
-  {
-    // Add all the basic blocks to the fetch queue.
-    for (auto& block : blocks)
-      vm(block);
-
-    while (auto instr = vm.fetch())
-    {
-      vm(*instr);
-    }
-  }
-}
-
 int main(int argc, char const *argv[])
 {
   llvm::cl::ParseCommandLineOptions(argc, argv, "nolimix86\n");
@@ -57,26 +40,25 @@ int main(int argc, char const *argv[])
   if (parser.parse())
     return 1;
 
-  auto blocks = parser.program_release();
+  auto the_program = parser.program_release();
 
   if (dump_ast)
   {
     nolimix86::ast::pretty_printer printer;
-    for (const auto& block : blocks)
-      printer(block);
+    printer(the_program);
     return 0;
   }
 
   if (eval)
   {
-    nolimix86::vm::x86 vm{blocks};
-    vm_run(vm, blocks);
+    nolimix86::vm::x86 vm;
+    vm(the_program);
   }
 
   if (dump_state)
   {
-    nolimix86::vm::x86 vm{blocks};
-    vm_run(vm, blocks);
+    nolimix86::vm::x86 vm;
+    vm(the_program);
 
     const auto& cpu = vm.cpu_get();
     cpu.dump_state();

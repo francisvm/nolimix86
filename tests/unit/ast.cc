@@ -7,50 +7,52 @@
 
 namespace ast = nolimix86::ast;
 
-TEST(ast_node, basic_block)
+TEST(ast_node, program)
 {
-  ast::basic_block bb{"l0"};
-  EXPECT_EQ(bb.size(), 0);
-  EXPECT_EQ(std::distance(bb.begin(), bb.end()), 0);
+  ast::program p;
+  EXPECT_EQ(p.size(), 0);
+  EXPECT_EQ(std::distance(p.begin(), p.end()), 0);
 }
 
-TEST(ast_node, basic_block_filled)
+TEST(ast_node, program_filled)
 {
-  ast::basic_block bb{"l0"};
-  bb.push_back(
+  ast::program p;
+  p.set_label("l0", p.begin());
+  p.push_back(
     std::make_unique<ast::add>(ast::operand(10),
                                ast::operand("eax", ast::operand::reg_tag{})));
-  bb.push_back(std::make_unique<ast::jmp>(
-    ast::make_operand<ast::operand::label_tag>(bb)));
-  EXPECT_EQ(bb.size(), 2);
-  EXPECT_EQ(std::distance(bb.begin(), bb.end()), 2);
+  p.push_back(
+      std::make_unique<ast::jmp>(ast::make_operand<ast::operand::label_tag>(
+          std::make_pair("l0", p.begin()))));
+  EXPECT_EQ(p.size(), 2);
+  EXPECT_EQ(std::distance(p.begin(), p.end()), 2);
 }
 
-TEST(ast_node, visit_basic_block)
+TEST(ast_node, visit_program)
 {
-  struct bb_visitor : public ast::const_default_visitor
+  struct program_visitor : public ast::const_default_visitor
   {
     using super_type = ast::const_default_visitor;
     using super_type::operator();
 
     int i = 0;
     void
-    operator()(const ast::basic_block&) override
+    operator()(const ast::program&) override
     {
       ++i;
     }
   };
 
-  ast::basic_block bb{"l0"};
-  bb_visitor visitor;
+  ast::program p;
+  program_visitor visitor;
   EXPECT_EQ(visitor.i, 0);
-  visitor(bb);
+  visitor(p);
   EXPECT_EQ(visitor.i, 1);
 }
 
-TEST(ast_node, default_visit_basic_block)
+TEST(ast_node, default_visit_program)
 {
-  struct bb_visitor : public ast::const_default_visitor
+  struct program_visitor : public ast::const_default_visitor
   {
     using super_type = ast::const_default_visitor;
     using super_type::operator();
@@ -63,11 +65,11 @@ TEST(ast_node, default_visit_basic_block)
     }
   };
 
-  ast::basic_block bb{"l0"};
-  bb.push_back(std::make_unique<ast::mov>(ast::operand(10), ast::operand(11)));
-  bb_visitor visitor;
+  ast::program p;
+  p.push_back(std::make_unique<ast::mov>(ast::operand(10), ast::operand(11)));
+  program_visitor visitor;
   EXPECT_EQ(visitor.i, 0);
-  visitor(bb);
+  visitor(p);
   EXPECT_EQ(visitor.i, 1);
 }
 
@@ -96,14 +98,14 @@ TEST(default_visitor, visit_instructions)
     }
   };
 
-  ast::basic_block bb{"l0"};
-  bb.push_back(std::make_unique<ast::mov>(ast::operand(10), ast::operand(11)));
-  bb.push_back(std::make_unique<ast::mov>(
+  ast::program p;
+  p.push_back(std::make_unique<ast::mov>(ast::operand(10), ast::operand(11)));
+  p.push_back(std::make_unique<ast::mov>(
       ast::operand("eax", ast::operand::reg_tag{}),
       ast::operand("ebx", ast::operand::reg_tag{})));
   op_visitor visitor;
   EXPECT_EQ(visitor.i, 0);
-  visitor(bb);
+  visitor(p);
   EXPECT_EQ(visitor.i, 4);
 }
 
@@ -128,8 +130,8 @@ TEST(operand, construction)
   auto imm = ast::make_operand<ast::operand::imm_tag>(0x0UL);
   auto mem = ast::make_operand<ast::operand::mem_tag>(0UL, "eax");
 
-  ast::basic_block bb{"l0"};
-  auto label = ast::make_operand<ast::operand::label_tag>(bb);
+  ast::program p;
+  auto label = ast::make_operand<ast::operand::label_tag>(std::make_pair("nop", p.end()));
 
   EXPECT_EQ(temp.type_get(), ast::operand::type::TEMP);
   EXPECT_EQ(reg.type_get(), ast::operand::type::REG);
