@@ -285,7 +285,8 @@ namespace nolimix86
     void
     vm<Cpu>::jump_to(const ast::operand::label_t& e)
     {
-      eip_ = e.second;
+      // Jump to the previous instruction, since eip is going to advance.
+      eip_ = std::prev(e.second);
     }
 
   } // namespace vm
