@@ -89,7 +89,7 @@ namespace nolimix86
     {
       if (!cpu_.is_flag_set(Cpu::flag_t::CF)
           && !cpu_.is_flag_set(Cpu::flag_t::ZF))
-        jump_to(e.oper().label_bb_get());
+        jump_to(e.oper().label_get());
     }
 
     template <typename Cpu>
@@ -97,7 +97,7 @@ namespace nolimix86
     vm<Cpu>::operator()(const ast::jae& e)
     {
       if (!cpu_.is_flag_set(Cpu::flag_t::CF))
-        jump_to(e.oper().label_bb_get());
+        jump_to(e.oper().label_get());
     }
 
     template <typename Cpu>
@@ -105,7 +105,7 @@ namespace nolimix86
     vm<Cpu>::operator()(const ast::jb& e)
     {
       if (cpu_.is_flag_set(Cpu::flag_t::CF))
-        jump_to(e.oper().label_bb_get());
+        jump_to(e.oper().label_get());
     }
 
     template <typename Cpu>
@@ -114,7 +114,7 @@ namespace nolimix86
     {
       if (cpu_.is_flag_set(Cpu::flag_t::CF)
           || cpu_.is_flag_set(Cpu::flag_t::ZF))
-        jump_to(e.oper().label_bb_get());
+        jump_to(e.oper().label_get());
     }
 
     template <typename Cpu>
@@ -122,7 +122,7 @@ namespace nolimix86
     vm<Cpu>::operator()(const ast::je& e)
     {
       if (cpu_.is_flag_set(Cpu::flag_t::ZF))
-        jump_to(e.oper().label_bb_get());
+        jump_to(e.oper().label_get());
     }
 
     template <typename Cpu>
@@ -131,7 +131,7 @@ namespace nolimix86
     {
       if (!cpu_.is_flag_set(Cpu::flag_t::ZF)
           && cpu_.flag(Cpu::flag_t::SF) == cpu_.flag(Cpu::flag_t::OF))
-        jump_to(e.oper().label_bb_get());
+        jump_to(e.oper().label_get());
     }
 
     template <typename Cpu>
@@ -139,7 +139,7 @@ namespace nolimix86
     vm<Cpu>::operator()(const ast::jge& e)
     {
       if (cpu_.flag(Cpu::flag_t::SF) == cpu_.flag(Cpu::flag_t::OF))
-        jump_to(e.oper().label_bb_get());
+        jump_to(e.oper().label_get());
     }
 
     template <typename Cpu>
@@ -147,7 +147,7 @@ namespace nolimix86
     vm<Cpu>::operator()(const ast::jl& e)
     {
       if (cpu_.flag(Cpu::flag_t::SF) != cpu_.flag(Cpu::flag_t::OF))
-        jump_to(e.oper().label_bb_get());
+        jump_to(e.oper().label_get());
     }
 
     template <typename Cpu>
@@ -156,14 +156,14 @@ namespace nolimix86
     {
       if (cpu_.is_flag_set(Cpu::flag_t::ZF)
           && cpu_.flag(Cpu::flag_t::SF) != cpu_.flag(Cpu::flag_t::OF))
-        jump_to(e.oper().label_bb_get());
+        jump_to(e.oper().label_get());
     }
 
     template <typename Cpu>
     void
     vm<Cpu>::operator()(const ast::jmp& e)
     {
-      jump_to(e.oper().label_bb_get());
+      jump_to(e.oper().label_get());
     }
 
     template <typename Cpu>
@@ -171,7 +171,7 @@ namespace nolimix86
     vm<Cpu>::operator()(const ast::jne& e)
     {
       if (!cpu_.is_flag_set(Cpu::flag_t::ZF))
-        jump_to(e.oper().label_bb_get());
+        jump_to(e.oper().label_get());
     }
 
     template <typename Cpu>
@@ -179,7 +179,7 @@ namespace nolimix86
     vm<Cpu>::operator()(const ast::js& e)
     {
       if (cpu_.is_flag_set(Cpu::flag_t::SF))
-        jump_to(e.oper().label_bb_get());
+        jump_to(e.oper().label_get());
     }
 
     template <typename Cpu>

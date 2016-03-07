@@ -229,7 +229,7 @@ namespace nolimix86
     }
 
     const operand::label_t&
-    operand::label_bb_get() const
+    operand::label_get() const
     {
       assert(is_label() && "The operand must be a label.");
       auto& impl = static_cast<label_impl&>(*impl_);
@@ -237,7 +237,7 @@ namespace nolimix86
     }
 
     void
-    operand::update_label_it(program::const_iterator it)
+    operand::update_label(program::const_iterator it)
     {
       assert(is_label() && "The operand must be a label.");
       auto& impl = static_cast<label_impl&>(*impl_);

@@ -145,7 +145,7 @@ namespace nolimix86
 
         // If the label is missing, ask for a relocation later.
         auto& operand = e.oper();
-        if (operand.label_bb_get().second == program_.end())
+        if (operand.label_get().second == program_.end())
           relocs_.push_back(&operand);
       }
 

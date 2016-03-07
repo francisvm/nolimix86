@@ -89,8 +89,8 @@ namespace nolimix86
 
         /// Label accessors.
         bool is_label() const;
-        const label_t& label_bb_get() const;
-	void update_label_it(program::const_iterator);
+        const label_t& label_get() const;
+	void update_label(program::const_iterator);
 
         /// Symbol accessors.
         bool is_symbol() const;

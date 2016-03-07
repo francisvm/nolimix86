@@ -37,9 +37,9 @@ namespace nolimix86
       for (auto reloc : relocs)
       {
         assert(reloc->is_label());
-        auto new_it = program.label(reloc->label_bb_get().first);
+        auto new_it = program.label(reloc->label_get().first);
         assert(new_it != program.end());
-        reloc->update_label_it(new_it);
+        reloc->update_label(new_it);
       }
     }
 

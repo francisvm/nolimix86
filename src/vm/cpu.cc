@@ -74,7 +74,6 @@ namespace nolimix86
       else if (op.is_label())
       {
         assert(!"Not implemented yet.");
-        //const auto& bb = op.label_bb_get();
       }
       else if (op.is_symbol())
       {
