@@ -1,5 +1,5 @@
-#include <asm-parser.hh>
-#include <streamer.hh>
+#include <parser/asm-parser.hh>
+#include <parser/streamer.hh>
 #include <ast/program.hh>
 #include <ast/operand.hh>
 

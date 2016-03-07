@@ -1,7 +1,7 @@
 set(libnolimix86_src
   # Parser
-  asm-parser.cc
-  streamer.cc
+  parser/asm-parser.cc
+  parser/streamer.cc
 
   # AST
   ast/ast.cc
