@@ -4,6 +4,7 @@ import subprocess
 import os
 import sys
 import re
+import yaml
 
 GREEN = '\033[92m'
 RED = '\033[91m'
@@ -13,16 +14,38 @@ ENDC = '\033[0m'
 FNULL = open(os.devnull, 'w')
 FILE_REGEX = re.compile(".*\.s")
 
+def default_comparator(content, expected):
+    return content == expected
+
+def yaml_comparator(content, expected):
+    yc = yaml.load(content)
+    ye = yaml.load(expected)
+    if len(yc) != len(ye):
+        return False
+    if set(yc.keys()) != set(ye.keys()):
+        return False
+
+    for k, v in yc.items():
+        if isinstance(v, list):
+            cs = sorted(v, key=lambda dic: dic["name"])
+            es = sorted(ye[k], key=lambda dic: dic["name"])
+            if cs != es:
+                return False
+        else:
+            if v != ye[k]:
+                return False
+    return True
+
 # (test_category_name, expected_return_code, flags, check_stdout, check_stderr)
 TEST_DIRS = [
-        ("good", 0, "", False, False, []),
-        ("good", 0, "-A", True, False, []),
+        ("good", 0, "", False, False, [], default_comparator),
+        ("good", 0, "-A", True, False, [], default_comparator),
         ("good", 0, "-e", False, False, ["pop-m", "pop-r", "pop-t", "jno",
                                          "jns", "jne", "jnz", "jnb", "jae",
                                          "jnc", "ja", "jnbe", "jge", "jnl",
                                          "jle", "jng", "jg", "jngle", "jnp",
-                                         "jmp", "leave"]),
-        ("cpu", 0, "-Y", True, False, []),
+                                         "jmp", "leave"], default_comparator),
+        ("cpu", 0, "-Y", True, False, [], yaml_comparator),
         ]
 
 def print_good(string):
@@ -58,7 +81,8 @@ class test:
         if os.path.exists(ret_path):
             self.expected_ret = read_file(ret_path)
 
-    def run(self, flags, check_out = False, check_err = False):
+    def run(self, flags, check_out = False, check_err = False,
+                  comparator = default_comparator):
         sub = None
         if flags != "":
             sub = subprocess.Popen(["./bin/nolimix86", flags,
@@ -73,7 +97,7 @@ class test:
                                    universal_newlines=True)
             sub.wait()
 
-        out_ko = check_out and self.expected_out and self.expected_out != pstdout
+        out_ko = check_out and self.expected_out and not(comparator(self.expected_out, pstdout))
         err_ko = check_err and self.expected_err and self.expected_err != pstderr
         ret_ko = self.expected_ret and self.expected_ret != sub.returncode
 
@@ -85,7 +109,7 @@ class suite:
         self.passed = 0
 
     def call_on_dir(self, test_dir, expected_ret, flag, check_out, check_err,
-                    ignore):
+                    ignore, comparator):
         for file_name in sorted(filter(FILE_REGEX.match, os.listdir(test_dir))):
             # Normalize the names.
             test_name = os.path.splitext(file_name)[0]
@@ -94,8 +118,8 @@ class suite:
 
             # Create and run the test.
             new_test = test(test_name, file_name, test_dir)
-            (out_ko, err_ko, ret_ko, ret) = new_test.run(flag,
-                                                         check_out, check_err)
+            (out_ko, err_ko, ret_ko, ret) = new_test.run(flag, check_out,
+                                                         check_err, comparator)
             # Output results.
             if out_ko:
                 print_fail("{0}\t-- OUT".format(test_name))
@@ -129,7 +153,7 @@ if __name__ == '__main__':
                 .format(test_dir[0], test_dir[2], test_dir[1]))
         tests.call_on_dir(tests_dir + test_dir[0] + "/",
                           test_dir[1], test_dir[2], test_dir[3], test_dir[4],
-                          test_dir[5])
+                          test_dir[5], test_dir[6])
 
     print("Tests: " + BOLD + " "
           + str(tests.passed) + " / " + str(tests.passed + tests.failed) + ENDC)
