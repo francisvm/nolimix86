@@ -55,6 +55,7 @@ namespace nolimix86
       /// Actions on the stack.
       void push(const ast::operand&);
       void pop(const ast::operand&);
+      void pop();
 
       /// Dump the current state of the CPU.
       void dump_state(stream_t& os = llvm::outs()) const;

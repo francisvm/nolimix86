@@ -154,6 +154,12 @@ namespace nolimix86
     x86::pop(const ast::operand& op)
     {
       set_value(op, stack_.back());
+      pop();
+    }
+
+    void
+    x86::pop()
+    {
       stack_.pop();
       regs_[reg_t::ESP] -= word_size;
     }

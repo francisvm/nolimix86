@@ -44,7 +44,9 @@ TEST_DIRS = [
                                          "jns", "jne", "jnz", "jnb", "jae",
                                          "jnc", "ja", "jnbe", "jge", "jnl",
                                          "jle", "jng", "jg", "jngle", "jnp",
-                                         "jmp", "leave"], default_comparator),
+                                         "jmp", "leave", "call", "ret",
+                                         "ret-i"],
+                                         default_comparator),
         ("cpu", 0, "-Y", True, False, [], yaml_comparator),
         ]
 

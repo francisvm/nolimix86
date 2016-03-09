@@ -51,13 +51,13 @@ int main(int argc, char const *argv[])
 
   if (eval)
   {
-    nolimix86::vm::x86 vm;
+    nolimix86::vm::x86 vm{the_program};
     vm(the_program);
   }
 
   if (dump_state)
   {
-    nolimix86::vm::x86 vm;
+    nolimix86::vm::x86 vm{the_program};
     vm(the_program);
 
     const auto& cpu = vm.cpu_get();

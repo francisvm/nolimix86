@@ -14,6 +14,12 @@ namespace nolimix86
   {
 
     template <typename Cpu>
+    vm<Cpu>::vm(const typename vm<Cpu>::program_t& program)
+      : program_{program}
+    {
+    }
+
+    template <typename Cpu>
     const typename vm<Cpu>::cpu_t&
     vm<Cpu>::cpu_get() const
     {
@@ -29,8 +35,14 @@ namespace nolimix86
 
     template <typename Cpu>
     void
-    vm<Cpu>::operator()(const ast::call&)
+    vm<Cpu>::operator()(const ast::call& e)
     {
+      assert(e.oper().is_label());
+      ast::operand::imm_t distance = std::distance(program_.begin(),
+                                                   std::next(eip_));
+      cpu_.push(ast::make_operand<ast::operand::imm_tag>(distance));
+
+      jump_to(e.oper().label_get().second);
     }
 
     template <typename Cpu>
@@ -89,7 +101,7 @@ namespace nolimix86
     {
       if (!cpu_.is_flag_set(Cpu::flag_t::CF)
           && !cpu_.is_flag_set(Cpu::flag_t::ZF))
-        jump_to(e.oper().label_get());
+        jump_to(e.oper().label_get().second);
     }
 
     template <typename Cpu>
@@ -97,7 +109,7 @@ namespace nolimix86
     vm<Cpu>::operator()(const ast::jae& e)
     {
       if (!cpu_.is_flag_set(Cpu::flag_t::CF))
-        jump_to(e.oper().label_get());
+        jump_to(e.oper().label_get().second);
     }
 
     template <typename Cpu>
@@ -105,7 +117,7 @@ namespace nolimix86
     vm<Cpu>::operator()(const ast::jb& e)
     {
       if (cpu_.is_flag_set(Cpu::flag_t::CF))
-        jump_to(e.oper().label_get());
+        jump_to(e.oper().label_get().second);
     }
 
     template <typename Cpu>
@@ -114,7 +126,7 @@ namespace nolimix86
     {
       if (cpu_.is_flag_set(Cpu::flag_t::CF)
           || cpu_.is_flag_set(Cpu::flag_t::ZF))
-        jump_to(e.oper().label_get());
+        jump_to(e.oper().label_get().second);
     }
 
     template <typename Cpu>
@@ -122,7 +134,7 @@ namespace nolimix86
     vm<Cpu>::operator()(const ast::je& e)
     {
       if (cpu_.is_flag_set(Cpu::flag_t::ZF))
-        jump_to(e.oper().label_get());
+        jump_to(e.oper().label_get().second);
     }
 
     template <typename Cpu>
@@ -131,7 +143,7 @@ namespace nolimix86
     {
       if (!cpu_.is_flag_set(Cpu::flag_t::ZF)
           && cpu_.flag(Cpu::flag_t::SF) == cpu_.flag(Cpu::flag_t::OF))
-        jump_to(e.oper().label_get());
+        jump_to(e.oper().label_get().second);
     }
 
     template <typename Cpu>
@@ -139,7 +151,7 @@ namespace nolimix86
     vm<Cpu>::operator()(const ast::jge& e)
     {
       if (cpu_.flag(Cpu::flag_t::SF) == cpu_.flag(Cpu::flag_t::OF))
-        jump_to(e.oper().label_get());
+        jump_to(e.oper().label_get().second);
     }
 
     template <typename Cpu>
@@ -147,7 +159,7 @@ namespace nolimix86
     vm<Cpu>::operator()(const ast::jl& e)
     {
       if (cpu_.flag(Cpu::flag_t::SF) != cpu_.flag(Cpu::flag_t::OF))
-        jump_to(e.oper().label_get());
+        jump_to(e.oper().label_get().second);
     }
 
     template <typename Cpu>
@@ -156,14 +168,14 @@ namespace nolimix86
     {
       if (cpu_.is_flag_set(Cpu::flag_t::ZF)
           && cpu_.flag(Cpu::flag_t::SF) != cpu_.flag(Cpu::flag_t::OF))
-        jump_to(e.oper().label_get());
+        jump_to(e.oper().label_get().second);
     }
 
     template <typename Cpu>
     void
     vm<Cpu>::operator()(const ast::jmp& e)
     {
-      jump_to(e.oper().label_get());
+      jump_to(e.oper().label_get().second);
     }
 
     template <typename Cpu>
@@ -171,7 +183,7 @@ namespace nolimix86
     vm<Cpu>::operator()(const ast::jne& e)
     {
       if (!cpu_.is_flag_set(Cpu::flag_t::ZF))
-        jump_to(e.oper().label_get());
+        jump_to(e.oper().label_get().second);
     }
 
     template <typename Cpu>
@@ -179,7 +191,7 @@ namespace nolimix86
     vm<Cpu>::operator()(const ast::js& e)
     {
       if (cpu_.is_flag_set(Cpu::flag_t::SF))
-        jump_to(e.oper().label_get());
+        jump_to(e.oper().label_get().second);
     }
 
     template <typename Cpu>
@@ -236,6 +248,10 @@ namespace nolimix86
     void
     vm<Cpu>::operator()(const ast::ret&)
     {
+      auto distance = cpu_.stack_.back();
+      auto it = std::next(program_.begin(), distance);
+      cpu_.pop();
+      jump_to(it);
     }
 
     template <typename Cpu>
@@ -283,10 +299,10 @@ namespace nolimix86
 
     template <typename Cpu>
     void
-    vm<Cpu>::jump_to(const ast::operand::label_t& e)
+    vm<Cpu>::jump_to(ast::program::const_iterator it)
     {
       // Jump to the previous instruction, since eip is going to advance.
-      eip_ = std::prev(e.second);
+      eip_ = std::prev(it);
     }
 
   } // namespace vm

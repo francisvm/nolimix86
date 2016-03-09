@@ -24,6 +24,8 @@ namespace nolimix86
         using program_t = ast::program;
         using ip_t = program_t::const_iterator;
 
+        vm(const program_t&);
+
         /// Get the vm's cpu.
         const cpu_t& cpu_get() const;
 
@@ -90,9 +92,10 @@ namespace nolimix86
       private:
         cpu_t cpu_;
         ip_t eip_;
+        const program_t& program_;
 
         // Jump to a label
-        void jump_to(const ast::operand::label_t&);
+        void jump_to(ast::program::const_iterator);
     };
 
     using x86 = vm<cpu::x86>;
