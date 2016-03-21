@@ -86,6 +86,7 @@ namespace nolimix86
     void
     vm<Cpu>::operator()(const ast::idiv&)
     {
+      // FIXME: Handle instruction.
     }
 
     template <typename Cpu>
@@ -198,6 +199,7 @@ namespace nolimix86
     void
     vm<Cpu>::operator()(const ast::lea&)
     {
+      // FIXME: Handle instruction.
     }
 
     template <typename Cpu>
@@ -228,6 +230,7 @@ namespace nolimix86
     void
     vm<Cpu>::operator()(const ast::neg&)
     {
+      // FIXME: Handle instruction.
     }
 
     template <typename Cpu>
@@ -258,18 +261,21 @@ namespace nolimix86
     void
     vm<Cpu>::operator()(const ast::sal&)
     {
+      // FIXME: Handle instruction.
     }
 
     template <typename Cpu>
     void
     vm<Cpu>::operator()(const ast::sar&)
     {
+      // FIXME: Handle instruction.
     }
 
     template <typename Cpu>
     void
     vm<Cpu>::operator()(const ast::sete&)
     {
+      // FIXME: Handle instruction.
     }
 
     template <typename Cpu>
@@ -283,6 +289,7 @@ namespace nolimix86
     void
     vm<Cpu>::operator()(const ast::test&)
     {
+      // FIXME: Handle instruction.
     }
 
     template <typename Cpu>
