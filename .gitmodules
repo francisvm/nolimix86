@@ -1,9 +1,9 @@
 [submodule "llvm"]
 	path = llvm
-	url = git@github.com:thegameg/llvm.git
+	url = https://github.com/thegameg/llvm.git
 	branch = fvm/nolimix86
 	ignore = dirty
 [submodule "tests/unit/googletest"]
 	path = tests/unit/googletest
-	url = git@github.com:google/googletest
+	url = https://github.com/google/googletest.git
 	ignore = dirty
