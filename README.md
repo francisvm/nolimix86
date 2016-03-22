@@ -1,4 +1,4 @@
-# nolimix86 [![Build Status](https://travis-ci.org/thegameg/nolimix86.svg?branch=master)](https://travis-ci.org/thegameg/nolimix86)
+# nolimix86 [![Build Status](https://travis-ci.org/thegameg/nolimix86.svg?branch=dev)](https://travis-ci.org/thegameg/nolimix86)
 x86 virtual machine with unlimited registers
 
 # Build
